@@ -643,7 +643,7 @@ function tilePrice(set, c, parV) {
   if (parV) return sortPrice(set, c, parV.id);
   const vers = versionsFor(set, c); const b = vers.find(v => v.id === BASE_ID);
   const bp = b ? sortPrice(set, c, BASE_ID) : null; if (bp != null) return bp;
-  const ps = vers.map(v => sortPrice(set, c, v.id)).filter(x => x != null); return ps.length ? { from: Math.min(...ps) } : null;
+  const ps = vers.map(v => sortPrice(set, c, v.id)).filter(x => x != null); return ps.length ? (vers.length === 1 ? ps[0] : { from: Math.min(...ps) }) : null;
 }
 const tpVal = t => t == null ? null : typeof t === 'object' ? t.from : t;
 function renderGrid(set) {
