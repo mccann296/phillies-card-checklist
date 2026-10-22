@@ -89,7 +89,7 @@ function normalizeSet(raw) {
     name: String(raw.name || 'Untitled set').trim(), year: raw.year ? String(raw.year) : '',
     brand: String(raw.brand || '').trim(), sport: String(raw.sport || '').trim(),
     baseName: String(raw.baseName || 'Base').trim(), example: !!raw.example, notes: raw.notes || '',
-    team: raw.team || '', sources: Array.isArray(raw.sources) ? raw.sources : [], dataVersion: raw.dataVersion || 0,
+    team: raw.team || '', chase: !!raw.chase, chasePlayer: raw.chasePlayer || '', sources: Array.isArray(raw.sources) ? raw.sources : [], dataVersion: raw.dataVersion || 0,
     parallels: [], cards: []
   };
   const pids = new Set([BASE_ID]);
@@ -115,7 +115,7 @@ function normalizeSet(raw) {
     if (c.noBase === true || /^(y|yes|true|1)$/i.test(String(c.noBase || ''))) card.noBase = true;
     if (c.featured === true || /^(y|yes|true|1)$/i.test(String(c.featured || ''))) card.featured = true;
     if (c.images && typeof c.images === 'object') card.images = c.images;
-    for (const k of ['notes', 'ref', 'players']) if (c[k]) card[k] = String(c[k]);
+    for (const k of ['notes', 'ref', 'players', 'year', 'product']) if (c[k]) card[k] = String(c[k]);
     s.cards.push(card);
   }
   return s;
@@ -180,6 +180,14 @@ function imgTag(set, card, ver, { pk, alt = '', src: forced } = {}) {
   return `<img loading="lazy" alt="${esc(alt)}" src="${esc(src)}" data-fallback="${esc(fb)}" ${pk ? `data-pk="${esc(pk)}"` : ''}>`;
 }
 
+// First owned version that has one of my photos (used as thumbnail when the card has no reference image)
+function photoKeyFor(set, card, preferVid) {
+  const ids = [preferVid, ...versionsFor(set, card).filter(v => own(set.id, card.id, v.id)).map(v => v.id), ...versionsFor(set, card).map(v => v.id)].filter(Boolean);
+  return ids.map(id => pkey(set.id, card.id, id)).find(k => photoKeys.has(k));
+}
+const thumbPk = (set, card) => card.image ? undefined : photoKeyFor(set, card);
+const cardLine = (set, card) => [card.year, card.product].filter(Boolean).join(' ');
+
 /* ---------------- sheet (bottom dialog) ---------------- */
 const sheet = $('#sheet'), sheetBody = $('#sheetBody');
 function openSheet(html, onMount) { sheetBody.innerHTML = html; sheet.hidden = false; onMount && onMount(sheetBody); }
@@ -209,7 +217,7 @@ function render() {
   back.hidden = !parent; back.dataset.href = parent || '';
   requestAnimationFrame(() => window.scrollTo(0, scrollMem[key] || 0));
 }
-window.addEventListener('hashchange', render);
+window.addEventListener('hashchange', () => { if (!sheet.hidden) closeSheet(); render(); });
 $('#backBtn').addEventListener('click', e => { location.hash = e.currentTarget.dataset.href; });
 const setTitle = t => { $('#title').textContent = t; document.title = t + ' · Card Checklist'; };
 
@@ -224,26 +232,43 @@ function progressRow(label, o, t, color, href) {
 function featuredCards() {
   const out = []; for (const s of sets) for (const c of s.cards) if (c.featured) out.push([s, c]); return out;
 }
+function chaseStats(s) {
+  let vers = 0; for (const c of s.cards) vers += versionsFor(s, c).filter(v => own(s.id, c.id, v.id)).length;
+  const cards = s.cards.filter(c => ownedCount(s, c)).length; return { cards, vers };
+}
+function chaseHtml(s) {
+  const cs = chaseStats(s);
+  const pc = [...s.cards].reverse().find(c => thumbPk(s, c) || c.image);
+  return `<div class="card chase">
+    <div class="set-item" data-go="#/set/${esc(s.id)}">
+      <div class="thumb" style="width:64px;flex:none">${pc ? imgTag(s, pc, null, { pk: thumbPk(s, pc), alt: s.chasePlayer }) : `<div class="chase-ph">🏀</div>`}</div>
+      <div class="grow"><div class="small muted">${esc(s.sport)}${s.team ? ' · ' + esc(s.team) : ''}</div>
+        <div class="ellipsis"><b>${esc(s.name)}</b></div>
+        <div class="small muted">${cs.cards} card${cs.cards === 1 ? '' : 's'} owned${s.cards.length > cs.cards ? ` · ${s.cards.length} listed` : ''}</div></div>
+      <span class="muted" style="font-size:22px">›</span></div>
+    <button class="btn primary block big-add" data-chase-add="${esc(s.id)}">＋ Add a card</button></div>`;
+}
 function renderHome() {
   setTitle('Card Checklist');
-  const feat = featuredCards();
-  const featHtml = feat.length ? `<div class="section-title">★ Featured chases</div>${feat.map(([s, c]) => {
+  const feat = featuredCards(); const chases = sets.filter(s => s.chase);
+  const featHtml = feat.length || chases.length ? `<div class="section-title">★ Featured chases</div>${feat.map(([s, c]) => {
     const vers = versionsFor(s, c); const n = vers.filter(v => own(s.id, c.id, v.id)).length;
     return `<div class="card set-item feat" data-go="#/set/${esc(s.id)}/card/${esc(c.id)}">
-      <div class="thumb" style="width:64px;flex:none">${imgTag(s, c, null, { alt: c.player })}</div>
+      <div class="thumb" style="width:64px;flex:none">${imgTag(s, c, null, { alt: c.player, pk: thumbPk(s, c) })}</div>
       <div class="grow"><div class="small muted">${esc(s.year)} ${esc(s.name.replace(/ — .*/, ''))} · #${esc(c.number)}</div>
         <div class="ellipsis"><b>${esc(c.player)}</b></div>
         <div class="small muted">${n}/${vers.length} versions owned (rainbow)</div>
-        <div class="bar" style="margin-top:6px"><i style="width:${pct(n, vers.length)}%"></i></div></div></div>`; }).join('')}` : '';
-  const list = sets.map(s => { const st = stats(s); return `
+        <div class="bar" style="margin-top:6px"><i style="width:${pct(n, vers.length)}%"></i></div></div></div>`; }).join('')}${chases.map(chaseHtml).join('')}` : '';
+  const list = sets.filter(s => !s.chase).map(s => { const st = stats(s); return `
     <div class="card set-item" data-go="#/set/${esc(s.id)}">
       <div class="ring" style="--p:${pct(st.owned, st.combos)};width:64px;height:64px"><span style="width:50px;height:50px;font-size:14px">${Math.round(pct(st.owned, st.combos))}%</span></div>
       <div class="grow"><div class="ellipsis"><b>${esc(s.year)} ${esc(s.name)}</b></div>
         <div class="small muted">${s.cards.length} cards · ${s.parallels.length} parallel types · ${st.combos} versions</div>
         <div class="small muted">${st.anyCards}/${s.cards.length} cards owned · ${st.owned}/${st.combos} incl. parallels</div>
         ${s.example ? '<span class="badge example" style="margin-top:4px">EXAMPLE DATA</span>' : ''}</div></div>`; }).join('');
+  setTimeout(() => hydratePhotos(), 0);
   view.innerHTML = `${featHtml}
-    ${sets.length ? `<div class="section-title">My sets</div>${list}` : `<div class="empty"><div style="font-size:48px">🃏</div><p>No sets yet. Import a checklist to get started.</p></div>`}
+    ${list ? `<div class="section-title">My sets</div>${list}` : `<div class="empty"><div style="font-size:48px">🃏</div><p>No sets yet. Import a checklist to get started.</p></div>`}
     <div class="section-title">Add a set</div>
     <div class="card"><div class="btn-row">
       <button class="btn primary" data-action="import">Import checklist</button>
@@ -266,7 +291,9 @@ function renderOverview(set) {
           <div class="small muted">${st.qty} cards in collection (incl. dupes)</div></div>
         <div class="ring" style="--p:${pct(st.owned, st.combos)}"><span>${Math.round(pct(st.owned, st.combos))}%</span></div>
       </div>
-      <button class="btn primary block" style="margin-top:14px" data-go="#/set/${esc(set.id)}/cards">Browse cards</button>
+      ${set.chase ? `<button class="btn primary block big-add" style="margin-top:14px" data-chase-add="${esc(set.id)}">＋ Add a card</button>
+        ${set.cards.length ? `<button class="btn block" style="margin-top:10px" data-go="#/set/${esc(set.id)}/cards">Browse my ${set.cards.length} card${set.cards.length === 1 ? '' : 's'}</button>` : '<p class="small muted" style="margin:10px 2px 0">No cards yet. Tap “Add a card” for each card you own — pick a photo from your camera or gallery.</p>'}`
+      : `<button class="btn primary block" style="margin-top:14px" data-go="#/set/${esc(set.id)}/cards">Browse cards</button>`}
     </div>
     ${set.cards.filter(c => c.featured).map(c => { const vers = versionsFor(set, c); const n = vers.filter(v => own(set.id, c.id, v.id)).length; return `<div class="card set-item feat" data-go="#/set/${esc(set.id)}/card/${esc(c.id)}"><div class="thumb" style="width:56px;flex:none">${imgTag(set, c, null)}</div><div class="grow"><div class="small muted">★ Featured · #${esc(c.number)}</div><b>${esc(c.player)}</b>${progressRow('Rainbow', n, vers.length)}</div></div>`; }).join('')}
     <div class="section-title">Completion</div>
@@ -281,7 +308,7 @@ function renderOverview(set) {
     </div>` : ''}
     <div class="section-title">Manage</div>
     <div class="card">
-      <div class="btn-row"><button class="btn" data-action="add-card">+ Card</button><button class="btn" data-action="parallels">Parallels</button></div>
+      <div class="btn-row"><button class="btn" data-action="add-card">+ Card</button>${set.chase ? '' : '<button class="btn" data-action="parallels">Parallels</button>'}</div>
       <div class="btn-row" style="margin-top:10px"><button class="btn" data-action="edit-set">Edit set</button><button class="btn" data-action="export-set">Export checklist</button></div>
       <button class="btn danger block" style="margin-top:10px" data-action="delete-set">Delete set</button>
       ${set.notes ? `<p class="small muted">${esc(set.notes)}</p>` : ''}
@@ -311,7 +338,7 @@ function renderGrid(set) {
       </div>
     </div>
     <div id="gridArea"></div>
-    <button class="fab" data-action="add-card">+ Card</button>`;
+    <button class="fab" data-action="add-card">＋ Card</button>`;
   drawGrid(set);
   const q = $('#q'); let t;
   q.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { f.q = q.value; drawGrid(set); }, 120); });
@@ -348,7 +375,7 @@ function drawGrid(set) {
           ${parV ? (has ? '<span class="own">✓</span>' : '') : (n ? `<span class="own">${n}/${vers.length}</span>` : '')}
           ${!parV && vers.length > 1 ? `<div class="dots">${vers.filter(v => own(set.id, c.id, v.id)).slice(0, 12).map(v => `<i style="background:${esc(v.color || '#fff')}"></i>`).join('')}</div>` : ''}
         </div>
-        <div class="cap"><b class="ellipsis">${c.featured ? '★ ' : ''}${esc(c.player || '—')}</b><span class="muted ellipsis" style="display:block">#${esc(c.number)}${c.subset !== set.baseName ? ' · ' + esc(c.subset) : ''}${c.rookie ? ' · RC' : ''}</span></div>
+        <div class="cap"><b class="ellipsis">${c.featured ? '★ ' : ''}${esc(c.player || '—')}</b><span class="muted ellipsis" style="display:block">${c.year || c.product ? esc(cardLine(set, c)) + ' · ' : ''}#${esc(c.number)}${c.subset !== set.baseName ? ' · ' + esc(c.subset) : ''}${c.rookie ? ' · RC' : ''}</span></div>
       </button>`; }).join('')}</div>` : `<div class="empty">No cards match.</div>`);
   hydratePhotos($('#gridArea'));
 }
@@ -357,7 +384,8 @@ const detailState = { hero: 'ref', open: {}, vf: 'all' };
 function renderDetail(set, card) {
   setTitle(`#${card.number} ${card.player}`);
   const vers = versionsFor(set, card);
-  if (detailState.card !== card.id) { detailState.card = card.id; detailState.open = {}; detailState.hero = 'ref'; detailState.vf = 'all'; }
+  if (detailState.card !== card.id) { detailState.card = card.id; detailState.open = {}; detailState.hero = 'ref'; detailState.vf = 'all';
+    const pk0 = thumbPk(set, card); if (pk0) detailState.hero = 'p:' + pk0.split('|')[2]; }
   // hero: 'ref' (default image), 'p:<vid>' (my photo), 'r:<vid>' (reference image of a parallel)
   const h = detailState.hero; const hv = vers.find(v => v.id === h.slice(2));
   let hero;
@@ -377,7 +405,7 @@ function renderDetail(set, card) {
           ${h !== 'ref' ? `<button class="link" style="width:100%" data-hero="ref">Show default image</button>` : ''}
         </div>
         <div class="grow">
-          <div class="small muted">#${esc(card.number)} · ${esc(card.subset)}</div>
+          ${card.year || card.product ? `<div class="small muted">${esc(cardLine(set, card))}</div>` : ''}<div class="small muted">#${esc(card.number)} · ${esc(card.subset)}</div>
           <h2 style="margin:2px 0 4px;font-size:21px;line-height:1.15">${card.featured ? '★ ' : ''}${esc(card.player || '—')}</h2>
           ${card.players ? `<div class="small muted">${esc(card.players)}</div>` : ''}
           <div class="muted small">${esc(card.team)}</div>
@@ -389,8 +417,8 @@ function renderDetail(set, card) {
       </div>
       ${card.notes ? `<details class="small" style="margin:12px 0 0;padding:4px 10px;border-radius:10px;background:var(--surface2)"><summary style="min-height:36px;display:flex;align-items:center;cursor:pointer">⚠️ Checklist notes</summary><p style="margin:4px 0 8px">${esc(card.notes)}</p></details>` : ''}
     </div>
-    <div class="section-title row"><span class="grow">Versions &amp; parallels</span></div>
-    <div class="chips" style="margin-bottom:8px">${['all', 'owned', 'missing'].map(x => `<button class="chip ${vf === x ? 'on' : ''}" data-vf="${x}">${x === 'all' ? `All ${vers.length}` : x === 'owned' ? `Owned ${n}` : `Missing ${vers.length - n}`}</button>`).join('')}</div>
+    <div class="section-title row"><span class="grow">${set.chase ? 'My copy' : 'Versions &amp; parallels'}</span></div>
+    <div class="chips" style="margin-bottom:8px;${set.chase ? 'display:none' : ''}">${['all', 'owned', 'missing'].map(x => `<button class="chip ${vf === x ? 'on' : ''}" data-vf="${x}">${x === 'all' ? `All ${vers.length}` : x === 'owned' ? `Owned ${n}` : `Missing ${vers.length - n}`}</button>`).join('')}</div>
     <div class="card">${shown.length ? shown.map(v => {
       const o = own(set.id, card.id, v.id); const k = pkey(set.id, card.id, v.id); const hasPhoto = photoKeys.has(k);
       const ref = verImage(card, v.id); const open = detailState.open[v.id];
@@ -398,7 +426,7 @@ function renderDetail(set, card) {
         <div class="pv-head">
           ${hasPhoto ? `<img class="pv-mini" data-pk="${esc(k)}" data-hero="p:${esc(v.id)}" alt="">` : ref ? `<img class="pv-mini" loading="lazy" src="${esc(ref)}" data-hero="r:${esc(v.id)}" alt="">` : `<span class="swatch" style="background:${esc(v.color || 'var(--surface)')}"></span>`}
           <div class="grow" style="min-width:0"><b>${esc(v.name)}</b> <span class="muted small">${fmtRun(v.printRun)}</span>
-            ${o ? `<div class="small muted ellipsis">${[o.cond, o.note].filter(Boolean).map(esc).join(' · ') || (hasPhoto ? '📷 photo' : '')}</div>` : ''}</div>
+            ${o ? `<div class="small muted ellipsis">${[o.serial ? '#' + o.serial : '', o.cond, o.note].filter(Boolean).map(esc).join(' · ') || (hasPhoto ? '📷 photo' : '')}</div>` : ''}</div>
           ${o ? `<div class="stepper"><button data-qty="-1" aria-label="Less">−</button><span>${o.q || 1}</span><button data-qty="1" aria-label="More">+</button></div>` : ''}
           <button class="toggle ${o ? 'on' : ''}" data-toggle>${o ? 'Owned ✓' : 'Missing'}</button>
         </div>
@@ -422,7 +450,8 @@ function renderDetail(set, card) {
 }
 
 /* ---------------- forms ---------------- */
-function setForm(s = {}) {
+function setForm(s) {
+  s = s || {}; // openSetEditor(null) passes null — a default param doesn't cover null (this broke 'Create manually')
   return `<label class="field">Set name<input class="input" name="name" required value="${esc(s.name || '')}" placeholder="e.g. Chrome"></label>
     <div class="two"><label class="field">Year<input class="input" name="year" inputmode="numeric" value="${esc(s.year || '')}" placeholder="2026"></label>
     <label class="field">Brand<input class="input" name="brand" value="${esc(s.brand || '')}" placeholder="Topps, Panini…"></label></div>
@@ -503,6 +532,70 @@ function openParallels(set) {
       for (const cid in coll[set.id] || {}) { delete coll[set.id][cid][p.id]; }
       saveSets(); saveColl(); render(); openParallels(set);
     }));
+  });
+}
+
+/* ---------------- chase sets: add only the cards you own ---------------- */
+const CHASES = [
+  { id: 'chase-vj-edgecomb', name: 'VJ Edgecombe Chase', chasePlayer: 'VJ Edgecombe', preload: () => vjPreload(), owned: ['2025-26-topps-chrome-253'] },
+  { id: 'chase-tyrese-maxey', name: 'Tyrese Maxey Chase', chasePlayer: 'Tyrese Maxey' }
+];
+// Adds missing chase sets once. Never touches existing sets, ownership or photos; a chase set the user deleted is not re-added.
+// The one card the user owns (verified on Checklist Insider's 2025-26 Topps Chrome Basketball checklist: #253 VJ Edgecombe RC).
+function vjPreload() {
+  return { parallels: [], cards: [{ id: '2025-26-topps-chrome-253', number: '253', player: 'VJ Edgecombe', team: 'Philadelphia 76ers', subset: 'Base', rookie: true, year: '2025-26', product: 'Topps Chrome',
+    image: 'img/chase/vj-253.jpg', ref: 'https://www.sportscardspro.com/game/basketball-cards-2025-topps-chrome/vj-edgecombe-253',
+    notes: '2025-26 Topps Chrome Basketball #253 VJ Edgecombe RC (base set, Rookies) — verified on Checklist Insider and Topps Ripped checklists. Reference photo via SportsCardsPro (listing photo).' }] };
+}
+function ensureChases() {
+  prefs.chasesAdded ??= []; let changed = false;
+  for (const c of CHASES) {
+    if (getSet(c.id)) { if (!prefs.chasesAdded.includes(c.id)) prefs.chasesAdded.push(c.id); continue; }
+    if (prefs.chasesAdded.includes(c.id)) continue;
+    const pre = c.preload ? c.preload() : { parallels: [], cards: [] };
+    const ns = normalizeSet({ ...c, chase: true, sport: 'Basketball', team: 'Philadelphia 76ers', brand: '', year: '', baseName: 'Base', ...pre,
+      notes: `Your own ${c.chasePlayer} cards. Add each card you own (any year/product) with a photo.` });
+    sets.push(ns);
+    for (const card of c.owned || []) if (!own(ns.id, card, BASE_ID)) setOwn(ns.id, card, BASE_ID, { q: 1 });
+    prefs.chasesAdded.push(c.id); changed = true;
+  }
+  if (changed) saveSets(); savePrefs();
+}
+function openChaseCardForm(set, from) {
+  const prods = [...new Set(set.cards.map(c => c.product).filter(Boolean))];
+  const subs = [...new Set(set.cards.map(c => c.subset).filter(Boolean))];
+  openSheet(`<h2>Add a card <span class="muted small" style="font-weight:600">· ${esc(set.chasePlayer || set.name)}</span></h2><form id="f" autocomplete="off">
+    <label class="photo-pick" id="pp"><input type="file" name="photo" accept="image/*"><span id="ppTxt">📷 Photo — take or choose from gallery</span><img id="ppImg" alt="" hidden></label>
+    <div class="two"><label class="field">Year<input class="input" name="year" value="${esc(from?.year || '')}" placeholder="2025-26"></label>
+    <label class="field">Card #<input class="input" name="number" value="${esc(from?.number || '')}" placeholder="e.g. 123"></label></div>
+    <label class="field">Brand / product<input class="input" name="product" list="prods" value="${esc(from?.product || '')}" placeholder="e.g. Topps Chrome"></label>
+    <datalist id="prods">${prods.map(x => `<option>${esc(x)}</option>`).join('')}</datalist>
+    <label class="field">Subset / insert <span class="small muted" style="font-weight:400">(blank = Base)</span><input class="input" name="subset" list="csubs" value="${esc(from && from.subset !== set.baseName ? from.subset : '')}" placeholder="Base"></label>
+    <datalist id="csubs">${subs.map(x => `<option>${esc(x)}</option>`).join('')}</datalist>
+    <label class="field">Player<input class="input" name="player" value="${esc(from?.player || set.chasePlayer || '')}"></label>
+    <label class="field">Note <span class="small muted" style="font-weight:400">(optional — grade, where you got it…)</span><input class="input" name="note" placeholder="e.g. PSA 10, pulled from a blaster"></label>
+    <label class="row" style="min-height:48px;font-weight:600"><input type="checkbox" name="rookie" ${from?.rookie ? 'checked' : ''} style="width:22px;height:22px"> Rookie card (RC)</label>
+    <button class="btn primary block big-add">Save as owned ✓</button></form>`, el => {
+    const fi = $('input[type=file]', el), img = $('#ppImg', el);
+    fi.addEventListener('change', () => { const f = fi.files[0]; if (!f) return; img.src = URL.createObjectURL(f); img.hidden = false; $('#ppTxt', el).textContent = '📷 Change photo'; });
+    $('#f', el).addEventListener('submit', async e => {
+      e.preventDefault(); const fd = new FormData(e.target); const g = k => String(fd.get(k) || '').trim();
+      const year = g('year'), product = g('product'), number = g('number').replace(/^#/, ''), subset = g('subset') || set.baseName, player = g('player') || set.chasePlayer || '';
+      if (!number && !product && !year) { toast('Add at least the year, product or card #', 3000); return; }
+      // find or create the card (same year + product + subset + number); chase sets have no parallels — just the card
+      const key = slug(`${year}-${product}-${subset === set.baseName ? '' : subset}-${number || player}`);
+      let card = set.cards.find(c => c.id === key);
+      if (!card) { card = { id: key, number, player, team: set.team, subset, rookie: !!fd.get('rookie'), image: '', year, product }; set.cards.push(card); }
+      else if (fd.get('rookie')) card.rookie = true;
+      delete card.noBase; delete card.parallels;
+      const vid = BASE_ID; const note = g('note'); const prev = own(set.id, card.id, vid);
+      saveSets();
+      setOwn(set.id, card.id, vid, { q: prev ? (prev.q || 1) + 1 : 1, ...(note ? { note } : {}) });
+      const f = fi.files[0];
+      if (f) { try { toast('Saving photo…'); await photoPut(pkey(set.id, card.id, vid), await resizeImage(f)); } catch (err) { toast('Photo failed: ' + err.message, 3000); } }
+      closeSheet(); detailState.card = null; location.hash = `#/set/${set.id}/card/${card.id}`; render();
+      toast(prev ? 'Already owned — quantity +1' : 'Saved as owned ✓');
+    });
   });
 }
 
@@ -669,6 +762,8 @@ window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferr
 view.addEventListener('click', async e => {
   const { parts } = route(); const set = parts[0] === 'set' ? getSet(parts[1]) : null;
   const card = set && parts[2] === 'card' ? set.cards.find(c => c.id === parts[3]) : null;
+  const ca = e.target.closest('[data-chase-add]');
+  if (ca) { const cs = getSet(ca.dataset.chaseAdd); if (cs) openChaseCardForm(cs, ca.dataset.fromCard ? cs.cards.find(c => c.id === ca.dataset.fromCard) : null); return; }
   const go = e.target.closest('[data-go]');
   if (go) {
     const h = go.dataset.go;
@@ -701,7 +796,7 @@ view.addEventListener('click', async e => {
   if (act === 'new-set') openSetEditor(null);
   if (act === 'load-example') { await seedExample(); render(); }
   if (act === 'load-default') { await seedDefault(true); render(); }
-  if (act === 'add-card' && set) openCardEditor(set, null);
+  if (act === 'add-card' && set) set.chase ? openChaseCardForm(set, null) : openCardEditor(set, null);
   if (act === 'edit-card' && card) openCardEditor(set, card);
   if (act === 'delete-card' && card && confirm(`Delete card #${card.number} ${card.player} from the checklist?`)) {
     set.cards = set.cards.filter(c => c !== card); if (coll[set.id]) delete coll[set.id][card.id]; saveSets(); saveColl(); location.hash = `#/set/${set.id}/cards`;
@@ -754,8 +849,14 @@ async function cacheAllImages() {
   applyTheme();
   await loadPhotoKeys().catch(err => console.warn('Photo storage unavailable', err));
   await seedDefault(false);
+  ensureChases();
   render();
-  if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW failed', err));
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    // When an updated version takes over, reload once so the new app shows right away (your data is untouched).
+    const hadController = !!navigator.serviceWorker.controller; let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController && !reloaded && $('#sheet').hidden) { reloaded = true; location.reload(); } });
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(err => console.warn('SW failed', err));
+  }
   if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
 })();
 })();
