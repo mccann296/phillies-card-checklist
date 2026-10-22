@@ -1,0 +1,636 @@
+{
+ "format": "card-checklist-set",
+ "version": 2,
+ "id": "2008-topps-phillies-gold",
+ "name": "2008 Topps + Update — Phillies Gold",
+ "year": 2008,
+ "brand": "Topps",
+ "sport": "Baseball",
+ "team": "Philadelphia Phillies",
+ "baseName": "Base",
+ "noBase": true,
+ "notes": "Phillies Gold /2008 cards from 2008 Topps Series 1, Series 2 and Updates & Highlights — only the Gold version is tracked (no base row). Filter by series (Series 1 / Series 2 / Update). Base-set Gold is numbered /2008 (not the unnumbered Gold Foil). Images: SportsCardsPro listing photos; where no Gold photo exists the base card photo is shown (noted on the card).",
+ "sources": [
+  "https://www.sportscardchecklist.com/set-30694/2008-topps-gold-baseball-trading-card-checklist",
+  "https://www.sportscardchecklist.com/set-64061/2008-topps-update-and-highlights-gold-baseball-trading-card-checklist",
+  "https://www.sportscardchecklist.com/set-64236/2008-topps-50th-anniversary-all-rookie-team-gold-baseball-trading-card-checklist",
+  "https://www.sportscardchecklist.com/set-64054/2008-topps-update-and-highlights-all-star-stitches-gold-baseball-trading-card-checklist",
+  "https://baseballcardpedia.com/index.php/2008_Topps",
+  "https://baseballcardpedia.com/index.php/2008_Topps_Updates_%26_Highlights",
+  "https://www.cardboardconnection.com/2008-topps-updates-highlights-baseball-cards",
+  "http://thephilliesroom.blogspot.com/2013/10/2008-topps-phillies.html",
+  "https://www.sportscardspro.com/console/baseball-cards-2008-topps"
+ ],
+ "parallels": [
+  {
+   "id": "gold-2008",
+   "name": "Gold",
+   "printRun": 2008,
+   "color": "#d4a017",
+   "appliesTo": [
+    "Base",
+    "League Leaders",
+    "Combo Card",
+    "NL MVP",
+    "Manager",
+    "Home Run Derby",
+    "All-Star"
+   ]
+  }
+ ],
+ "cards": [
+  {
+   "id": "18",
+   "number": "18",
+   "player": "J.D. Durbin",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/18.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/jd-durbin-18",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "28",
+   "number": "28",
+   "player": "Kyle Kendrick",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/28.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/kyle-kendrick-28",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "30",
+   "number": "30",
+   "player": "Jimmy Rollins",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/30--gold.jpg",
+   "images": {
+    "gold-2008": "img/2008/t08/30--gold.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/jimmy-rollins-gold-30"
+  },
+  {
+   "id": "35",
+   "number": "35",
+   "player": "Cole Hamels",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/35--gold.jpg",
+   "images": {
+    "gold-2008": "img/2008/t08/35--gold.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/cole-hamels-gold-35"
+  },
+  {
+   "id": "58",
+   "number": "58",
+   "player": "Matt Holliday / Ryan Howard / Miguel Cabrera",
+   "team": "Philadelphia Phillies",
+   "subset": "League Leaders",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/58.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/matt-holliday-miguel-cabrera-ryan-howard-58?q=matt+holliday+ryan+howard+miguel+cabrera+58",
+   "notes": "Multi-player: Rockies / Phillies / Marlins Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "67",
+   "number": "67",
+   "player": "Wes Helms",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/67.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/wes-helms-67",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "98",
+   "number": "98",
+   "player": "Ryan Howard / Chase Utley",
+   "team": "Philadelphia Phillies",
+   "subset": "Combo Card",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/98--gold.jpg",
+   "images": {
+    "gold-2008": "img/2008/t08/98--gold.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/chase-utley-ryan-howard-gold-98"
+  },
+  {
+   "id": "100",
+   "number": "100",
+   "player": "Ryan Howard",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/100.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/ryan-howard-100",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "173",
+   "number": "173",
+   "player": "Jamie Moyer",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/173--gold.jpg",
+   "images": {
+    "gold-2008": "img/2008/t08/173--gold.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/jamie-moyer-gold-173"
+  },
+  {
+   "id": "184",
+   "number": "184",
+   "player": "Tadahito Iguchi",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/184.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/tadahito-iguchi-184",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "233",
+   "number": "233",
+   "player": "Jimmy Rollins",
+   "team": "Philadelphia Phillies",
+   "subset": "NL MVP",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/233.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/jimmy-rollins-233",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "238",
+   "number": "238",
+   "player": "Shane Victorino",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/238--gold.jpg",
+   "images": {
+    "gold-2008": "img/2008/t08/238--gold.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/shane-victorino-gold-238"
+  },
+  {
+   "id": "262",
+   "number": "262",
+   "player": "Brett Myers",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/262--gold.jpg",
+   "images": {
+    "gold-2008": "img/2008/t08/262--gold.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/brett-myers-gold-262"
+  },
+  {
+   "id": "281",
+   "number": "281",
+   "player": "Carlos Ruiz",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/281.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/carlos-ruiz-281",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "298",
+   "number": "298",
+   "player": "Prince Fielder / Ryan Howard / Adam Dunn",
+   "team": "Philadelphia Phillies",
+   "subset": "League Leaders",
+   "series": "Series 1",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/298.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/adam-dunn-prince-fielder-ryan-howard-298?q=prince+fielder+ryan+howard+adam+dunn+298",
+   "notes": "Multi-player: Brewers / Phillies / Reds Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "443",
+   "number": "443",
+   "player": "Greg Dobbs",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 2",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/443.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/greg-dobbs-443",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "460",
+   "number": "460",
+   "player": "Chase Utley",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 2",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/460--gold.jpg",
+   "images": {
+    "gold-2008": "img/2008/t08/460--gold.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/chase-utley-gold-460"
+  },
+  {
+   "id": "496",
+   "number": "496",
+   "player": "Brad Lidge",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 2",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/496.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/brad-lidge-496",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "521",
+   "number": "521",
+   "player": "Jayson Werth",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 2",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/521.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/jayson-werth-521",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "532",
+   "number": "532",
+   "player": "Tim Lahey",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 2",
+   "rookie": true,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/532.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/tim-lahey-532",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "572",
+   "number": "572",
+   "player": "Adam Eaton",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 2",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/572.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/adam-eaton-572",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "573",
+   "number": "573",
+   "player": "Tom Gordon",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 2",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/573.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/tom-gordon-573",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "615",
+   "number": "615",
+   "player": "Pat Burrell",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Series 2",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/615.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/pat-burrell-615",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "632",
+   "number": "632",
+   "player": "Charlie Manuel",
+   "team": "Philadelphia Phillies",
+   "subset": "Manager",
+   "series": "Series 2",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/632.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps/charlie-manuel-632",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "uh63",
+   "number": "UH63",
+   "player": "Eric Bruntlett",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/uh63.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/eric-bruntlett-gold-uh63",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "uh81",
+   "number": "UH81",
+   "player": "J.C. Romero",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/uh81.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/jc-romero-gold-uh81",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "uh93",
+   "number": "UH93",
+   "player": "Chris Coste",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": null,
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/chris-coste-gold-uh93"
+  },
+  {
+   "id": "uh158",
+   "number": "UH158",
+   "player": "Chad Durbin",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/uh158.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/chad-durbin-gold-uh158",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "uh184",
+   "number": "UH184",
+   "player": "Chase Utley",
+   "team": "Philadelphia Phillies",
+   "subset": "Home Run Derby",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/uh184--gold.jpg",
+   "images": {
+    "gold-2008": "img/2008/t08/uh184--gold.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/chase-utley-gold-uh184"
+  },
+  {
+   "id": "uh220",
+   "number": "UH220",
+   "player": "Geoff Jenkins",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": null,
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/geoff-jenkins-gold-uh220"
+  },
+  {
+   "id": "uh228",
+   "number": "UH228",
+   "player": "Joe Blanton",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/uh228.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/joe-blanton-gold-uh228",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "uh236",
+   "number": "UH236",
+   "player": "Chris Snelling",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": null,
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/chris-snelling-gold-uh236"
+  },
+  {
+   "id": "uh241",
+   "number": "UH241",
+   "player": "Chase Utley",
+   "team": "Philadelphia Phillies",
+   "subset": "All-Star",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/uh241--gold.jpg",
+   "images": {
+    "gold-2008": "img/2008/t08/uh241--gold.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/chase-utley-gold-uh241"
+  },
+  {
+   "id": "uh250",
+   "number": "UH250",
+   "player": "Pedro Feliz",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/uh250.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/pedro-feliz-gold-uh250",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "uh278",
+   "number": "UH278",
+   "player": "So Taguchi",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/uh278.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/so-taguchi-gold-uh278",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  },
+  {
+   "id": "uh304",
+   "number": "UH304",
+   "player": "Brad Lidge",
+   "team": "Philadelphia Phillies",
+   "subset": "All-Star",
+   "series": "Update",
+   "rookie": false,
+   "noBase": true,
+   "parallels": [
+    "gold-2008"
+   ],
+   "image": "img/2008/t08/uh304.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-update-&-highlights/brad-lidge-gold-uh304",
+   "notes": "Reference photo is the base card (no Gold photo found on SportsCardsPro)"
+  }
+ ],
+ "dataVersion": 1,
+ "pinned": true
+}

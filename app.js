@@ -32,6 +32,10 @@ let prefs = load(LS_PREFS, { theme: 'auto', seeded: false });
 const saveSets = () => localStorage.setItem(LS_SETS, JSON.stringify(sets));
 const saveColl = () => localStorage.setItem(LS_COLL, JSON.stringify(coll));
 const savePrefs = () => localStorage.setItem(LS_PREFS, JSON.stringify(prefs));
+// my own prices (override the weekly published price; never touched by the refresh): {setId:{cardId:{vid:number}}}
+const LS_MYP = 'cc.myprices.v1';
+let myPrices = load(LS_MYP, {});
+const saveMyPrices = () => localStorage.setItem(LS_MYP, JSON.stringify(myPrices));
 
 // IndexedDB for user photos (Blobs)
 const idb = new Promise((res, rej) => {
@@ -89,7 +93,7 @@ function normalizeSet(raw) {
     name: String(raw.name || 'Untitled set').trim(), year: raw.year ? String(raw.year) : '',
     brand: String(raw.brand || '').trim(), sport: String(raw.sport || '').trim(),
     baseName: String(raw.baseName || 'Base').trim(), example: !!raw.example, notes: raw.notes || '',
-    team: raw.team || '', chase: !!raw.chase, chasePlayer: raw.chasePlayer || '', sources: Array.isArray(raw.sources) ? raw.sources : [], dataVersion: raw.dataVersion || 0,
+    team: raw.team || '', chase: !!raw.chase, pinned: !!raw.pinned, chasePlayer: raw.chasePlayer || '', sources: Array.isArray(raw.sources) ? raw.sources : [], dataVersion: raw.dataVersion || 0,
     parallels: [], cards: []
   };
   const pids = new Set([BASE_ID]);
@@ -115,7 +119,7 @@ function normalizeSet(raw) {
     if (c.noBase === true || /^(y|yes|true|1)$/i.test(String(c.noBase || ''))) card.noBase = true;
     if (c.featured === true || /^(y|yes|true|1)$/i.test(String(c.featured || ''))) card.featured = true;
     if (c.images && typeof c.images === 'object') card.images = c.images;
-    for (const k of ['notes', 'ref', 'players', 'year', 'product']) if (c[k]) card[k] = String(c[k]);
+    for (const k of ['notes', 'ref', 'players', 'year', 'product', 'series']) if (c[k]) card[k] = String(c[k]);
     s.cards.push(card);
   }
   return s;
@@ -188,6 +192,226 @@ function photoKeyFor(set, card, preferVid) {
 const thumbPk = (set, card) => card.image ? undefined : photoKeyFor(set, card);
 const cardLine = (set, card) => [card.year, card.product].filter(Boolean).join(' ');
 
+/* ---------------- prices (raw / ungraded) ---------------- */
+let PRICES = null; // prices.json: { updated, urlBase, p: {setId:{cardId:{vid:[price, path, date]}}} }
+const money = v => v == null || isNaN(v) ? '' : '$' + (v >= 1000 ? Math.round(v).toLocaleString('en-US') : (+v).toFixed(2));
+const myPrice = (sid, cid, vid) => myPrices[sid]?.[cid]?.[vid];
+function setMyPrice(sid, cid, vid, v) {
+  if (v == null) { if (myPrices[sid]?.[cid]) { delete myPrices[sid][cid][vid]; if (!Object.keys(myPrices[sid][cid]).length) delete myPrices[sid][cid]; } }
+  else { myPrices[sid] ??= {}; myPrices[sid][cid] ??= {}; myPrices[sid][cid][vid] = v; }
+  saveMyPrices();
+}
+function pubPrice(sid, cid, vid) { const e = PRICES?.p?.[sid]?.[cid]?.[vid]; return e && e[0] != null ? { v: e[0], url: (PRICES.urlBase || 'https://www.sportscardspro.com/game/') + e[1], date: e[2] || PRICES.updated } : null; }
+function priceOf(set, card, vid) { const m = myPrice(set.id, card.id, vid); if (m != null) return { v: m, mine: true }; return pubPrice(set.id, card.id, vid); }
+function valueOf(sets_) {
+  const r = { v: 0, priced: 0, unpriced: 0, items: 0 };
+  for (const s of sets_) for (const c of s.cards) for (const ver of versionsFor(s, c)) {
+    const o = own(s.id, c.id, ver.id); if (!o) continue; const q = o.q || 1; r.items += q;
+    const p = priceOf(s, c, ver.id); if (p) { r.v += p.v * q; r.priced++; } else r.unpriced++;
+  }
+  return r;
+}
+const valueLine = r => r.priced ? `${money(r.v)}${r.unpriced ? ` <span class="muted">· ${r.unpriced} unpriced</span>` : ''}` : (r.unpriced ? `<span class="muted">no prices yet</span>` : '');
+function cardQuery(set, card, ver) {
+  const y = String(card.year || set.year || '').match(/(19|20)\d\d/)?.[0] || '';
+  const prod = card.product || [set.brand, set.name.replace(/ — .*/, '').replace(/^Topps /, '')].filter(Boolean).join(' ');
+  return [y, prod, (card.player || '').split(' / ')[0], card.number, ver && ver.id !== BASE_ID ? ver.name.replace(/\(.*?\)/g, '') : ''].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+}
+const lookupURL = (set, card, ver) => 'https://www.sportscardspro.com/search-products?type=prices&q=' + encodeURIComponent(cardQuery(set, card, ver));
+// eBay: Sports Trading Card Singles (261328); Buy It Now sorted by price + shipping lowest first / sold / auctions
+const ebayURL = (set, card, ver, mode = 'bin') => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(cardQuery(set, card, ver)) + '&_sacat=261328' +
+  (mode === 'sold' ? '&LH_Sold=1&LH_Complete=1&_sop=13' : mode === 'auction' ? '&LH_Auction=1&_sop=1' : '&LH_BIN=1&_sop=15');
+const whatnotURL = (set, card, ver) => 'https://www.whatnot.com/search?query=' + encodeURIComponent(cardQuery(set, card, ver)) + '&referringSource=typed';
+// weekly snapshot of the lowest listed price found (prices.json "l"): {wn:[price, url, iso]} — can be outdated
+function listedOf(sid, cid, vid) {
+  const e = PRICES?.l?.[sid]?.[cid]?.[vid]; if (!e) return null;
+  const best = Object.entries(e).filter(([, x]) => x && x[0] != null).map(([site, x]) => ({ site, v: x[0], url: x[1], t: x[2] })).sort((a, b) => a.v - b.v)[0];
+  return best || null;
+}
+const SITE = { wn: 'Whatnot', eb: 'eBay' };
+const shortDay = iso => { try { return new Date(iso).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); } catch { return iso; } };
+function buyLinks(set, card, v) {
+  return `<div class="buy"><a class="btn sm" href="${esc(ebayURL(set, card, v))}" target="_blank" rel="noopener">eBay</a><a class="btn sm" href="${esc(whatnotURL(set, card, v))}" target="_blank" rel="noopener">Whatnot</a></div>`;
+}
+function priceLine(set, card, v) {
+  const p = priceOf(set, card, v.id), l = listedOf(set.id, card.id, v.id);
+  if (!p && !l) return '';
+  const cheaper = p && l ? (l.v < p.v ? 'l' : 'p') : '';
+  return `<div class="small pl">${p ? `<span class="${cheaper === 'p' ? 'best' : ''}">${p.mine ? 'My price' : 'Raw sold'} ${money(p.v)}</span>` : ''}${l ? `${p ? ' · ' : ''}<span class="${cheaper === 'l' ? 'best' : ''}">Listed ${money(l.v)} on ${SITE[l.site] || l.site}</span>` : ''}</div>`;
+}
+// best known price used for sorting: my price > raw sold > lowest listed
+const sortPrice = (set, card, vid) => priceOf(set, card, vid)?.v ?? listedOf(set.id, card.id, vid)?.v ?? null;
+/* ---------------- Deals (from the weekly lowest-listing snapshot) ---------------- */
+// A deal = a version you don't own, in a set where you own at least one card, whose lowest listing + assumed shipping is
+// at least prefs.dealPct % under the raw (ungraded) market price. Ownership is local, so this is computed on the phone.
+const dealPct = () => prefs.dealPct ?? 25, dealShip = () => prefs.dealShip ?? 4;
+function computeDeals({ includeHidden = false } = {}) {
+  const out = []; if (!PRICES?.l) return out;
+  const hid = prefs.dealHide || {};
+  for (const s of sets) {
+    if (s.example || !s.cards.some(c => ownedCount(s, c))) continue;
+    const L = PRICES.l[s.id]; if (!L) continue;
+    for (const c of s.cards) { const LC = L[c.id]; if (!LC) continue;
+      for (const v of versionsFor(s, c)) {
+        if (own(s.id, c.id, v.id)) continue;
+        const raw = pubPrice(s.id, c.id, v.id); if (!raw || raw.v < 1) continue; // no reliable market price → skip
+        const e = LC[v.id]; if (!e) continue;
+        for (const [site, x] of Object.entries(e)) {
+          if (!x || x[0] == null) continue;
+          const total = x[0] + dealShip(), off = 1 - total / raw.v;
+          if (off * 100 < dealPct()) continue;
+          const key = `${s.id}|${c.id}|${v.id}|${x[1]}`, hidden = !!hid[key];
+          if (hidden && !includeHidden) continue;
+          out.push({ s, c, v, site, price: x[0], url: x[1], t: x[2], title: x[3] || '', raw, total, off, key, hidden });
+        }
+      }
+    }
+  }
+  return out.sort((a, b) => b.off - a.off);
+}
+function dealHtml(d) {
+  return `<div class="card deal${d.hidden ? ' hidden-deal' : ''}">
+    <div class="row" style="align-items:flex-start;gap:12px">
+      <div class="thumb" style="width:72px;flex:none" data-go="#/set/${esc(d.s.id)}/card/${esc(d.c.id)}">${imgTag(d.s, d.c, d.v, { alt: d.c.player })}</div>
+      <div class="grow" style="min-width:0">
+        <div class="row"><b class="grow ellipsis">${esc(d.c.player)} #${esc(d.c.number)}</b><span class="off">−${Math.round(d.off * 100)}%</span></div>
+        <div class="small ellipsis">${esc(d.v.id === BASE_ID ? 'Base' : d.v.name)} · <span class="muted">${esc(d.s.year)} ${esc(d.s.name.replace(/ — .*/, ''))}</span></div>
+        <div class="small" style="margin-top:4px"><b class="best">${money(d.price)}</b> + ~${money(dealShip())} ship on ${SITE[d.site] || d.site} <span class="muted">vs raw ${money(d.raw.v)}</span></div>
+        <div class="small muted">checked ${esc(shortDay(d.t))}${d.title ? ` · “${esc(d.title.slice(0, 70))}”` : ''}</div>
+        ${d.off > 0.8 ? '<div class="small warn">Unusually low — check the photos/description before buying.</div>' : ''}
+        <div class="buy" style="margin-top:6px"><a class="btn sm primary" href="${esc(d.url)}" target="_blank" rel="noopener">Open listing ↗</a><a class="btn sm" href="${esc(d.raw.url)}" target="_blank" rel="noopener">Market</a><button class="btn sm" data-hide-deal="${esc(d.key)}">${d.hidden ? 'Unhide' : 'Hide'}</button></div>
+      </div></div></div>`;
+}
+const dealState = { showHidden: false };
+function renderDeals() {
+  setTitle('Deals');
+  const all = computeDeals({ includeHidden: dealState.showHidden }); const nHidden = Object.keys(prefs.dealHide || {}).length;
+  const at = PRICES?.listedAt ? shortDay(PRICES.listedAt) : null;
+  view.innerHTML = `<div class="card">
+      <div class="small"><b>Weekly snapshot</b> of the lowest Buy-It-Now listing found on Whatnot${at ? ` (checked ${esc(at)})` : ''}, compared with the raw (ungraded) market price from SportsCardsPro. Listings sell or change — always check before buying.</div>
+      <div class="small muted" style="margin-top:6px">Only versions you don't own, in sets where you own at least one card. eBay isn't checked automatically (its search pages are off-limits to bots) — use the eBay buttons on each card.</div>
+      <div class="row" style="gap:10px;margin-top:10px;flex-wrap:wrap">
+        <label class="small">At least <select id="dPct" class="input" style="width:auto;display:inline-block;padding:4px 8px">${[10, 15, 20, 25, 30, 40, 50].map(p => `<option value="${p}" ${p === dealPct() ? 'selected' : ''}>${p}%</option>`).join('')}</select> under</label>
+        <label class="small">Shipping ~$<input id="dShip" class="input" type="number" min="0" step="0.5" inputmode="decimal" value="${dealShip()}" style="width:64px;display:inline-block;padding:4px 8px"></label>
+        ${nHidden ? `<button class="btn sm" id="dHid">${dealState.showHidden ? 'Hide hidden' : `Show hidden (${nHidden})`}</button>` : ''}
+      </div></div>
+    <div class="card row" style="gap:10px"><div class="grow small">🔔 <b>Deal alerts</b> for the featured chases (40%+ under market).<div class="muted">${prefs.pushSub ? 'On — subscription saved on this phone.' : 'Works from the home-screen app (iOS 16.4+).'}</div></div><button class="btn sm" data-action="push">${prefs.pushSub ? 'Manage' : 'Enable'}</button></div>
+    ${!PRICES?.l ? '<div class="empty"><p>No listing snapshot yet — connect to the internet and reopen the app.</p></div>'
+      : all.length ? `<div class="section-title">${all.length} deal${all.length === 1 ? '' : 's'} · biggest discount first</div>${all.map(dealHtml).join('')}`
+      : `<div class="empty"><p>No deals at ${dealPct()}%+ under market in this week's snapshot. Try a lower threshold.</p></div>`}`;
+  $('#dPct').onchange = e => { prefs.dealPct = +e.target.value; savePrefs(); renderDeals(); };
+  $('#dShip').onchange = e => { const v = parseFloat(e.target.value); prefs.dealShip = isNaN(v) || v < 0 ? 4 : v; savePrefs(); renderDeals(); };
+  const dh = $('#dHid'); if (dh) dh.onclick = () => { dealState.showHidden = !dealState.showHidden; renderDeals(); };
+}
+
+/* ---------------- Web Push deal alerts (no backend: the subscription is pasted to Groky) ---------------- */
+const VAPID_PUBLIC = 'BGZ2Cw2uhWgLDSj8uydncEU7eeOnU9FBARPJ6aPL4ctQHKLp2JnK0AHQREgpXQ9gDj_WswPAHoiAsgK8kbwdRLo';
+const isStandalone = () => window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true;
+const b64u = s => { const p = '='.repeat((4 - s.length % 4) % 4); const b = atob((s + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(b, ch => ch.charCodeAt(0)); };
+const pushText = sub => `Groky — please save my deal-alert subscription (Phillies Checklist):\n\`\`\`json\n${JSON.stringify({ format: 'cc-push-sub', label: 'iPhone', endpoint: sub.endpoint, keys: sub.keys })}\n\`\`\``;
+function openPush() {
+  const supported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+  const sub = prefs.pushSub;
+  openSheet(`<h2>🔔 Deal alerts</h2>
+    <p class="small" style="margin-top:0">Get a notification when a card in your <b>featured chases</b> (Cool Crushers, Cycle Complete, VJ Edgecombe, Tyrese Maxey and the three 2008 Phillies sets) is listed at least <b>40% under</b> its raw market price in the weekly snapshot.</p>
+    ${!supported || !isStandalone() ? `<p class="small warn">${isStandalone() ? 'This browser doesn’t support web push.' : 'On iPhone this only works from the <b>home-screen app</b> (iOS 16.4 or later): Safari → Share → “Add to Home Screen”, then open it from the home screen icon and tap Enable here.'}</p>` : ''}
+    ${sub ? `<p class="small">✅ Alerts are set up on this phone. If you haven't yet, send this to Groky in our chat (it's also included in “Send my cards to Groky”):</p>
+       <textarea class="input" id="psT" readonly style="height:120px;font-size:12px;font-family:ui-monospace,monospace">${esc(pushText(sub))}</textarea>
+       <div class="btn-row" style="margin-top:10px">${navigator.share ? '<button class="btn primary" id="psShare">Share…</button>' : ''}<button class="btn" id="psCopy">Copy</button><button class="btn" id="psOff">Turn off</button></div>`
+      : `<button class="btn primary block" id="psOn" ${supported ? '' : 'disabled'}>Enable deal alerts</button>
+         <p class="small muted">After you allow notifications, copy or share the code it shows and paste it into our chat — there's no server, so Groky sends the alerts.</p>`}`, el => {
+    const on = $('#psOn', el);
+    if (on) on.onclick = () => {
+      // must start from the tap itself (iOS requires a user gesture for the permission prompt)
+      Notification.requestPermission().then(async perm => {
+        if (perm !== 'granted') { toast('Notifications not allowed — you can enable them in Settings › Notifications', 4000); return; }
+        try {
+          const reg = await navigator.serviceWorker.ready;
+          const s = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64u(VAPID_PUBLIC) });
+          const j = s.toJSON(); prefs.pushSub = { endpoint: j.endpoint, keys: j.keys, at: new Date().toISOString() }; savePrefs();
+          openPush(); toast('Alerts enabled — now send the code to Groky', 3500);
+        } catch (e) { toast('Could not subscribe: ' + e.message, 4000); }
+      });
+    };
+    const t = sub && pushText(sub);
+    const cp = $('#psCopy', el); if (cp) cp.onclick = async () => { try { await navigator.clipboard.writeText(t); toast('Copied — paste it into the chat'); } catch { const ta = $('#psT', el); ta.select(); ta.setSelectionRange(0, t.length); toast(document.execCommand?.('copy') ? 'Copied' : 'Select the text and copy it', 3000); } };
+    const sh = $('#psShare', el); if (sh) sh.onclick = () => navigator.share({ title: 'Deal alerts for Groky', text: t }).catch(() => {});
+    const off = $('#psOff', el); if (off) off.onclick = async () => { try { const reg = await navigator.serviceWorker.ready; const s = await reg.pushManager.getSubscription(); if (s) await s.unsubscribe(); } catch { } delete prefs.pushSub; savePrefs(); closeSheet(); toast('Deal alerts turned off on this phone'); };
+  });
+}
+
+async function loadPrices() {
+  try { const r = await fetch('prices.json', { cache: 'no-cache' }); if (r.ok) { PRICES = await r.json(); return true; } } catch { }
+  return false;
+}
+
+/* ---------------- published-card registry & merging cards Groky adds (data/extra.json) ---------------- */
+const PUB = new Set(); // "setId|cardId" of every card in the published data
+let pubLoaded = false;
+const pubKey = (sid, cid) => sid + '|' + cid;
+const isUserCard = (s, c) => !c.pub && !PUB.has(pubKey(s.id, c.id));
+async function mergeExtra() {
+  // Cards Groky publishes after you "Send to Groky". Merge by set id + card id: never duplicates, and never touches your
+  // ownership, quantities, notes, photos or your own prices (those are keyed by the same ids, so they stay attached).
+  try {
+    const r = await fetch('data/extra.json', { cache: 'no-cache' }); if (!r.ok) return 0;
+    const ex = await r.json(); let n = 0;
+    for (const it of ex.cards || []) {
+      const s = getSet(it.set); const pc = it.card; if (!s || !pc?.id) continue;
+      PUB.add(pubKey(s.id, pc.id));
+      const SAFE = ['number', 'player', 'team', 'subset', 'rookie', 'year', 'product', 'image', 'images', 'ref', 'notes', 'players'];
+      let c = s.cards.find(x => x.id === pc.id);
+      if (!c) { c = { id: pc.id, team: s.team || '', subset: s.baseName, parallels: s.chase ? [] : undefined }; if (c.parallels === undefined) delete c.parallels; s.cards.push(c); }
+      for (const k of SAFE) if (pc[k] !== undefined && pc[k] !== '') c[k] = pc[k];
+      if (Array.isArray(pc.parallels) && !s.chase) c.parallels = pc.parallels;
+      if (!c.pub) { c.pub = true; n++; }
+    }
+    if (n) saveSets();
+    return n;
+  } catch (e) { console.warn('extra.json not merged', e); return 0; }
+}
+
+/* ---------------- Send to Groky ---------------- */
+function userCards() {
+  const out = [];
+  for (const s of sets) if (!s.example) for (const c of s.cards) if (isUserCard(s, c)) out.push([s, c]);
+  return out;
+}
+function grokyPayload() {
+  const list = userCards();
+  const items = list.map(([s, c]) => ({
+    set: { id: s.id, name: s.name, year: s.year, brand: s.brand, sport: s.sport, chase: !!s.chase },
+    card: { id: c.id, number: c.number, player: c.player, team: c.team, subset: c.subset, rookie: !!c.rookie, year: c.year || '', product: c.product || '' },
+    owned: versionsFor(s, c).filter(v => own(s.id, c.id, v.id)).map(v => { const o = own(s.id, c.id, v.id); return { version: v.id, name: v.name, q: o.q || 1, note: o.note || '', cond: o.cond || '', serial: o.serial || '', myPrice: myPrice(s.id, c.id, v.id) ?? null }; }),
+    sentBefore: !!prefs.sent?.[pubKey(s.id, c.id)]
+  }));
+  const lines = items.map(i => {
+    const own_ = i.owned.length ? i.owned.map(o => `${o.name}${o.q > 1 ? ' ×' + o.q : ''}${o.note ? ' (' + o.note + ')' : ''}`).join(', ') : 'not owned';
+    return `• ${[i.card.year || i.set.year, i.card.product || i.set.name].filter(Boolean).join(' ')} #${i.card.number} ${i.card.player}${i.card.subset && i.card.subset !== 'Base' ? ' — ' + i.card.subset : ''}${i.card.rookie ? ' RC' : ''} [${i.set.name}] — ${own_}`;
+  });
+  const json = { format: 'cc-user-cards', v: 1, exportedAt: new Date().toISOString(), cards: items };
+  if (prefs.pushSub) json.push = { format: 'cc-push-sub', label: 'iPhone', endpoint: prefs.pushSub.endpoint, keys: prefs.pushSub.keys };
+  const head = items.length ? `Groky — please add these ${items.length} card${items.length === 1 ? '' : 's'} I entered on my phone to the published checklist (and price them):\n${lines.join('\n')}` : 'Groky — no new cards this time.';
+  const text = `${head}${prefs.pushSub ? '\nAlso: please save my deal-alert subscription (in the JSON below, "push").' : ''}\n\n\`\`\`json\n${JSON.stringify(json)}\n\`\`\``;
+  return { items, text };
+}
+function openSendToGroky() {
+  const { items, text } = grokyPayload();
+  if (!pubLoaded) { openSheet(`<h2>Send to Groky</h2><p>Connect to the internet once and reopen the app so it can tell which cards are already in the published checklist.</p>`); return; }
+  if (!items.length && !prefs.pushSub) { openSheet(`<h2>Send to Groky</h2><p>Nothing to send — every card you've entered is already in the published checklist${PUB.size ? '' : ' (connect to the internet once so the app can check)'}.</p>`); return; }
+  openSheet(`<h2>Send to Groky</h2>
+    <p class="small muted" style="margin-top:0">${items.length} card${items.length === 1 ? '' : 's'} you added on this phone (not in the published checklist yet). Tap <b>Share</b> or <b>Copy</b>, then paste it into our chat. Once they're published, the app merges them with your entries automatically — nothing is duplicated and your ownership, photos and prices stay.</p>
+    <textarea class="input" id="gk" readonly style="height:200px;font-size:13px;font-family:ui-monospace,monospace">${esc(text)}</textarea>
+    <div class="btn-row" style="margin-top:10px">${navigator.share ? '<button class="btn primary" id="gkShare">Share…</button>' : ''}<button class="btn ${navigator.share ? '' : 'primary'}" id="gkCopy">Copy</button></div>`, el => {
+    const mark = () => { prefs.sent ??= {}; const d = new Date().toISOString().slice(0, 10); for (const i of items) prefs.sent[pubKey(i.set.id, i.card.id)] = d; savePrefs(); };
+    $('#gkCopy', el).onclick = async () => {
+      try { await navigator.clipboard.writeText(text); toast('Copied — paste it into the chat'); mark(); }
+      catch { const t = $('#gk', el); t.removeAttribute('readonly'); t.select(); t.setSelectionRange(0, text.length); const ok = document.execCommand && document.execCommand('copy'); t.setAttribute('readonly', ''); toast(ok ? 'Copied — paste it into the chat' : 'Select the text and copy it', 3000); if (ok) mark(); }
+    };
+    const sh = $('#gkShare', el); if (sh) sh.onclick = async () => { try { await navigator.share({ title: 'Cards for Groky', text }); mark(); } catch (e) { if (e.name !== 'AbortError') toast('Share failed — use Copy', 3000); } };
+  });
+}
+
 /* ---------------- sheet (bottom dialog) ---------------- */
 const sheet = $('#sheet'), sheetBody = $('#sheetBody');
 function openSheet(html, onMount) { sheetBody.innerHTML = html; sheet.hidden = false; onMount && onMount(sheetBody); }
@@ -213,7 +437,8 @@ function render() {
     if (parts[2] === 'cards') { parent = `#/set/${set.id}`; renderGrid(set); }
     else if (parts[2] === 'card' && set.cards.find(c => c.id === parts[3])) { parent = `#/set/${set.id}/cards`; renderDetail(set, set.cards.find(c => c.id === parts[3])); }
     else { parent = '#/'; renderOverview(set); }
-  } else renderHome();
+  } else if (parts[0] === 'deals') { parent = '#/'; renderDeals(); }
+  else renderHome();
   back.hidden = !parent; back.dataset.href = parent || '';
   requestAnimationFrame(() => window.scrollTo(0, scrollMem[key] || 0));
 }
@@ -244,30 +469,59 @@ function chaseHtml(s) {
       <div class="thumb" style="width:64px;flex:none">${pc ? imgTag(s, pc, null, { pk: thumbPk(s, pc), alt: s.chasePlayer }) : `<div class="chase-ph">🏀</div>`}</div>
       <div class="grow"><div class="small muted">${esc(s.sport)}${s.team ? ' · ' + esc(s.team) : ''}</div>
         <div class="ellipsis"><b>${esc(s.name)}</b></div>
-        <div class="small muted">${cs.cards} card${cs.cards === 1 ? '' : 's'} owned${s.cards.length > cs.cards ? ` · ${s.cards.length} listed` : ''}</div></div>
+        <div class="small muted">${cs.cards} card${cs.cards === 1 ? '' : 's'} owned${s.cards.length > cs.cards ? ` · ${s.cards.length} listed` : ''}</div>
+        ${(() => { const vl = valueLine(valueOf([s])); return vl ? `<div class="small value">💲 ${vl}</div>` : ''; })()}</div>
       <span class="muted" style="font-size:22px">›</span></div>
     <button class="btn primary block big-add" data-chase-add="${esc(s.id)}">＋ Add a card</button></div>`;
 }
+function pinnedHtml(s) {
+  const st = stats(s); const vl = valueLine(valueOf([s]));
+  const pc = s.cards.find(c => c.image);
+  return `<div class="card set-item feat" data-go="#/set/${esc(s.id)}">
+      <div class="thumb" style="width:64px;flex:none">${pc ? imgTag(s, pc, versionsFor(s, pc)[0], { alt: s.name }) : ''}</div>
+      <div class="grow"><div class="small muted">${esc(s.year)} · ${s.cards.length} cards${s.parallels.length ? '' : ' · base only'}</div>
+        <div class="ellipsis"><b>${esc(s.name.replace(/^2008 /, ''))}</b></div>
+        <div class="small muted">${st.owned}/${st.combos} owned · ${Math.round(pct(st.owned, st.combos))}%</div>
+        ${vl ? `<div class="small value">💲 ${vl}</div>` : ''}
+        <div class="bar" style="margin-top:6px"><i style="width:${pct(st.owned, st.combos)}%"></i></div></div>
+      <span class="muted" style="font-size:22px">›</span></div>`;
+}
 function renderHome() {
   setTitle('Card Checklist');
-  const feat = featuredCards(); const chases = sets.filter(s => s.chase);
-  const featHtml = feat.length || chases.length ? `<div class="section-title">★ Featured chases</div>${feat.map(([s, c]) => {
+  const feat = featuredCards(); const chases = sets.filter(s => s.chase); const pinned = sets.filter(s => s.pinned && !s.chase);
+  const featHtml = feat.length || chases.length || pinned.length ? `<div class="section-title">★ Featured chases</div>${feat.map(([s, c]) => {
     const vers = versionsFor(s, c); const n = vers.filter(v => own(s.id, c.id, v.id)).length;
     return `<div class="card set-item feat" data-go="#/set/${esc(s.id)}/card/${esc(c.id)}">
       <div class="thumb" style="width:64px;flex:none">${imgTag(s, c, null, { alt: c.player, pk: thumbPk(s, c) })}</div>
       <div class="grow"><div class="small muted">${esc(s.year)} ${esc(s.name.replace(/ — .*/, ''))} · #${esc(c.number)}</div>
         <div class="ellipsis"><b>${esc(c.player)}</b></div>
         <div class="small muted">${n}/${vers.length} versions owned (rainbow)</div>
-        <div class="bar" style="margin-top:6px"><i style="width:${pct(n, vers.length)}%"></i></div></div></div>`; }).join('')}${chases.map(chaseHtml).join('')}` : '';
+        ${(() => { const vl = valueLine(valueOf([{ ...s, cards: [c] }])); return vl ? `<div class="small value">💲 ${vl}</div>` : ''; })()}
+        <div class="bar" style="margin-top:6px"><i style="width:${pct(n, vers.length)}%"></i></div></div></div>`; }).join('')}${chases.map(chaseHtml).join('')}${pinned.map(pinnedHtml).join('')}` : '';
   const list = sets.filter(s => !s.chase).map(s => { const st = stats(s); return `
     <div class="card set-item" data-go="#/set/${esc(s.id)}">
       <div class="ring" style="--p:${pct(st.owned, st.combos)};width:64px;height:64px"><span style="width:50px;height:50px;font-size:14px">${Math.round(pct(st.owned, st.combos))}%</span></div>
       <div class="grow"><div class="ellipsis"><b>${esc(s.year)} ${esc(s.name)}</b></div>
         <div class="small muted">${s.cards.length} cards · ${s.parallels.length} parallel types · ${st.combos} versions</div>
         <div class="small muted">${st.anyCards}/${s.cards.length} cards owned · ${st.owned}/${st.combos} incl. parallels</div>
+        ${(() => { const vl = valueLine(valueOf([s])); return vl ? `<div class="small value">💲 ${vl}</div>` : ''; })()}
         ${s.example ? '<span class="badge example" style="margin-top:4px">EXAMPLE DATA</span>' : ''}</div></div>`; }).join('');
   setTimeout(() => hydratePhotos(), 0);
-  view.innerHTML = `${featHtml}
+  const tv = valueOf(sets.filter(s => !s.example)); const nUser = pubLoaded ? userCards().length : 0;
+  const totals = sets.length ? `<div class="card totals">
+      <div class="row" style="align-items:flex-end"><div class="grow"><div class="small muted">My collection · raw value</div>
+        <div class="big-money">${tv.priced ? money(tv.v) : '—'}</div>
+        <div class="small muted">${tv.items} card${tv.items === 1 ? '' : 's'} owned · ${tv.priced} priced${tv.unpriced ? ` · ${tv.unpriced} without a price` : ''}</div>
+        <div class="small muted">${PRICES?.updated ? `Ungraded prices as of ${esc(PRICES.updated)} · <a href="https://www.sportscardspro.com" target="_blank" rel="noopener">SportsCardsPro</a>` : 'Prices load when you’re online'}</div></div></div>
+      <button class="btn block" style="margin-top:10px" data-action="send-groky">📤 Send my cards to Groky${nUser ? ` (${nUser})` : ''}</button></div>` : '';
+  const deals = computeDeals();
+  const dealsCard = sets.some(s => !s.example) ? `<div class="card set-item deals-card" data-go="#/deals">
+      <div style="font-size:30px;flex:none">🔥</div>
+      <div class="grow"><div class="ellipsis"><b>Deals</b> ${deals.length ? `<span class="off">${deals.length}</span>` : ''}</div>
+        <div class="small muted">${!PRICES?.l ? 'Weekly listing snapshot loads when you’re online' : deals.length ? `Best: ${esc(deals[0].c.player.replace(/ \(.*/, ''))} ${esc(deals[0].v.id === BASE_ID ? 'Base' : deals[0].v.name)} −${Math.round(deals[0].off * 100)}% · ${dealPct()}%+ under market` : `None ${dealPct()}%+ under market this week`}</div>
+        <div class="small muted">Weekly snapshot${PRICES?.listedAt ? ' · checked ' + esc(shortDay(PRICES.listedAt)) : ''}</div></div>
+      <span class="muted" style="font-size:22px">›</span></div>` : '';
+  view.innerHTML = `${totals}${dealsCard}${featHtml}
     ${list ? `<div class="section-title">My sets</div>${list}` : `<div class="empty"><div style="font-size:48px">🃏</div><p>No sets yet. Import a checklist to get started.</p></div>`}
     <div class="section-title">Add a set</div>
     <div class="card"><div class="btn-row">
@@ -288,7 +542,8 @@ function renderOverview(set) {
         <div class="grow"><div class="small muted">${esc([set.year, set.brand, set.sport].filter(Boolean).join(' · '))}</div>
           <h2 style="margin:2px 0 6px;font-size:22px">${esc(set.name)}</h2>
           <div class="small muted">${set.cards.length} cards · ${set.parallels.length} parallels · ${st.combos} total versions</div>
-          <div class="small muted">${st.qty} cards in collection (incl. dupes)</div></div>
+          <div class="small muted">${st.qty} cards in collection (incl. dupes)</div>
+          ${(() => { const vl = valueLine(valueOf([set])); return vl ? `<div class="value" style="margin-top:4px">💲 Raw value: <b>${vl}</b></div>` : ''; })()}</div>
         <div class="ring" style="--p:${pct(st.owned, st.combos)}"><span>${Math.round(pct(st.owned, st.combos))}%</span></div>
       </div>
       ${set.chase ? `<button class="btn primary block big-add" style="margin-top:14px" data-chase-add="${esc(set.id)}">＋ Add a card</button>
@@ -300,8 +555,8 @@ function renderOverview(set) {
     <div class="card">
       ${progressRow('Overall (every card × every parallel)', st.owned, st.combos)}
       ${progressRow('Cards owned in any version', st.anyCards, set.cards.length)}
-      ${progressRow(esc(set.baseName) + ' set', st.base.o, st.base.t, '', `filter:${BASE_ID}:${set.baseName}`)}
-      ${subs.map(([n, b]) => progressRow(esc(n) + ' <span class="badge">insert</span>', b.o, b.t, '', `filter:${BASE_ID}:${n}`)).join('')}
+      ${st.base.t ? progressRow(esc(set.baseName) + ' set', st.base.o, st.base.t, '', `filter:${BASE_ID}:${set.baseName}`) : ''}
+      ${subs.filter(([, b]) => b.t).map(([n, b]) => progressRow(esc(n) + ' <span class="badge">insert</span>', b.o, b.t, '', `filter:${BASE_ID}:${n}`)).join('')}
     </div>
     ${set.parallels.length ? `<div class="section-title">Parallels</div><div class="card">
       ${set.parallels.map(p => progressRow(`${esc(p.name)} <span class="muted small">${fmtRun(p.printRun)}</span>${p.appliesTo?.length ? ` <span class="small muted">· ${esc(p.appliesTo.join(', '))}</span>` : ''}`, st.par[p.id].o, st.par[p.id].t, p.color, `filter:${p.id}:`)).join('')}
@@ -316,25 +571,36 @@ function renderOverview(set) {
     </div>`;
 }
 
-function getFilter(set) { return filters[set.id] ??= { q: '', status: 'all', par: 'any', team: '', subset: '', rc: false }; }
+function getFilter(set) { return filters[set.id] ??= { q: '', status: 'all', par: 'any', team: '', subset: '', rc: false, sort: 'num', mbp: false }; }
+function tilePrice(set, c, parV) {
+  if (parV) return sortPrice(set, c, parV.id);
+  const vers = versionsFor(set, c); const b = vers.find(v => v.id === BASE_ID);
+  const bp = b ? sortPrice(set, c, BASE_ID) : null; if (bp != null) return bp;
+  const ps = vers.map(v => sortPrice(set, c, v.id)).filter(x => x != null); return ps.length ? { from: Math.min(...ps) } : null;
+}
+const tpVal = t => t == null ? null : typeof t === 'object' ? t.from : t;
 function renderGrid(set) {
   setTitle(set.name);
   const f = getFilter(set);
   const teams = [...new Set(set.cards.map(c => c.team).filter(Boolean))].sort(natCmp);
   const subs = subsets(set);
+  const series = [...new Set(set.cards.map(c => c.series).filter(Boolean))].sort(natCmp);
   view.innerHTML = `
     <div class="searchbar">
       <input class="input" id="q" type="search" placeholder="Search player, team, number…" value="${esc(f.q)}" autocomplete="off">
       <div class="chips">
         ${['all', 'owned', 'missing'].map(s => `<button class="chip ${f.status === s ? 'on' : ''}" data-status="${s}">${s[0].toUpperCase() + s.slice(1)}</button>`).join('')}
         <select class="chip ${f.par !== 'any' ? 'on' : ''}" id="fPar" aria-label="Parallel">
-          <option value="any">Any version</option><option value="${BASE_ID}" ${f.par === BASE_ID ? 'selected' : ''}>${esc(baseVersion(set).name)}</option>
+          <option value="any">Any version</option>${set.cards.some(c => !c.noBase) ? `<option value="${BASE_ID}" ${f.par === BASE_ID ? 'selected' : ''}>${esc(baseVersion(set).name)}</option>` : ''}
           ${set.parallels.map(p => `<option value="${esc(p.id)}" ${f.par === p.id ? 'selected' : ''}>${esc(p.name)} ${fmtRun(p.printRun)}</option>`).join('')}</select>
         ${subs.length > 1 ? `<select class="chip ${f.subset ? 'on' : ''}" id="fSub" aria-label="Subset"><option value="">All subsets</option>${subs.map(s => `<option ${f.subset === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>` : ''}
+        ${series.length > 1 ? `<select class="chip ${f.series ? 'on' : ''}" id="fSer" aria-label="Series"><option value="">All series</option>${series.map(t => `<option ${f.series === t ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>` : ''}
         ${teams.length ? `<select class="chip ${f.team ? 'on' : ''}" id="fTeam" aria-label="Team"><option value="">All teams</option>${teams.map(t => `<option ${f.team === t ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>` : ''}
         ${set.cards.some(isHit) ? `<button class="chip ${f.nohits ? 'on' : ''}" data-nohits>Hide autos/relics</button>` : ''}
         ${set.cards.some(c => c.featured) ? `<button class="chip ${f.feat ? 'on' : ''}" data-feat>★ Featured</button>` : ''}
         ${set.cards.some(c => c.rookie) ? `<button class="chip ${f.rc ? 'on' : ''}" data-rc>RC</button>` : ''}
+        <select class="chip ${f.sort !== 'num' ? 'on' : ''}" id="fSort" aria-label="Sort"><option value="num">Sort: card #</option><option value="price-desc" ${f.sort === 'price-desc' ? 'selected' : ''}>Price: high → low</option><option value="price-asc" ${f.sort === 'price-asc' ? 'selected' : ''}>Price: low → high</option></select>
+        <button class="chip ${f.mbp ? 'on' : ''}" data-mbp>💲 Missing, by price</button>
       </div>
     </div>
     <div id="gridArea"></div>
@@ -345,6 +611,8 @@ function renderGrid(set) {
   $('#fPar').addEventListener('change', e => { f.par = e.target.value; renderGrid(set); });
   $('#fSub')?.addEventListener('change', e => { f.subset = e.target.value; renderGrid(set); });
   $('#fTeam')?.addEventListener('change', e => { f.team = e.target.value; renderGrid(set); });
+  $('#fSer')?.addEventListener('change', e => { f.series = e.target.value; renderGrid(set); });
+  $('#fSort').addEventListener('change', e => { f.sort = e.target.value; drawGrid(set); });
 }
 function drawGrid(set) {
   const f = getFilter(set); const q = f.q.trim().toLowerCase();
@@ -352,6 +620,7 @@ function drawGrid(set) {
   let cards = set.cards.filter(c => {
     if (f.subset && c.subset !== f.subset) return false;
     if (f.team && c.team !== f.team) return false;
+    if (f.series && c.series !== f.series) return false;
     if (f.rc && !c.rookie) return false;
     if (f.feat && !c.featured) return false;
     if (f.nohits && isHit(c)) return false;
@@ -363,6 +632,8 @@ function drawGrid(set) {
     if (f.status === 'missing' && has) return false;
     return true;
   });
+  if (f.mbp) return drawMissingByPrice(set, cards, parV);
+  if (f.sort !== 'num') { const dir = f.sort === 'price-asc' ? 1 : -1; cards = cards.map(c => [c, tpVal(tilePrice(set, c, parV))]).sort((a, b) => a[1] == null ? (b[1] == null ? 0 : 1) : b[1] == null ? -1 : (a[1] - b[1]) * dir).map(x => x[0]); }
   const owned = cards.filter(c => parV ? own(set.id, c.id, parV.id) : ownedCount(set, c)).length;
   $('#gridArea').innerHTML = `<div class="small muted" style="margin:2px 2px 10px">${cards.length} cards${parV ? ` · ${esc(parV.name)} ${fmtRun(parV.printRun)}` : ''} · ${owned} owned</div>` +
     (cards.length ? `<div class="grid">${cards.map(c => {
@@ -375,12 +646,33 @@ function drawGrid(set) {
           ${parV ? (has ? '<span class="own">✓</span>' : '') : (n ? `<span class="own">${n}/${vers.length}</span>` : '')}
           ${!parV && vers.length > 1 ? `<div class="dots">${vers.filter(v => own(set.id, c.id, v.id)).slice(0, 12).map(v => `<i style="background:${esc(v.color || '#fff')}"></i>`).join('')}</div>` : ''}
         </div>
+        ${(() => { const tp = tilePrice(set, c, parV); return tp == null ? '' : `<span class="tile-price">${typeof tp === 'object' ? 'from ' + money(tp.from) : money(tp)}</span>`; })()}
         <div class="cap"><b class="ellipsis">${c.featured ? '★ ' : ''}${esc(c.player || '—')}</b><span class="muted ellipsis" style="display:block">${c.year || c.product ? esc(cardLine(set, c)) + ' · ' : ''}#${esc(c.number)}${c.subset !== set.baseName ? ' · ' + esc(c.subset) : ''}${c.rookie ? ' · RC' : ''}</span></div>
       </button>`; }).join('')}</div>` : `<div class="empty">No cards match.</div>`);
   hydratePhotos($('#gridArea'));
 }
 
-const detailState = { hero: 'ref', open: {}, vf: 'all' };
+function drawMissingByPrice(set, cards, parV) {
+  // every version you still need (in the current filters), cheapest first — for shopping
+  const rows = [];
+  for (const c of cards) for (const v of versionsFor(set, c)) {
+    if (parV && v.id !== parV.id) continue; if (own(set.id, c.id, v.id)) continue;
+    rows.push({ c, v, p: sortPrice(set, c, v.id) });
+  }
+  const f = getFilter(set); const dir = f.sort === 'price-desc' ? -1 : 1;
+  rows.sort((a, b) => a.p == null ? (b.p == null ? 0 : 1) : b.p == null ? -1 : (a.p - b.p) * dir);
+  const priced = rows.filter(r => r.p != null).length; const LIM = 300;
+  $('#gridArea').innerHTML = `<div class="small muted" style="margin:2px 2px 10px">${rows.length} missing versions · ${priced} priced · ${dir === 1 ? 'cheapest' : 'priciest'} first${rows.length > LIM ? ` (showing ${LIM})` : ''}</div>
+    <div class="card">${rows.slice(0, LIM).map(({ c, v }) => `<div class="mbp">
+      <div class="mbp-main" data-go="#/set/${esc(set.id)}/card/${esc(c.id)}">
+        <div class="thumb" style="width:44px;flex:none">${imgTag(set, c, v, { alt: c.player })}</div>
+        <div class="grow" style="min-width:0"><b class="ellipsis" style="display:block">${esc(c.player || '—')} <span class="muted small">#${esc(c.number)}</span></b>
+          <div class="small muted ellipsis">${esc(v.name)} ${fmtRun(v.printRun)}${c.subset !== set.baseName ? ' · ' + esc(c.subset) : ''}</div>${priceLine(set, c, v) || '<div class="small muted">no price yet</div>'}</div></div>
+      ${buyLinks(set, c, v)}</div>`).join('') || '<div class="empty">Nothing missing here 🎉</div>'}</div>`;
+  hydratePhotos($('#gridArea'));
+}
+
+const detailState = { hero: 'ref', open: {}, vf: 'all', vs: 'default' };
 function renderDetail(set, card) {
   setTitle(`#${card.number} ${card.player}`);
   const vers = versionsFor(set, card);
@@ -396,6 +688,7 @@ function renderDetail(set, card) {
   const n = vers.filter(v => own(set.id, card.id, v.id)).length;
   const vf = detailState.vf;
   const shown = vers.filter(v => vf === 'all' || (vf === 'owned') === !!own(set.id, card.id, v.id));
+  if (detailState.vs !== 'default') { const dir = detailState.vs === 'price-asc' ? 1 : -1; shown.sort((a, b) => { const pa = sortPrice(set, card, a.id), pb = sortPrice(set, card, b.id); return pa == null ? (pb == null ? 0 : 1) : pb == null ? -1 : (pa - pb) * dir; }); }
   view.innerHTML = `
     <div class="card">
       <div class="detail-hero">
@@ -413,27 +706,40 @@ function renderDetail(set, card) {
           <div style="margin-top:12px"><b style="font-size:28px">${n}</b><span class="muted"> / ${vers.length} versions</span></div>
           <div class="bar" style="margin-top:6px"><i style="width:${pct(n, vers.length)}%"></i></div>
           <div class="small muted" style="margin-top:8px">${esc(set.year)} ${esc(set.name)}</div>
+          ${(() => { const bp = vers.length ? priceOf(set, card, vers[0].id) : null; const mv = valueOf([{ ...set, cards: [card] }]);
+            return `<div class="price-box"><div><span class="muted small">Raw ${esc(vers[0]?.name || '')}:</span> <b>${bp ? money(bp.v) : '—'}</b>${bp?.mine ? ' <span class="badge">my price</span>' : ''}</div>
+              ${mv.priced ? `<div><span class="muted small">My copies:</span> <b>${money(mv.v)}</b></div>` : ''}
+              <div class="small muted">${bp && !bp.mine ? `as of ${esc(bp.date)} · <a href="${esc(bp.url)}" target="_blank" rel="noopener">SportsCardsPro ↗</a>` : `<a href="${esc(lookupURL(set, card, null))}" target="_blank" rel="noopener">Look up price ↗</a>`}</div></div>`; })()}
         </div>
       </div>
       ${card.notes ? `<details class="small" style="margin:12px 0 0;padding:4px 10px;border-radius:10px;background:var(--surface2)"><summary style="min-height:36px;display:flex;align-items:center;cursor:pointer">⚠️ Checklist notes</summary><p style="margin:4px 0 8px">${esc(card.notes)}</p></details>` : ''}
     </div>
     <div class="section-title row"><span class="grow">${set.chase ? 'My copy' : 'Versions &amp; parallels'}</span></div>
-    <div class="chips" style="margin-bottom:8px;${set.chase ? 'display:none' : ''}">${['all', 'owned', 'missing'].map(x => `<button class="chip ${vf === x ? 'on' : ''}" data-vf="${x}">${x === 'all' ? `All ${vers.length}` : x === 'owned' ? `Owned ${n}` : `Missing ${vers.length - n}`}</button>`).join('')}</div>
+    <div class="chips" style="margin-bottom:8px;${set.chase ? 'display:none' : ''}">${['all', 'owned', 'missing'].map(x => `<button class="chip ${vf === x ? 'on' : ''}" data-vf="${x}">${x === 'all' ? `All ${vers.length}` : x === 'owned' ? `Owned ${n}` : `Missing ${vers.length - n}`}</button>`).join('')}
+      <select class="chip ${detailState.vs !== 'default' ? 'on' : ''}" id="vSort" aria-label="Sort versions"><option value="default">Checklist order</option><option value="price-desc" ${detailState.vs === 'price-desc' ? 'selected' : ''}>Price: high → low</option><option value="price-asc" ${detailState.vs === 'price-asc' ? 'selected' : ''}>Price: low → high</option></select></div>
+    ${PRICES?.updated ? `<p class="small muted" style="margin:-2px 4px 8px">Raw = ungraded sold price from <a href="https://www.sportscardspro.com" target="_blank" rel="noopener">SportsCardsPro</a>, as of ${esc(PRICES.updated)}.${PRICES.l ? ` “Listed” = cheapest Buy-It-Now found in a weekly snapshot (${esc(shortDay(PRICES.listedAt || PRICES.updated))}), before shipping — may be gone or changed.` : ''}</p>` : ''}
     <div class="card">${shown.length ? shown.map(v => {
       const o = own(set.id, card.id, v.id); const k = pkey(set.id, card.id, v.id); const hasPhoto = photoKeys.has(k);
       const ref = verImage(card, v.id); const open = detailState.open[v.id];
       return `<div class="pv" data-ver="${esc(v.id)}">
         <div class="pv-head">
           ${hasPhoto ? `<img class="pv-mini" data-pk="${esc(k)}" data-hero="p:${esc(v.id)}" alt="">` : ref ? `<img class="pv-mini" loading="lazy" src="${esc(ref)}" data-hero="r:${esc(v.id)}" alt="">` : `<span class="swatch" style="background:${esc(v.color || 'var(--surface)')}"></span>`}
-          <div class="grow" style="min-width:0"><b>${esc(v.name)}</b> <span class="muted small">${fmtRun(v.printRun)}</span>
+          <div class="grow" style="min-width:0"><b>${esc(v.name)}</b> <span class="muted small">${fmtRun(v.printRun)}</span>${(() => { const p = priceOf(set, card, v.id); return p ? ` <span class="price-tag ${p.mine ? 'mine' : ''}">${money(p.v)}</span>` : ''; })()}
+            ${priceLine(set, card, v)}
             ${o ? `<div class="small muted ellipsis">${[o.serial ? '#' + o.serial : '', o.cond, o.note].filter(Boolean).map(esc).join(' · ') || (hasPhoto ? '📷 photo' : '')}</div>` : ''}</div>
           ${o ? `<div class="stepper"><button data-qty="-1" aria-label="Less">−</button><span>${o.q || 1}</span><button data-qty="1" aria-label="More">+</button></div>` : ''}
           <button class="toggle ${o ? 'on' : ''}" data-toggle>${o ? 'Owned ✓' : 'Missing'}</button>
         </div>
-        <button class="link" data-open>${open ? 'Hide details' : (o ? 'Condition, note & photo' : 'Add photo / details')}</button>
+        <div class="row" style="gap:8px;align-items:center"><button class="link grow" style="text-align:left" data-open>${open ? 'Hide details' : (o ? 'Details, price & photo' : 'Price, photo & details')}</button>${buyLinks(set, card, v)}</div>
         ${open ? `<div class="pv-extra">
           <label class="field" style="margin:0">Condition<select class="input" data-field="cond">${CONDITIONS.map(c => `<option ${o?.cond === c ? 'selected' : ''} value="${c}">${c || '—'}</option>`).join('')}</select></label>
           <label class="field" style="margin:0">Note (grade, serial #, where bought…)<input class="input" data-field="note" value="${esc(o?.note || '')}" placeholder="e.g. PSA 9, #23/50"></label>
+          ${(() => { const pp = pubPrice(set.id, card.id, v.id); const mp = myPrice(set.id, card.id, v.id);
+            return `<label class="field" style="margin:0">My price ($) <span class="small muted" style="font-weight:400">— overrides the weekly price; leave blank to use it</span>
+              <input class="input" data-myprice inputmode="decimal" value="${mp != null ? esc(mp) : ''}" placeholder="${pp ? esc(pp.v.toFixed(2)) : 'e.g. 12.50'}"></label>
+              <div class="small muted">${pp ? `Raw (ungraded) ${money(pp.v)} as of ${esc(pp.date)} · <a href="${esc(pp.url)}" target="_blank" rel="noopener">SportsCardsPro ↗</a>` : `No published price · <a href="${esc(lookupURL(set, card, v))}" target="_blank" rel="noopener">Look up price ↗</a>`}</div>
+              ${(() => { const l = listedOf(set.id, card.id, v.id); return l ? `<div class="small muted">Lowest listed: <b>${money(l.v)}</b> + shipping on <a href="${esc(l.url)}" target="_blank" rel="noopener">${SITE[l.site] || l.site} ↗</a> (checked ${esc(shortDay(l.t))} — snapshot, may be outdated)</div>` : ''; })()}
+              <div class="small muted">Shop: <a href="${esc(ebayURL(set, card, v))}" target="_blank" rel="noopener">eBay Buy It Now (lowest + shipping)</a> · <a href="${esc(ebayURL(set, card, v, 'auction'))}" target="_blank" rel="noopener">eBay auctions</a> · <a href="${esc(ebayURL(set, card, v, 'sold'))}" target="_blank" rel="noopener">eBay sold</a> · <a href="${esc(whatnotURL(set, card, v))}" target="_blank" rel="noopener">Whatnot</a></div>`; })()}
           <div class="row">${hasPhoto ? `<img class="pv-photo" data-pk="${esc(k)}" alt="">` : ''}
             <div class="grow btn-row"><button class="btn" data-photo>📷 ${hasPhoto ? 'Replace' : 'Add'} photo</button>${hasPhoto ? '<button class="btn danger" data-delphoto>Remove</button>' : ''}</div></div>
         </div>` : ''}
@@ -441,6 +747,13 @@ function renderDetail(set, card) {
     ${card.ref ? `<p class="small muted" style="margin:4px 4px 12px">Reference photos via <a href="${esc(card.ref)}" target="_blank" rel="noopener">SportsCardsPro</a>. Tap a thumbnail to view it large.</p>` : ''}
     <div class="btn-row"><button class="btn" data-action="edit-card">Edit card</button><button class="btn danger" data-action="delete-card">Delete card</button></div>`;
   hydratePhotos();
+  $('#vSort')?.addEventListener('change', e => { detailState.vs = e.target.value; renderDetail(set, card); });
+  view.querySelectorAll('[data-myprice]').forEach(inp => inp.addEventListener('change', e => {
+    const vid = e.target.closest('[data-ver]').dataset.ver; const raw = e.target.value.replace(/[$,\s]/g, '');
+    const v = raw === '' ? null : Math.round(parseFloat(raw) * 100) / 100;
+    if (raw !== '' && (isNaN(v) || v < 0)) { toast('Enter a number, e.g. 12.50'); return; }
+    setMyPrice(set.id, card.id, vid, v); renderDetail(set, card); toast(v == null ? 'Using the weekly price' : 'Your price saved');
+  }));
   view.querySelectorAll('[data-field]').forEach(inp => inp.addEventListener('change', e => {
     const vid = e.target.closest('[data-ver]').dataset.ver;
     const val = e.target.value.trim();
@@ -698,13 +1011,13 @@ function handleImportText(text) {
 
 /* ---------------- backup ---------------- */
 async function exportBackup(withPhotos) {
-  const out = { format: 'card-checklist-backup', version: 1, exportedAt: new Date().toISOString(), sets, collection: coll, photos: {} };
+  const out = { format: 'card-checklist-backup', version: 1, exportedAt: new Date().toISOString(), sets, collection: coll, myPrices, photos: {} };
   if (withPhotos) for (const k of photoKeys) { const b = await photoGet(k); if (b) out.photos[k] = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); }); }
   download(`card-checklist-backup-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(out));
 }
 async function restoreBackup(b) {
   if (!confirm(`Restore backup from ${b.exportedAt?.slice(0, 10) || 'file'}? This replaces all sets and ownership on this device (${(b.sets || []).length} sets).`)) return;
-  sets = (b.sets || []).map(s => ({ ...normalizeSet(s), example: !!s.example })); coll = b.collection || {}; saveSets(); saveColl();
+  sets = (b.sets || []).map(s => ({ ...normalizeSet(s), example: !!s.example })); coll = b.collection || {}; if (b.myPrices) { myPrices = b.myPrices; saveMyPrices(); } saveSets(); saveColl();
   for (const [k, d] of Object.entries(b.photos || {})) { const blob = await (await fetch(d)).blob(); await photoPut(k, blob); }
   closeSheet(); location.hash = '#/'; render(); toast('Backup restored');
 }
@@ -716,6 +1029,9 @@ $('#menuBtn').addEventListener('click', () => {
     <button class="menu-item" data-m="backup">💾 Backup collection (JSON)</button>
     <button class="menu-item" data-m="backup-photos">🖼️ Backup incl. my photos</button>
     <button class="menu-item" data-m="restore">♻️ Restore backup</button>
+    <button class="menu-item" data-m="send-groky">📤 Send my cards to Groky</button>
+    <button class="menu-item" data-m="deals">🔥 Deals</button>
+    <button class="menu-item" data-m="push">🔔 Deal alerts${prefs.pushSub ? ' (on)' : ''}</button>
     <button class="menu-item" data-m="import">📥 Import checklist</button>
     <button class="menu-item" data-m="offline">📶 Save all card images for offline</button>
     <button class="menu-item" data-m="reload">🔄 Reload bundled Phillies checklists</button>
@@ -730,6 +1046,9 @@ $('#menuBtn').addEventListener('click', () => {
       if (m === 'backup-photos') exportBackup(true);
       if (m === 'restore') pickFile('.json,application/json', t => { try { const j = JSON.parse(t); if (j.format !== 'card-checklist-backup') throw new Error('Not a backup file'); restoreBackup(j); } catch (e) { toast(e.message, 3000); } });
       if (m === 'import') openImport();
+      if (m === 'send-groky') openSendToGroky();
+      if (m === 'deals') { closeSheet(); location.hash = '#/deals'; }
+      if (m === 'push') openPush();
       if (m === 'offline') { closeSheet(); cacheAllImages(); }
       if (m === 'reload') { closeSheet(); seedDefault(true).then(render); }
       if (m === 'example') { closeSheet(); seedExample().then(render); }
@@ -775,6 +1094,7 @@ view.addEventListener('click', async e => {
   if (e.target.closest('[data-nohits]') && set) { getFilter(set).nohits = !getFilter(set).nohits; renderGrid(set); return; }
   if (e.target.closest('[data-feat]') && set) { getFilter(set).feat = !getFilter(set).feat; renderGrid(set); return; }
   if (e.target.closest('[data-rc]') && set) { getFilter(set).rc = !getFilter(set).rc; renderGrid(set); return; }
+  if (e.target.closest('[data-mbp]') && set) { const f = getFilter(set); f.mbp = !f.mbp; if (f.mbp && f.sort === 'num') f.sort = 'price-asc'; renderGrid(set); return; }
   const hero = e.target.closest('[data-hero]'); if (hero && card) { detailState.hero = hero.dataset.hero; renderDetail(set, card); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
   const vfb = e.target.closest('[data-vf]'); if (vfb && card) { detailState.vf = vfb.dataset.vf; renderDetail(set, card); return; }
   const ver = e.target.closest('[data-ver]')?.dataset.ver;
@@ -791,8 +1111,12 @@ view.addEventListener('click', async e => {
     }
     if (e.target.closest('[data-delphoto]')) { if (!confirm('Remove this photo?')) return; await photoDel(pkey(set.id, card.id, ver)); if (detailState.hero === 'p:' + ver) detailState.hero = 'ref'; renderDetail(set, card); return; }
   }
+  const hd = e.target.closest('[data-hide-deal]');
+  if (hd) { const k = hd.dataset.hideDeal; prefs.dealHide ??= {}; if (prefs.dealHide[k]) delete prefs.dealHide[k]; else prefs.dealHide[k] = new Date().toISOString().slice(0, 10); savePrefs(); renderDeals(); toast(prefs.dealHide[k] ? 'Deal hidden' : 'Deal restored'); return; }
   const act = e.target.closest('[data-action]')?.dataset.action; if (!act) return;
+  if (act === 'push') openPush();
   if (act === 'import') openImport();
+  if (act === 'send-groky') openSendToGroky();
   if (act === 'new-set') openSetEditor(null);
   if (act === 'load-example') { await seedExample(); render(); }
   if (act === 'load-default') { await seedDefault(true); render(); }
@@ -818,13 +1142,25 @@ async function seedDefault(force) {
   try {
     const idx = await (await fetch('data/index.json', { cache: 'no-cache' })).json();
     let changed = 0;
+    // sets this phone was already offered (older installs only had the four 2026 sets) — a set you deleted isn't re-added
+    const known = new Set(prefs.knownSets || (prefs.seededDefault ? ['2026-topps-s1-phillies', '2026-topps-s2-phillies', '2026-topps-upd-phillies', '2026-topps-chrome-phillies'] : []));
     for (const path of idx.sets || []) {
       const j = await (await fetch(path, { cache: 'no-cache' })).json();
       const ns = normalizeSet(j); const cur = getSet(ns.id);
-      if (!cur) { if (force || !prefs.seededDefault) { sets.push(ns); changed++; } }
-      else if ((ns.dataVersion || 0) > (cur.dataVersion || 0)) { sets[sets.indexOf(cur)] = ns; changed++; }
+      for (const c of ns.cards) PUB.add(pubKey(ns.id, c.id));
+      if (!cur) { if (force || !known.has(ns.id)) { sets.push(ns); changed++; } }
+      else if (!!cur.pinned !== !!ns.pinned && (ns.dataVersion || 0) <= (cur.dataVersion || 0)) { cur.pinned = ns.pinned; changed++; }
+      else if ((ns.dataVersion || 0) > (cur.dataVersion || 0)) {
+        // refresh the checklist but keep cards & parallels you added yourself (ownership/photos/prices are keyed by id)
+        const ids = new Set(ns.cards.map(c => c.id)), pids = new Set(ns.parallels.map(p => p.id));
+        for (const c of cur.cards) if (!ids.has(c.id)) ns.cards.push(c);
+        for (const p of cur.parallels) if (!pids.has(p.id)) ns.parallels.push(p);
+        sets[sets.indexOf(cur)] = ns; changed++;
+      }
     }
     if (changed) saveSets();
+    prefs.knownSets = [...new Set([...known, ...sets.map(s => s.id)])];
+    pubLoaded = true;
     prefs.seededDefault = true; savePrefs();
     if (force) toast(changed ? 'Checklists loaded' : 'Already up to date');
     return changed;
@@ -850,7 +1186,10 @@ async function cacheAllImages() {
   await loadPhotoKeys().catch(err => console.warn('Photo storage unavailable', err));
   await seedDefault(false);
   ensureChases();
+  for (const c of CHASES) if (c.preload) for (const pc of c.preload().cards) PUB.add(pubKey(c.id, pc.id));
   render();
+  // prices + Groky-published cards: network first (cached by the service worker for offline), then re-render
+  Promise.all([loadPrices(), mergeExtra()]).then(([p, n]) => { if (p || n) render(); });
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     // When an updated version takes over, reload once so the new app shows right away (your data is untouched).
     const hadController = !!navigator.serviceWorker.controller; let reloaded = false;

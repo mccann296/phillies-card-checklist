@@ -1,0 +1,103 @@
+{
+ "format": "card-checklist-set",
+ "version": 2,
+ "id": "2008-topps-chrome-phillies",
+ "name": "2008 Topps Chrome — Phillies",
+ "year": 2008,
+ "brand": "Topps",
+ "sport": "Baseball",
+ "team": "Philadelphia Phillies",
+ "baseName": "Base",
+ "notes": "Phillies cards only, base version only, 7 base cards (inserts removed per user). No Phillies rookies in 2008 Topps Chrome.",
+ "sources": [
+  "https://baseballcardpedia.com/index.php/2008_Topps_Chrome",
+  "https://www.sportscardchecklist.com/set-18004/2008-topps-chrome-baseball-trading-card-checklist",
+  "https://www.sportscardchecklist.com/set-63837/2008-topps-chrome-trading-card-history-baseball-trading-card-checklist",
+  "https://www.sportscardchecklist.com/set-63818/2008-topps-chrome-50th-anniversary-all-rookie-team-baseball-trading-card-checklist",
+  "https://www.sportscardchecklist.com/set-63836/2008-topps-chrome-t205-baseball-trading-card-checklist",
+  "https://www.sportscardchecklist.com/set-63830/2008-topps-chrome-dick-perez-baseball-trading-card-checklist",
+  "https://www.sportscardspro.com/console/baseball-cards-2008-topps-chrome"
+ ],
+ "parallels": [],
+ "cards": [
+  {
+   "id": "8",
+   "number": "8",
+   "player": "Jimmy Rollins",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/ch08/8.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-chrome/jimmy-rollins-8"
+  },
+  {
+   "id": "10",
+   "number": "10",
+   "player": "Cole Hamels",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/ch08/10.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-chrome/cole-hamels-10"
+  },
+  {
+   "id": "29",
+   "number": "29",
+   "player": "Ryan Howard",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/ch08/29.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-chrome/ryan-howard-29"
+  },
+  {
+   "id": "73",
+   "number": "73",
+   "player": "Brett Myers",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/ch08/73.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-chrome/brett-myers-73"
+  },
+  {
+   "id": "77",
+   "number": "77",
+   "player": "Carlos Ruiz",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/ch08/77.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-chrome/carlos-ruiz-77"
+  },
+  {
+   "id": "123",
+   "number": "123",
+   "player": "Chase Utley",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/ch08/123.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-chrome/chase-utley-123"
+  },
+  {
+   "id": "160",
+   "number": "160",
+   "player": "Pat Burrell",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/ch08/160.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-chrome/pat-burrell-160"
+  }
+ ],
+ "dataVersion": 1,
+ "pinned": true
+}

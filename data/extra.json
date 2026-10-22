@@ -1,0 +1,23 @@
+{
+ "format": "cc-extra",
+ "v": 1,
+ "note": "Cards published after the app was released (e.g. cards sent from the phone with 'Send to Groky'). The app merges these into the matching set by set id + card id on open; ownership, photos and the user's own prices are never touched.",
+ "cards": [
+  {
+   "set": "chase-vj-edgecomb",
+   "sport": "Basketball",
+   "card": {
+    "id": "2025-26-topps-chrome-253",
+    "number": "253",
+    "player": "VJ Edgecombe",
+    "team": "Philadelphia 76ers",
+    "subset": "Base",
+    "rookie": true,
+    "year": "2025-26",
+    "product": "Topps Chrome",
+    "image": "img/chase/vj-253.jpg",
+    "ref": "https://www.sportscardspro.com/game/basketball-cards-2025-topps-chrome/vj-edgecombe-253"
+   }
+  }
+ ]
+}

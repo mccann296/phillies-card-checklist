@@ -1,6 +1,6 @@
-const VERSION = 'cc-v4';
+const VERSION = 'cc-v5';
 const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'sample-set.json',
-  'data/index.json', 'data/s1.json', 'data/s2.json', 'data/upd.json', 'data/chrome.json',
+  'data/index.json', 'data/s1.json', 'data/s2.json', 'data/upd.json', 'data/chrome.json', 'data/t08gold.json', 'data/od08.json', 'data/ch08.json', 'data/extra.json', 'prices.json',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION && k !== 'cc-img').map(k => caches.delete(k)))).then(() => self.clients.claim())); });
@@ -19,4 +19,24 @@ self.addEventListener('fetch', e => {
     e.respondWith(fetch(req, { cache: 'no-cache' }).then(res => { if (res.ok) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(req, copy)); } return res; })
       .catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || (req.mode === 'navigate' ? caches.match('index.html') : Response.error()))));
   }
+});
+
+// Web Push deal alerts (sent from the weekly price job on Groky's box)
+self.addEventListener('push', e => {
+  let d = {}; try { d = e.data ? e.data.json() : {}; } catch { d = { body: e.data && e.data.text() }; }
+  e.waitUntil(self.registration.showNotification(d.title || 'Card deal', {
+    body: d.body || '', tag: d.tag || undefined, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png',
+    data: { url: d.url || '', app: d.app || self.registration.scope }
+  }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const { url, app } = e.notification.data || {};
+  // open the listing if there is one, otherwise the card in the app
+  e.waitUntil((async () => {
+    if (url) return clients.openWindow(url);
+    const ws = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const w of ws) if (w.url.startsWith(self.registration.scope)) { await w.focus(); return w.navigate ? w.navigate(app) : null; }
+    return clients.openWindow(app);
+  })());
 });

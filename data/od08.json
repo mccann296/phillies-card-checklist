@@ -1,0 +1,146 @@
+{
+ "format": "card-checklist-set",
+ "version": 2,
+ "id": "2008-topps-opening-day-phillies",
+ "name": "2008 Topps Opening Day — Phillies",
+ "year": 2008,
+ "brand": "Topps",
+ "sport": "Baseball",
+ "team": "Philadelphia Phillies",
+ "baseName": "Base",
+ "notes": "Phillies cards only, base version only (per user). All 11 Phillies cards incl. #156 Aaron Rowand (see his note).",
+ "sources": [
+  "https://www.sportscardchecklist.com/set-63629/2008-topps-opening-day-baseball-trading-card-checklist",
+  "https://www.sportscardchecklist.com/set-63632/2008-topps-opening-day-gold-baseball-trading-card-checklist",
+  "https://baseballcardpedia.com/index.php/2008_Topps_Opening_Day",
+  "https://topps08.blogspot.com/search/label/2008%20Topps%20Opening%20Day",
+  "https://www.sportscardspro.com/console/baseball-cards-2008-topps-opening-day"
+ ],
+ "parallels": [],
+ "cards": [
+  {
+   "id": "13",
+   "number": "13",
+   "player": "Kyle Kendrick",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/13.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/kyle-kendrick-13"
+  },
+  {
+   "id": "14",
+   "number": "14",
+   "player": "Jimmy Rollins",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/14.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/jimmy-rollins-14"
+  },
+  {
+   "id": "16",
+   "number": "16",
+   "player": "Cole Hamels",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/16.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/cole-hamels-16"
+  },
+  {
+   "id": "46",
+   "number": "46",
+   "player": "Ryan Howard",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/46.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/ryan-howard-46"
+  },
+  {
+   "id": "75",
+   "number": "75",
+   "player": "Chase Utley",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/75.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/chase-utley-75"
+  },
+  {
+   "id": "77",
+   "number": "77",
+   "player": "Tadahito Iguchi",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/77.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/tadahito-iguchi-77"
+  },
+  {
+   "id": "108",
+   "number": "108",
+   "player": "Shane Victorino",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/108.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/shane-victorino-108"
+  },
+  {
+   "id": "119",
+   "number": "119",
+   "player": "Brett Myers",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/119.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/brett-myers-119"
+  },
+  {
+   "id": "124",
+   "number": "124",
+   "player": "Carlos Ruiz",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/124.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/carlos-ruiz-124"
+  },
+  {
+   "id": "150",
+   "number": "150",
+   "player": "Pat Burrell",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/150.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/pat-burrell-150"
+  },
+  {
+   "id": "156",
+   "number": "156",
+   "player": "Aaron Rowand",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [],
+   "image": "img/2008/od08/156.jpg",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2008-topps-opening-day/aaron-rowand-156",
+   "notes": "Rowand had signed with the Giants before release, but this card lists/pictures him as a Phillie (per Sportscardchecklist)."
+  }
+ ],
+ "dataVersion": 1,
+ "pinned": true
+}
