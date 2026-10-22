@@ -1,0 +1,2873 @@
+{
+"format": "card-checklist-set",
+"version": 2,
+"dataVersion": 1,
+"id": "2026-topps-upd-phillies",
+"name": "Topps Update Series — Phillies",
+"year": 2026,
+"brand": "Topps",
+"sport": "Baseball",
+"team": "Philadelphia Phillies",
+"baseName": "Base",
+"notes": "Phillies cards only. Card list and per-card parallels from Breakninja's team checklist (built from Topps checklists), checked against official Topps checklists and Beckett/Checklist Insider parallel lists. Images: SportsCardsPro listing photos (personal reference).",
+"sources": [
+"https://www.breakninja.com/baseball/2026-Topps-Update-Series-Baseball-Checklist-Philadelphia-Phillies.php",
+"https://www.steelcitycollectibles.com/storage/pdf/product_checklists/2026-Topps-Update-Series-Baseball-Checklist-9-4.pdf",
+"https://www.checklistinsider.com/2026-topps-update-series-baseball",
+"https://www.sportscardspro.com/"
+],
+"parallels": [
+{
+"id": "aqua-foil",
+"name": "Aqua Foil",
+"printRun": null,
+"color": "#14b8c4"
+},
+{
+"id": "aqua-holo",
+"name": "Aqua Holo",
+"printRun": null,
+"color": "#14b8c4"
+},
+{
+"id": "cherry-blossom",
+"name": "Cherry Blossom",
+"printRun": null,
+"color": "#f4a6c0"
+},
+{
+"id": "clear-variation",
+"name": "Clear Variation",
+"printRun": null,
+"color": "#cfe8ff"
+},
+{
+"id": "diamante-foil",
+"name": "Diamante Foil",
+"printRun": null,
+"color": ""
+},
+{
+"id": "golden-mirror-autographs",
+"name": "Golden Mirror Autographs",
+"printRun": null,
+"color": "#d4a017"
+},
+{
+"id": "golden-mirror-legend-variations-jim-thome",
+"name": "Golden Mirror Legend Variations (Jim Thome)",
+"printRun": null,
+"color": "#d4a017"
+},
+{
+"id": "golden-mirror-legend-variations-jimmy-rollins",
+"name": "Golden Mirror Legend Variations (Jimmy Rollins)",
+"printRun": null,
+"color": "#d4a017"
+},
+{
+"id": "golden-mirror-variation",
+"name": "Golden Mirror Variation",
+"printRun": null,
+"color": "#d4a017"
+},
+{
+"id": "holo-foil",
+"name": "Holo Foil",
+"printRun": null,
+"color": ""
+},
+{
+"id": "koi-fish",
+"name": "Koi Fish",
+"printRun": null,
+"color": ""
+},
+{
+"id": "pink",
+"name": "Pink",
+"printRun": null,
+"color": "#ec4899"
+},
+{
+"id": "pink-diamante-foil",
+"name": "Pink Diamante Foil",
+"printRun": null,
+"color": "#ec4899"
+},
+{
+"id": "pink-holo",
+"name": "Pink Holo",
+"printRun": null,
+"color": "#ec4899"
+},
+{
+"id": "player-number-variation",
+"name": "Player Number Variation",
+"printRun": null,
+"color": ""
+},
+{
+"id": "rainbow-foil",
+"name": "Rainbow Foil",
+"printRun": null,
+"color": ""
+},
+{
+"id": "rookie-1952-variation",
+"name": "Rookie 1952 Variation",
+"printRun": null,
+"color": ""
+},
+{
+"id": "rookie-clear-variation",
+"name": "Rookie Clear Variation",
+"printRun": null,
+"color": "#cfe8ff"
+},
+{
+"id": "rookie-golden-mirror-variation",
+"name": "Rookie Golden Mirror Variation",
+"printRun": null,
+"color": "#d4a017"
+},
+{
+"id": "rookie-true-photo-variation",
+"name": "Rookie True Photo Variation",
+"printRun": null,
+"color": ""
+},
+{
+"id": "sandglitter",
+"name": "Sandglitter",
+"printRun": null,
+"color": ""
+},
+{
+"id": "silver-crackle",
+"name": "Silver Crackle",
+"printRun": null,
+"color": "#b9c6d6"
+},
+{
+"id": "team-color-border-variation",
+"name": "Team Color Border Variation",
+"printRun": null,
+"color": ""
+},
+{
+"id": "topps-logo-foil-pattern",
+"name": "Topps Logo Foil Pattern",
+"printRun": null,
+"color": ""
+},
+{
+"id": "true-photo-variation",
+"name": "True Photo Variation",
+"printRun": null,
+"color": ""
+},
+{
+"id": "value-box-holiday-variation",
+"name": "Value Box Holiday Variation",
+"printRun": null,
+"color": "#d9480f"
+},
+{
+"id": "value-box-holiday-variation-bats",
+"name": "Value Box Holiday Variation Bats",
+"printRun": null,
+"color": "#d9480f"
+},
+{
+"id": "value-box-holiday-variation-black-cat",
+"name": "Value Box Holiday Variation Black Cat",
+"printRun": null,
+"color": "#1d1d1f"
+},
+{
+"id": "value-box-holiday-variation-ghost",
+"name": "Value Box Holiday Variation Ghost",
+"printRun": null,
+"color": "#d9480f"
+},
+{
+"id": "value-box-holiday-variation-jack-o-lantern",
+"name": "Value Box Holiday Variation Jack-o-Lantern",
+"printRun": null,
+"color": "#d9480f"
+},
+{
+"id": "value-box-holiday-variation-skeleton",
+"name": "Value Box Holiday Variation Skeleton",
+"printRun": null,
+"color": "#d9480f"
+},
+{
+"id": "value-box-holiday-variation-witches-hat",
+"name": "Value Box Holiday Variation Witches Hat",
+"printRun": null,
+"color": "#d9480f"
+},
+{
+"id": "vintage-stock-variation",
+"name": "Vintage Stock Variation",
+"printRun": null,
+"color": "#c8b48a"
+},
+{
+"id": "gold-2026",
+"name": "Gold",
+"printRun": 2026,
+"color": "#d4a017"
+},
+{
+"id": "purple-holo-250",
+"name": "Purple Holo",
+"printRun": 250,
+"color": "#8a5cf6"
+},
+{
+"id": "purple-rainbow-250",
+"name": "Purple Rainbow",
+"printRun": 250,
+"color": "#8a5cf6"
+},
+{
+"id": "blue-150",
+"name": "Blue",
+"printRun": 150,
+"color": "#2f7cf6"
+},
+{
+"id": "blue-holo-150",
+"name": "Blue Holo",
+"printRun": 150,
+"color": "#2f7cf6"
+},
+{
+"id": "blue-rainbow-150",
+"name": "Blue Rainbow",
+"printRun": 150,
+"color": "#2f7cf6"
+},
+{
+"id": "green-99",
+"name": "Green",
+"printRun": 99,
+"color": "#22a55a"
+},
+{
+"id": "green-diamante-foil-99",
+"name": "Green Diamante Foil",
+"printRun": 99,
+"color": "#22a55a"
+},
+{
+"id": "green-holo-99",
+"name": "Green Holo",
+"printRun": 99,
+"color": "#22a55a"
+},
+{
+"id": "green-rainbow-99",
+"name": "Green Rainbow",
+"printRun": 99,
+"color": "#22a55a"
+},
+{
+"id": "real-one-91",
+"name": "Real One",
+"printRun": 91,
+"color": ""
+},
+{
+"id": "independence-day-76",
+"name": "Independence Day",
+"printRun": 76,
+"color": "#2f5fd0"
+},
+{
+"id": "75-years-75",
+"name": "75 Years",
+"printRun": 75,
+"color": ""
+},
+{
+"id": "75-years-of-topps-75",
+"name": "75 Years of Topps",
+"printRun": 75,
+"color": ""
+},
+{
+"id": "black-75",
+"name": "Black",
+"printRun": 75,
+"color": "#1d1d1f"
+},
+{
+"id": "canvas-50",
+"name": "Canvas",
+"printRun": 50,
+"color": "#d8c9a8"
+},
+{
+"id": "gold-50",
+"name": "Gold",
+"printRun": 50,
+"color": "#d4a017"
+},
+{
+"id": "gold-diamante-foil-50",
+"name": "Gold Diamante Foil",
+"printRun": 50,
+"color": "#d4a017"
+},
+{
+"id": "gold-holo-50",
+"name": "Gold Holo",
+"printRun": 50,
+"color": "#d4a017"
+},
+{
+"id": "gold-rainbow-50",
+"name": "Gold Rainbow",
+"printRun": 50,
+"color": "#d4a017"
+},
+{
+"id": "gold-sandglitter-50",
+"name": "Gold Sandglitter",
+"printRun": 50,
+"color": "#d4a017"
+},
+{
+"id": "koi-fish-gold-50",
+"name": "Koi Fish Gold",
+"printRun": 50,
+"color": "#d4a017"
+},
+{
+"id": "bronze-25",
+"name": "Bronze",
+"printRun": 25,
+"color": "#b06a2c"
+},
+{
+"id": "koi-fish-orange-25",
+"name": "Koi Fish Orange",
+"printRun": 25,
+"color": "#f07a1a"
+},
+{
+"id": "memorial-day-camo-25",
+"name": "Memorial Day Camo",
+"printRun": 25,
+"color": "#5b6b3a"
+},
+{
+"id": "orange-25",
+"name": "Orange",
+"printRun": 25,
+"color": "#f07a1a"
+},
+{
+"id": "orange-diamante-foil-25",
+"name": "Orange Diamante Foil",
+"printRun": 25,
+"color": "#f07a1a"
+},
+{
+"id": "orange-holo-25",
+"name": "Orange Holo",
+"printRun": 25,
+"color": "#f07a1a"
+},
+{
+"id": "orange-rainbow-25",
+"name": "Orange Rainbow",
+"printRun": 25,
+"color": "#f07a1a"
+},
+{
+"id": "orange-sandglitter-25",
+"name": "Orange Sandglitter",
+"printRun": 25,
+"color": "#f07a1a"
+},
+{
+"id": "wood-25",
+"name": "Wood",
+"printRun": 25,
+"color": "#8b5a2b"
+},
+{
+"id": "black-10",
+"name": "Black",
+"printRun": 10,
+"color": "#1d1d1f"
+},
+{
+"id": "black-diamante-foil-10",
+"name": "Black Diamante Foil",
+"printRun": 10,
+"color": "#1d1d1f"
+},
+{
+"id": "black-holo-10",
+"name": "Black Holo",
+"printRun": 10,
+"color": "#1d1d1f"
+},
+{
+"id": "black-rainbow-10",
+"name": "Black Rainbow",
+"printRun": 10,
+"color": "#1d1d1f"
+},
+{
+"id": "black-sandglitter-10",
+"name": "Black Sandglitter",
+"printRun": 10,
+"color": "#1d1d1f"
+},
+{
+"id": "koi-fish-black-10",
+"name": "Koi Fish Black",
+"printRun": 10,
+"color": "#1d1d1f"
+},
+{
+"id": "koi-fish-red-5",
+"name": "Koi Fish Red",
+"printRun": 5,
+"color": "#e0303a"
+},
+{
+"id": "red-5",
+"name": "Red",
+"printRun": 5,
+"color": "#e0303a"
+},
+{
+"id": "red-diamante-foil-5",
+"name": "Red Diamante Foil",
+"printRun": 5,
+"color": "#e0303a"
+},
+{
+"id": "red-holo-5",
+"name": "Red Holo",
+"printRun": 5,
+"color": "#e0303a"
+},
+{
+"id": "red-rainbow-5",
+"name": "Red Rainbow",
+"printRun": 5,
+"color": "#e0303a"
+},
+{
+"id": "red-sandglitter-5",
+"name": "Red Sandglitter",
+"printRun": 5,
+"color": "#e0303a"
+},
+{
+"id": "black-1",
+"name": "Black",
+"printRun": 1,
+"color": "#1d1d1f"
+},
+{
+"id": "foilfractor-1",
+"name": "FoilFractor",
+"printRun": 1,
+"color": "#9fb4c8"
+},
+{
+"id": "gold-1",
+"name": "Gold",
+"printRun": 1,
+"color": "#d4a017"
+},
+{
+"id": "platinum-1",
+"name": "Platinum",
+"printRun": 1,
+"color": "#d9dde3"
+},
+{
+"id": "printing-plates-black-1",
+"name": "Printing Plates Black",
+"printRun": 1,
+"color": "#1d1d1f"
+},
+{
+"id": "printing-plates-cyan-1",
+"name": "Printing Plates Cyan",
+"printRun": 1,
+"color": "#6b7280"
+},
+{
+"id": "printing-plates-magenta-1",
+"name": "Printing Plates Magenta",
+"printRun": 1,
+"color": "#6b7280"
+},
+{
+"id": "printing-plates-yellow-1",
+"name": "Printing Plates Yellow",
+"printRun": 1,
+"color": "#facc15"
+},
+{
+"id": "rose-gold-holo-1",
+"name": "Rose Gold Holo",
+"printRun": 1,
+"color": "#d4a017"
+}
+],
+"cards": [
+{
+"id": "us2",
+"number": "US2",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Base",
+"rookie": true,
+"parallels": [
+"golden-mirror-legend-variations-jimmy-rollins",
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"rookie-golden-mirror-variation",
+"player-number-variation",
+"rookie-clear-variation",
+"rookie-true-photo-variation",
+"team-color-border-variation",
+"vintage-stock-variation",
+"value-box-holiday-variation",
+"value-box-holiday-variation-jack-o-lantern",
+"value-box-holiday-variation-ghost",
+"value-box-holiday-variation-skeleton",
+"value-box-holiday-variation-black-cat",
+"value-box-holiday-variation-witches-hat",
+"value-box-holiday-variation-bats",
+"rookie-1952-variation"
+],
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"image": "img/upd/us2.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/justin-crawford-us2"
+},
+{
+"id": "us12",
+"number": "US12",
+"player": "Adolis García",
+"team": "Philadelphia Phillies",
+"subset": "Base",
+"rookie": false,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"golden-mirror-variation",
+"golden-mirror-legend-variations-jim-thome"
+],
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"image": "img/upd/us12.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/adolis-garcia-us12"
+},
+{
+"id": "us34",
+"number": "US34",
+"player": "Felix Reyes",
+"team": "Philadelphia Phillies",
+"subset": "Base",
+"rookie": true,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"rookie-golden-mirror-variation"
+],
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/felix-reyes-75-years-of-topps-us34"
+},
+{
+"id": "us63",
+"number": "US63",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Base",
+"rookie": true,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"rookie-golden-mirror-variation",
+"player-number-variation",
+"rookie-clear-variation",
+"rookie-true-photo-variation",
+"team-color-border-variation",
+"vintage-stock-variation",
+"value-box-holiday-variation",
+"value-box-holiday-variation-jack-o-lantern",
+"value-box-holiday-variation-ghost",
+"value-box-holiday-variation-skeleton",
+"value-box-holiday-variation-black-cat",
+"value-box-holiday-variation-witches-hat",
+"value-box-holiday-variation-bats",
+"rookie-1952-variation"
+],
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"image": "img/upd/us63.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/andrew-painter-us63"
+},
+{
+"id": "us155",
+"number": "US155",
+"player": "Brad Keller",
+"team": "Philadelphia Phillies",
+"subset": "Base",
+"rookie": false,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"golden-mirror-variation"
+],
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"image": "img/upd/us155.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/brad-keller-us155"
+},
+{
+"id": "us270",
+"number": "US270",
+"player": "Orion Kerkering",
+"team": "Philadelphia Phillies",
+"subset": "Base",
+"rookie": false,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"golden-mirror-variation"
+],
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/orion-kerkering-75-years-of-topps-us270"
+},
+{
+"id": "us276",
+"number": "US276",
+"player": "Garrett Stubbs",
+"team": "Philadelphia Phillies",
+"subset": "Base",
+"rookie": false,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"golden-mirror-variation"
+],
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/garrett-stubbs-75-years-of-topps-us276"
+},
+{
+"id": "us293",
+"number": "US293",
+"player": "Rafael Marchán",
+"team": "Philadelphia Phillies",
+"subset": "Base",
+"rookie": false,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"golden-mirror-variation"
+],
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"image": "img/upd/us293.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/rafael-marchan-us293"
+},
+{
+"id": "rookie-debut-us23",
+"number": "US23",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Rookie Debut",
+"rookie": true,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"golden-mirror-variation",
+"clear-variation",
+"true-photo-variation",
+"team-color-border-variation",
+"vintage-stock-variation",
+"value-box-holiday-variation",
+"value-box-holiday-variation-jack-o-lantern",
+"value-box-holiday-variation-ghost",
+"value-box-holiday-variation-skeleton",
+"value-box-holiday-variation-black-cat",
+"value-box-holiday-variation-witches-hat",
+"value-box-holiday-variation-bats"
+],
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"image": "img/upd/rookie-debut-us23.jpg",
+"images": {
+"gold-2026": "img/upd/rookie-debut-us23--gold-2026.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/justin-crawford-us23"
+},
+{
+"id": "rookie-debut-us57",
+"number": "US57",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Rookie Debut",
+"rookie": true,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"golden-mirror-variation",
+"clear-variation",
+"true-photo-variation",
+"team-color-border-variation",
+"vintage-stock-variation",
+"value-box-holiday-variation",
+"value-box-holiday-variation-jack-o-lantern",
+"value-box-holiday-variation-ghost",
+"value-box-holiday-variation-skeleton",
+"value-box-holiday-variation-black-cat",
+"value-box-holiday-variation-witches-hat",
+"value-box-holiday-variation-bats"
+],
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"image": "img/upd/rookie-debut-us57.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/andrew-painter-us57"
+},
+{
+"id": "season-highlights-us131",
+"number": "US131",
+"player": "Cycle Complete (Bryce Harper)",
+"team": "Philadelphia Phillies",
+"subset": "Season Highlights",
+"rookie": false,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"golden-mirror-variation",
+"clear-variation",
+"true-photo-variation",
+"team-color-border-variation",
+"vintage-stock-variation",
+"value-box-holiday-variation",
+"value-box-holiday-variation-jack-o-lantern",
+"value-box-holiday-variation-ghost",
+"value-box-holiday-variation-skeleton",
+"value-box-holiday-variation-black-cat",
+"value-box-holiday-variation-witches-hat",
+"value-box-holiday-variation-bats"
+],
+"players": "Bryce Harper",
+"featured": true,
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"image": "img/upd/season-highlights-us131.jpg",
+"images": {
+"green-diamante-foil-99": "img/upd/season-highlights-us131--green-diamante-foil-99.jpg",
+"team-color-border-variation": "img/upd/season-highlights-us131--team-color-border-variation.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/bryce-harper-us131"
+},
+{
+"id": "season-highlights-us262",
+"number": "US262",
+"player": "350 & Counting (Kyle Schwarber)",
+"team": "Philadelphia Phillies",
+"subset": "Season Highlights",
+"rookie": false,
+"parallels": [
+"printing-plates-black-1",
+"printing-plates-cyan-1",
+"printing-plates-magenta-1",
+"printing-plates-yellow-1",
+"foilfractor-1",
+"rose-gold-holo-1",
+"red-rainbow-5",
+"red-sandglitter-5",
+"red-holo-5",
+"black-rainbow-10",
+"black-sandglitter-10",
+"black-holo-10",
+"wood-25",
+"memorial-day-camo-25",
+"orange-rainbow-25",
+"orange-sandglitter-25",
+"orange-holo-25",
+"canvas-50",
+"gold-rainbow-50",
+"gold-sandglitter-50",
+"gold-holo-50",
+"75-years-of-topps-75",
+"black-75",
+"independence-day-76",
+"green-rainbow-99",
+"green-holo-99",
+"blue-rainbow-150",
+"blue-holo-150",
+"purple-rainbow-250",
+"purple-holo-250",
+"gold-2026",
+"rainbow-foil",
+"aqua-foil",
+"sandglitter",
+"holo-foil",
+"pink-holo",
+"aqua-holo",
+"diamante-foil",
+"pink-diamante-foil",
+"green-diamante-foil-99",
+"gold-diamante-foil-50",
+"orange-diamante-foil-25",
+"black-diamante-foil-10",
+"red-diamante-foil-5",
+"topps-logo-foil-pattern",
+"cherry-blossom",
+"silver-crackle",
+"golden-mirror-variation",
+"clear-variation",
+"true-photo-variation",
+"team-color-border-variation",
+"vintage-stock-variation",
+"value-box-holiday-variation",
+"value-box-holiday-variation-jack-o-lantern",
+"value-box-holiday-variation-ghost",
+"value-box-holiday-variation-skeleton",
+"value-box-holiday-variation-black-cat",
+"value-box-holiday-variation-witches-hat",
+"value-box-holiday-variation-bats"
+],
+"players": "Kyle Schwarber",
+"notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
+"image": "img/upd/season-highlights-us262.jpg",
+"images": {
+"gold-2026": "img/upd/season-highlights-us262--gold-2026.jpg",
+"rainbow-foil": "img/upd/season-highlights-us262--rainbow-foil.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/kyle-schwarber-us262"
+},
+{
+"id": "1991-topps-baseball-u91-3",
+"number": "U91-3",
+"player": "Bryce Harper",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"koi-fish-red-5",
+"black-10",
+"koi-fish-black-10",
+"orange-25",
+"koi-fish-orange-25",
+"gold-50",
+"koi-fish-gold-50",
+"real-one-91",
+"green-99",
+"blue-150",
+"pink",
+"koi-fish"
+],
+"image": "img/upd/1991-topps-baseball-u91-3.jpg",
+"images": {
+"blue-150": "img/upd/1991-topps-baseball-u91-3--blue-150.jpg",
+"gold-50": "img/upd/1991-topps-baseball-u91-3--gold-50.jpg",
+"pink": "img/upd/1991-topps-baseball-u91-3--pink.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991/bryce-harper-u91-3"
+},
+{
+"id": "1991-topps-baseball-u91-4",
+"number": "U91-4",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"koi-fish-red-5",
+"black-10",
+"koi-fish-black-10",
+"orange-25",
+"koi-fish-orange-25",
+"gold-50",
+"koi-fish-gold-50",
+"real-one-91",
+"green-99",
+"blue-150",
+"pink",
+"koi-fish"
+],
+"image": "img/upd/1991-topps-baseball-u91-4.jpg",
+"images": {
+"pink": "img/upd/1991-topps-baseball-u91-4--pink.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991/andrew-painter-u91-4"
+},
+{
+"id": "1991-topps-baseball-u91-15",
+"number": "U91-15",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"koi-fish-red-5",
+"black-10",
+"koi-fish-black-10",
+"orange-25",
+"koi-fish-orange-25",
+"gold-50",
+"koi-fish-gold-50",
+"real-one-91",
+"green-99",
+"blue-150",
+"pink",
+"koi-fish"
+],
+"image": "img/upd/1991-topps-baseball-u91-15.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991/justin-crawford-u91-15"
+},
+{
+"id": "1991-topps-baseball-all-star-autographs-91as-ks",
+"number": "91AS-KS",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball All-Star Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"image": "img/upd/1991-topps-baseball-all-star-autographs-91as-ks.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-all-star-autograph/kyle-schwarber-91as-ks"
+},
+{
+"id": "1991-topps-baseball-autographs-91a-ks",
+"number": "91A-KS",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"image": "img/upd/1991-topps-baseball-autographs-91a-ks.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-autograph/kyle-schwarber-91a-ks"
+},
+{
+"id": "1991-topps-baseball-autographs-91au-ag",
+"number": "91AU-AG",
+"player": "Adolis García",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"image": "img/upd/1991-topps-baseball-autographs-91au-ag.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-autograph/adolis-garcia-91au-ag"
+},
+{
+"id": "1991-topps-baseball-autographs-91au-jcr",
+"number": "91AU-JCR",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"images": {
+"orange-25": "img/upd/1991-topps-baseball-autographs-91au-jcr--orange-25.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-autograph/justin-crawford-orange-91au-jcr"
+},
+{
+"id": "1991-topps-baseball-autographs-91au-jd",
+"number": "91AU-JD",
+"player": "Jhoan Duran",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"image": "img/upd/1991-topps-baseball-autographs-91au-jd.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-autograph/jhoan-duran-91au-jd"
+},
+{
+"id": "1991-topps-baseball-autographs-91b2-ms",
+"number": "91B2-MS",
+"player": "Matt Strahm",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"image": "img/upd/1991-topps-baseball-autographs-91b2-ms.jpg",
+"images": {
+"gold-50": "img/upd/1991-topps-baseball-autographs-91b2-ms--gold-50.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-autograph/matt-strahm-91b2-ms"
+},
+{
+"id": "1991-topps-baseball-chrome-base-u91c-36",
+"number": "U91C-36",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Chrome Base",
+"rookie": false,
+"parallels": [],
+"image": "img/upd/1991-topps-baseball-chrome-base-u91c-36.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-chrome/justin-crawford-u91c-36"
+},
+{
+"id": "1991-topps-baseball-chrome-base-u91c-37",
+"number": "U91C-37",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Chrome Base",
+"rookie": false,
+"parallels": [],
+"image": "img/upd/1991-topps-baseball-chrome-base-u91c-37.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-chrome/andrew-painter-u91c-37"
+},
+{
+"id": "1991-topps-baseball-chrome-base-u91c-94",
+"number": "U91C-94",
+"player": "Felix Reyes",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Chrome Base",
+"rookie": false,
+"parallels": [],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-chrome/felix-reyes-aqua-u91c-94"
+},
+{
+"id": "1991-topps-baseball-chrome-base-u91c-96",
+"number": "U91C-96",
+"player": "Chase Utley",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Chrome Base",
+"rookie": false,
+"parallels": [],
+"image": "img/upd/1991-topps-baseball-chrome-base-u91c-96.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-chrome/chase-utley-u91c-96"
+},
+{
+"id": "1991-topps-baseball-chrome-base-u91c-97",
+"number": "U91C-97",
+"player": "Trea Turner",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Chrome Base",
+"rookie": false,
+"parallels": [],
+"image": "img/upd/1991-topps-baseball-chrome-base-u91c-97.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-chrome/trea-turner-u91c-97"
+},
+{
+"id": "1991-topps-baseball-chrome-base-autographs-u91c-36",
+"number": "U91C-36",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Chrome Base Autographs",
+"rookie": false,
+"parallels": [],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-chrome/justin-crawford-autograph-black-u91c-36"
+},
+{
+"id": "1991-topps-baseball-chrome-base-autographs-u91c-37",
+"number": "U91C-37",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Chrome Base Autographs",
+"rookie": false,
+"parallels": [],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-chrome/andrew-painter-autograph-black-u91c-37"
+},
+{
+"id": "1991-topps-baseball-chrome-base-autographs-u91c-94",
+"number": "U91C-94",
+"player": "Felix Reyes",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Chrome Base Autographs",
+"rookie": false,
+"parallels": [],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-chrome/felix-reyes-autograph-black-u91c-94"
+},
+{
+"id": "1991-topps-baseball-chrome-base-autographs-u91c-96",
+"number": "U91C-96",
+"player": "Chase Utley",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Chrome Base Autographs",
+"rookie": false,
+"parallels": [],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-chrome/chase-utley-autograph-black-u91c-96"
+},
+{
+"id": "1991-topps-baseball-relics-91ru-ap",
+"number": "91RU-AP",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Relics",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"image": "img/upd/1991-topps-baseball-relics-91ru-ap.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-relic/andrew-painter-91ru-ap"
+},
+{
+"id": "1991-topps-baseball-relics-91ru-jcr",
+"number": "91RU-JCR",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "1991 Topps Baseball Relics",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"image": "img/upd/1991-topps-baseball-relics-91ru-jcr.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-1991-relic/justin-crawford-91ru-jcr"
+},
+{
+"id": "2026-all-star-game-asg-30",
+"number": "ASG-30",
+"player": "Brandon Marsh",
+"team": "Philadelphia Phillies",
+"subset": "2026 All-Star Game",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150",
+"pink"
+],
+"image": "img/upd/2026-all-star-game-asg-30.jpg",
+"images": {
+"blue-150": "img/upd/2026-all-star-game-asg-30--blue-150.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-game/brandon-marsh-asg-30"
+},
+{
+"id": "2026-all-star-game-asg-37",
+"number": "ASG-37",
+"player": "Cristopher Sánchez",
+"team": "Philadelphia Phillies",
+"subset": "2026 All-Star Game",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150",
+"pink"
+],
+"image": "img/upd/2026-all-star-game-asg-37.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-game/cristopher-sanchez-asg-37"
+},
+{
+"id": "2026-all-star-game-asg-38",
+"number": "ASG-38",
+"player": "Bryce Harper",
+"team": "Philadelphia Phillies",
+"subset": "2026 All-Star Game",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150",
+"pink"
+],
+"image": "img/upd/2026-all-star-game-asg-38.jpg",
+"images": {
+"pink": "img/upd/2026-all-star-game-asg-38--pink.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-game/bryce-harper-asg-38"
+},
+{
+"id": "2026-all-star-game-asg-46",
+"number": "ASG-46",
+"player": "Jesús Luzardo",
+"team": "Philadelphia Phillies",
+"subset": "2026 All-Star Game",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150",
+"pink"
+],
+"image": "img/upd/2026-all-star-game-asg-46.jpg",
+"images": {
+"blue-150": "img/upd/2026-all-star-game-asg-46--blue-150.jpg",
+"green-99": "img/upd/2026-all-star-game-asg-46--green-99.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-game/jesus-luzardo-asg-46"
+},
+{
+"id": "2026-all-star-game-asg-50",
+"number": "ASG-50",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "2026 All-Star Game",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150",
+"pink"
+],
+"image": "img/upd/2026-all-star-game-asg-50.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-game/kyle-schwarber-asg-50"
+},
+{
+"id": "2026-all-star-game-autographs-asg-37",
+"number": "ASG-37",
+"player": "Cristopher Sánchez",
+"team": "Philadelphia Phillies",
+"subset": "2026 All-Star Game Autographs",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10"
+],
+"image": "img/upd/2026-all-star-game-autographs-asg-37.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-game-autograph/cristopher-sanchez-asg-37"
+},
+{
+"id": "2026-all-star-game-autographs-asg-38",
+"number": "ASG-38",
+"player": "Bryce Harper",
+"team": "Philadelphia Phillies",
+"subset": "2026 All-Star Game Autographs",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-game-autograph/bryce-harper-asg-38"
+},
+{
+"id": "2026-all-star-game-autographs-asg-46",
+"number": "ASG-46",
+"player": "Jesús Luzardo",
+"team": "Philadelphia Phillies",
+"subset": "2026 All-Star Game Autographs",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10"
+],
+"image": "img/upd/2026-all-star-game-autographs-asg-46.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-game-autograph/jesus-luzardo-asg-46"
+},
+{
+"id": "2026-all-star-game-autographs-asg-50",
+"number": "ASG-50",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "2026 All-Star Game Autographs",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10"
+],
+"image": "img/upd/2026-all-star-game-autographs-asg-50.jpg",
+"images": {
+"red-5": "img/upd/2026-all-star-game-autographs-asg-50--red-5.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-game-autograph/kyle-schwarber-asg-50"
+},
+{
+"id": "all-aces-aa-21",
+"number": "AA-21",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "All Aces",
+"rookie": false,
+"parallels": [
+"gold-1"
+],
+"image": "img/upd/all-aces-aa-21.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-aces/andrew-painter-aa-21"
+},
+{
+"id": "all-aces-aa-27",
+"number": "AA-27",
+"player": "Cristopher Sánchez",
+"team": "Philadelphia Phillies",
+"subset": "All Aces",
+"rookie": false,
+"parallels": [
+"gold-1"
+],
+"image": "img/upd/all-aces-aa-27.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-aces/cristopher-sanchez-aa-27"
+},
+{
+"id": "all-kings-ak-40",
+"number": "AK-40",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "All Kings",
+"rookie": false,
+"parallels": [
+"gold-1"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-kings/kyle-schwarber-ak-40"
+},
+{
+"id": "all-star-stitches-as-bh",
+"number": "AS-BH",
+"player": "Bryce Harper",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/all-star-stitches-as-bh.jpg",
+"images": {
+"red-5": "img/upd/all-star-stitches-as-bh--red-5.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches/bryce-harper-as-bh"
+},
+{
+"id": "all-star-stitches-as-bm",
+"number": "AS-BM",
+"player": "Brandon Marsh",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/all-star-stitches-as-bm.jpg",
+"images": {
+"gold-50": "img/upd/all-star-stitches-as-bm--gold-50.jpg",
+"orange-25": "img/upd/all-star-stitches-as-bm--orange-25.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches/brandon-marsh-as-bm"
+},
+{
+"id": "all-star-stitches-as-csa",
+"number": "AS-CSA",
+"player": "Cristopher Sánchez",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/all-star-stitches-as-csa.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches/cristopher-sanchez-as-csa"
+},
+{
+"id": "all-star-stitches-as-jd",
+"number": "AS-JD",
+"player": "Jhoan Duran",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/all-star-stitches-as-jd.jpg",
+"images": {
+"red-5": "img/upd/all-star-stitches-as-jd--red-5.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches/jhoan-duran-as-jd"
+},
+{
+"id": "all-star-stitches-as-jlu",
+"number": "AS-JLU",
+"player": "Jesús Luzardo",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/all-star-stitches-as-jlu.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches/jesus-luzardo-as-jlu"
+},
+{
+"id": "all-star-stitches-as-ks",
+"number": "AS-KS",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/all-star-stitches-as-ks.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches/kyle-schwarber-as-ks"
+},
+{
+"id": "all-star-stitches-autographs-as-bh",
+"number": "AS-BH",
+"player": "Bryce Harper",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/all-star-stitches-autographs-as-bh.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches-autograph/bryce-harper-as-bh"
+},
+{
+"id": "all-star-stitches-autographs-as-csa",
+"number": "AS-CSA",
+"player": "Cristopher Sánchez",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/all-star-stitches-autographs-as-csa.jpg",
+"images": {
+"gold-50": "img/upd/all-star-stitches-autographs-as-csa--gold-50.jpg",
+"red-5": "img/upd/all-star-stitches-autographs-as-csa--red-5.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches-autograph/cristopher-sanchez-as-csa"
+},
+{
+"id": "all-star-stitches-autographs-as-jd",
+"number": "AS-JD",
+"player": "Jhoan Duran",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches-autograph/jhoan-duran-as-jd"
+},
+{
+"id": "all-star-stitches-autographs-as-jlu",
+"number": "AS-JLU",
+"player": "Jesús Luzardo",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches-autograph/jesus-luzardo-as-jlu"
+},
+{
+"id": "all-star-stitches-autographs-as-ks",
+"number": "AS-KS",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "All-Star Stitches Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/all-star-stitches-autographs-as-ks.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-all-star-stitches-autograph/kyle-schwarber-as-ks"
+},
+{
+"id": "autumn-ascensions-aa-27",
+"number": "AA-27",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "Autumn Ascensions",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150",
+"pink"
+],
+"image": "img/upd/autumn-ascensions-aa-27.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-autumn-ascensions/kyle-schwarber-aa-27"
+},
+{
+"id": "autumn-ascensions-aa-28",
+"number": "AA-28",
+"player": "Bryce Harper",
+"team": "Philadelphia Phillies",
+"subset": "Autumn Ascensions",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150",
+"pink"
+],
+"image": "img/upd/autumn-ascensions-aa-28.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-autumn-ascensions/bryce-harper-aa-28"
+},
+{
+"id": "base-rookie-1952-autographs-us2",
+"number": "US2",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Base Rookie 1952 Autographs",
+"rookie": false,
+"parallels": [
+"black-1",
+"red-5"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/justin-crawford-75-years-flagship-real-one-autograph-us2"
+},
+{
+"id": "base-rookie-1952-autographs-us63",
+"number": "US63",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Base Rookie 1952 Autographs",
+"rookie": false,
+"parallels": [
+"black-1",
+"red-5"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/andrew-painter-75-years-flagship-real-one-autograph-us63"
+},
+{
+"id": "baseball-stars-autographs-bsau-jc",
+"number": "BSAU-JC",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Baseball Stars Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-baseball-stars-autograph/justin-crawford-black-bsau-jc"
+},
+{
+"id": "city-connect-autograph-relics-cc2-cs",
+"number": "CC2-CS",
+"player": "Cristopher Sánchez",
+"team": "Philadelphia Phillies",
+"subset": "City Connect Autograph Relics",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-city-connect-autograph-relic/cristopher-sanchez-black-cc2-cs"
+},
+{
+"id": "companion-card-us2",
+"number": "US2",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Companion Card",
+"rookie": false,
+"parallels": [],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/justin-crawford-us2"
+},
+{
+"id": "companion-card-us63",
+"number": "US63",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Companion Card",
+"rookie": false,
+"parallels": [],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/andrew-painter-us63"
+},
+{
+"id": "cover-athletes-ca-26",
+"number": "CA-26",
+"player": "Bryce Harper",
+"team": "Philadelphia Phillies",
+"subset": "Cover Athletes",
+"rookie": false,
+"parallels": [],
+"image": "img/upd/cover-athletes-ca-26.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-cover-athlete/bryce-harper-ca-26"
+},
+{
+"id": "cover-athletes-autographs-covr-bh",
+"number": "COVR-BH",
+"player": "Bryce Harper",
+"team": "Philadelphia Phillies",
+"subset": "Cover Athletes Autographs",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "fanatics-authentic-redemption-alec-bohm-bryson-stott-mike-schmidt",
+"number": "",
+"player": "Alec Bohm / Bryson Stott / Mike Schmidt",
+"team": "Philadelphia Phillies",
+"subset": "Fanatics Authentic Redemption",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "flagship-real-one-autographs-650",
+"number": "650",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "Flagship Real One Autographs",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"75-years-75",
+"green-99",
+"golden-mirror-autographs"
+]
+},
+{
+"id": "flagship-real-one-autographs-us2",
+"number": "US2",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Flagship Real One Autographs",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"75-years-75",
+"green-99",
+"golden-mirror-autographs"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/justin-crawford-75-years-flagship-real-one-autograph-us2"
+},
+{
+"id": "flagship-real-one-autographs-us12",
+"number": "US12",
+"player": "Adolis García",
+"team": "Philadelphia Phillies",
+"subset": "Flagship Real One Autographs",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"75-years-75",
+"green-99",
+"golden-mirror-autographs"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/adolis-garcia-75-years-flagship-real-one-autograph-us12"
+},
+{
+"id": "flagship-real-one-autographs-us63",
+"number": "US63",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Flagship Real One Autographs",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"75-years-75",
+"green-99",
+"golden-mirror-autographs"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/andrew-painter-75-years-flagship-real-one-autograph-us63"
+},
+{
+"id": "flagship-real-one-golden-mirror-autographs-322",
+"number": "322",
+"player": "Trea Turner",
+"team": "Philadelphia Phillies",
+"subset": "Flagship Real One Golden Mirror Autographs",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "heavy-lumber-hl-50",
+"number": "HL-50",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Heavy Lumber",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "heavy-lumber-autograph-relics-hl2-jr",
+"number": "HL2-JR",
+"player": "Jimmy Rollins",
+"team": "Philadelphia Phillies",
+"subset": "Heavy Lumber Autograph Relics",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "heavy-lumber-autograph-relics-hlar-jt",
+"number": "HLAR-JT",
+"player": "Jim Thome",
+"team": "Philadelphia Phillies",
+"subset": "Heavy Lumber Autograph Relics",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "heavy-lumber-autograph-relics-hlar-ks",
+"number": "HLAR-KS",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "Heavy Lumber Autograph Relics",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "home-field-ha-47",
+"number": "HA-47",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "Home Field",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "home-field-ha-55",
+"number": "HA-55",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Home Field",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "home-field-ha-56",
+"number": "HA-56",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Home Field",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "major-league-material-autographs-mlm2-jtr",
+"number": "MLM2-JTR",
+"player": "J.T. Realmuto",
+"team": "Philadelphia Phillies",
+"subset": "Major League Material Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-major-league-material-autograph/jt-realmuto-black-mlm2-jtr"
+},
+{
+"id": "major-league-material-autographs-mlma-ks",
+"number": "MLMA-KS",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "Major League Material Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"images": {
+"orange-25": "img/upd/major-league-material-autographs-mlma-ks--orange-25.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-major-league-material-autograph/kyle-schwarber-orange-mlma-ks"
+},
+{
+"id": "major-league-material-autographs-mlmu-ap",
+"number": "MLMU-AP",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Major League Material Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-major-league-material-autograph/andrew-painter-black-mlmu-ap"
+},
+{
+"id": "major-league-material-autographs-mlmu-jc",
+"number": "MLMU-JC",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Major League Material Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-major-league-material-autograph/justin-crawford-black-mlmu-jc"
+},
+{
+"id": "major-league-material-dual-autographs-mlmda-tjt",
+"number": "MLMDA-TJT",
+"player": "J.T. Realmuto / Trea Turner",
+"team": "Philadelphia Phillies",
+"subset": "Major League Material Dual Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-major-league-material-dual-autograph/trea-turner-jt-realmuto-black-mlmda-tjt"
+},
+{
+"id": "major-league-materials-mlmu-ap",
+"number": "MLMU-AP",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Major League Materials",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"image": "img/upd/major-league-materials-mlmu-ap.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-major-league-material/andrew-painter-mlmu-ap"
+},
+{
+"id": "major-league-materials-mlmu-jc",
+"number": "MLMU-JC",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Major League Materials",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"blue-150"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-major-league-material/justin-crawford-black-mlmu-jc"
+},
+{
+"id": "oversized-1991-topps-baseball-u91o-5",
+"number": "U91O-5",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Oversized 1991 Topps Baseball",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "oversized-1991-topps-baseball-u91o-6",
+"number": "U91O-6",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Oversized 1991 Topps Baseball",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "oversized-2026-base-us2",
+"number": "US2",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Oversized 2026 Base",
+"rookie": false,
+"parallels": [],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/justin-crawford-oversized-us2"
+},
+{
+"id": "oversized-2026-base-us63",
+"number": "US63",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Oversized 2026 Base",
+"rookie": false,
+"parallels": [],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/andrew-painter-oversized-us63"
+},
+{
+"id": "postseason-performance-autographs-ppa-an",
+"number": "PPA-AN",
+"player": "Aaron Nola",
+"team": "Philadelphia Phillies",
+"subset": "Postseason Performance Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-postseason-performance-autograph/aaron-nola-black-ppa-an"
+},
+{
+"id": "postseason-performance-autographs-ppa-ks",
+"number": "PPA-KS",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "Postseason Performance Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25"
+],
+"images": {
+"orange-25": "img/upd/postseason-performance-autographs-ppa-ks--orange-25.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-postseason-performance-autograph/kyle-schwarber-orange-ppa-ks"
+},
+{
+"id": "real-one-relics-us2",
+"number": "US2",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Real One Relics",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/justin-crawford-black-real-one-relic-us2"
+},
+{
+"id": "real-one-relics-us12",
+"number": "US12",
+"player": "Adolis García",
+"team": "Philadelphia Phillies",
+"subset": "Real One Relics",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/adolis-garcia-black-real-one-relic-us12"
+},
+{
+"id": "rising-rookie-relic-autographs-rrr-ap",
+"number": "RRR-AP",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Rising Rookie Relic Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/rising-rookie-relic-autographs-rrr-ap.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-rising-rookie-relic-autograph/andrew-painter-rrr-ap"
+},
+{
+"id": "rising-rookie-relic-autographs-rrr-jc",
+"number": "RRR-JC",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Rising Rookie Relic Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-rising-rookie-relic-autograph/justin-crawford-black-rrr-jc"
+},
+{
+"id": "rising-rookie-relics-rrr-ap",
+"number": "RRR-AP",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Rising Rookie Relics",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/rising-rookie-relics-rrr-ap.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-rising-rookie-relic/andrew-painter-rrr-ap"
+},
+{
+"id": "rising-rookie-relics-rrr-jc",
+"number": "RRR-JC",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Rising Rookie Relics",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50"
+],
+"image": "img/upd/rising-rookie-relics-rrr-jc.jpg",
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-rising-rookie-relic/justin-crawford-rrr-jc"
+},
+{
+"id": "rounding-the-bases-relic-autographs-rtb-ks",
+"number": "RTB-KS",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "Rounding the Bases Relic Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-rounding-the-bases-relic-autograph/kyle-schwarber-black-rtb-ks"
+},
+{
+"id": "rounding-the-bases-relic-autographs-rtb-ksc",
+"number": "RTB-KSC",
+"player": "Kyle Schwarber",
+"team": "Philadelphia Phillies",
+"subset": "Rounding the Bases Relic Autographs",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-rounding-the-bases-relic-autograph/kyle-schwarber-black-rtb-ksc"
+},
+{
+"id": "stars-of-mlb-smlb-81",
+"number": "SMLB-81",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "Stars of MLB",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"pink"
+],
+"image": "img/upd/stars-of-mlb-smlb-81.jpg",
+"images": {
+"gold-50": "img/upd/stars-of-mlb-smlb-81--gold-50.jpg",
+"green-99": "img/upd/stars-of-mlb-smlb-81--green-99.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-stars-of-mlb/justin-crawford-smlb-81"
+},
+{
+"id": "stars-of-mlb-smlb-82",
+"number": "SMLB-82",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "Stars of MLB",
+"rookie": false,
+"parallels": [
+"foilfractor-1",
+"red-5",
+"black-10",
+"orange-25",
+"gold-50",
+"green-99",
+"pink"
+],
+"image": "img/upd/stars-of-mlb-smlb-82.jpg",
+"images": {
+"green-99": "img/upd/stars-of-mlb-smlb-82--green-99.jpg",
+"pink": "img/upd/stars-of-mlb-smlb-82--pink.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-stars-of-mlb/andrew-painter-smlb-82"
+},
+{
+"id": "the-flagship-collection-base-57",
+"number": "57",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "The Flagship Collection Base",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "the-flagship-collection-base-64",
+"number": "64",
+"player": "Bryce Harper",
+"team": "Philadelphia Phillies",
+"subset": "The Flagship Collection Base",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "the-flagship-collection-base-66",
+"number": "66",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "The Flagship Collection Base",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "the-flagship-collection-chrome-base-57",
+"number": "57",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "The Flagship Collection Chrome Base",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "the-flagship-collection-chrome-base-64",
+"number": "64",
+"player": "Bryce Harper",
+"team": "Philadelphia Phillies",
+"subset": "The Flagship Collection Chrome Base",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "the-flagship-collection-chrome-base-66",
+"number": "66",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "The Flagship Collection Chrome Base",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "the-flagship-collection-chrome-base-autographs-57",
+"number": "57",
+"player": "Andrew Painter",
+"team": "Philadelphia Phillies",
+"subset": "The Flagship Collection Chrome Base Autographs",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "the-flagship-collection-chrome-base-autographs-66",
+"number": "66",
+"player": "Justin Crawford",
+"team": "Philadelphia Phillies",
+"subset": "The Flagship Collection Chrome Base Autographs",
+"rookie": false,
+"parallels": []
+},
+{
+"id": "topps-flagship-autograph-patch-tfap2-an",
+"number": "TFAP2-AN",
+"player": "Aaron Nola",
+"team": "Philadelphia Phillies",
+"subset": "Topps Flagship Autograph Patch",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"bronze-25"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-flagship-autograph-patch/aaron-nola-black-tfap2-an"
+},
+{
+"id": "topps-flagship-autograph-patch-tfap2-ms",
+"number": "TFAP2-MS",
+"player": "Matt Strahm",
+"team": "Philadelphia Phillies",
+"subset": "Topps Flagship Autograph Patch",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"bronze-25"
+],
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-flagship-autograph-patch/matt-strahm-black-tfap2-ms"
+},
+{
+"id": "topps-flagship-autograph-patch-tfap2-zw",
+"number": "TFAP2-ZW",
+"player": "Zack Wheeler",
+"team": "Philadelphia Phillies",
+"subset": "Topps Flagship Autograph Patch",
+"rookie": false,
+"parallels": [
+"platinum-1",
+"red-5",
+"black-10",
+"bronze-25"
+],
+"images": {
+"bronze-25": "img/upd/topps-flagship-autograph-patch-tfap2-zw--bronze-25.jpg"
+},
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update-flagship-autograph-patch/zack-wheeler-bronze-tfap2-zw"
+}
+]
+}

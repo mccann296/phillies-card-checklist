@@ -1,0 +1,345 @@
+{
+ "format": "card-checklist-set",
+ "version": 1,
+ "id": "example-demo-series-2026",
+ "name": "EXAMPLE DATA \u2014 Demo Series",
+ "year": 2026,
+ "brand": "Example Co.",
+ "sport": "Baseball",
+ "example": true,
+ "notes": "Fictional players for demo only. Replace with a real checklist.",
+ "baseName": "Base",
+ "parallels": [
+  {
+   "id": "refractor",
+   "name": "Refractor",
+   "printRun": null,
+   "color": "#b9c6d6",
+   "appliesTo": [
+    "Base"
+   ]
+  },
+  {
+   "id": "blue",
+   "name": "Blue",
+   "printRun": 150,
+   "color": "#2f7cf6",
+   "appliesTo": [
+    "Base"
+   ]
+  },
+  {
+   "id": "green",
+   "name": "Green",
+   "printRun": 99,
+   "color": "#22a55a",
+   "appliesTo": [
+    "Base"
+   ]
+  },
+  {
+   "id": "gold",
+   "name": "Gold",
+   "printRun": 50,
+   "color": "#d4a017",
+   "appliesTo": []
+  },
+  {
+   "id": "orange",
+   "name": "Orange",
+   "printRun": 25,
+   "color": "#f07a1a",
+   "appliesTo": [
+    "Base"
+   ]
+  },
+  {
+   "id": "red",
+   "name": "Red",
+   "printRun": 5,
+   "color": "#e0303a",
+   "appliesTo": []
+  },
+  {
+   "id": "superfractor",
+   "name": "Superfractor",
+   "printRun": 1,
+   "color": "#8a5cf6",
+   "appliesTo": [
+    "Base"
+   ]
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "number": "1",
+   "player": "Alex Rivera",
+   "team": "Harbor City Gulls",
+   "subset": "Base",
+   "rookie": true,
+   "image": ""
+  },
+  {
+   "id": "c2",
+   "number": "2",
+   "player": "Jordan Hollis",
+   "team": "Mesa Rattlers",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c3",
+   "number": "3",
+   "player": "Marco Castell",
+   "team": "Northfield Pines",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c4",
+   "number": "4",
+   "player": "Devin Brooks",
+   "team": "Bay Ridge Comets",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c5",
+   "number": "5",
+   "player": "Luis Navarro",
+   "team": "Ironvale Miners",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c6",
+   "number": "6",
+   "player": "Tyler Whitfield",
+   "team": "Sunport Pelicans",
+   "subset": "Base",
+   "rookie": true,
+   "image": ""
+  },
+  {
+   "id": "c7",
+   "number": "7",
+   "player": "Kenji Sato",
+   "team": "Harbor City Gulls",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c8",
+   "number": "8",
+   "player": "Sam Okafor",
+   "team": "Mesa Rattlers",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c9",
+   "number": "9",
+   "player": "Rafael Duarte",
+   "team": "Northfield Pines",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c10",
+   "number": "10",
+   "player": "Cole Bennett",
+   "team": "Bay Ridge Comets",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c11",
+   "number": "11",
+   "player": "Andre Lyle",
+   "team": "Ironvale Miners",
+   "subset": "Base",
+   "rookie": true,
+   "image": ""
+  },
+  {
+   "id": "c12",
+   "number": "12",
+   "player": "Mateo Ferraro",
+   "team": "Sunport Pelicans",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c13",
+   "number": "13",
+   "player": "Owen Quinn",
+   "team": "Harbor City Gulls",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c14",
+   "number": "14",
+   "player": "Isaiah Mercer",
+   "team": "Mesa Rattlers",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c15",
+   "number": "15",
+   "player": "Nico Alonso",
+   "team": "Northfield Pines",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c16",
+   "number": "16",
+   "player": "Grant Pryor",
+   "team": "Bay Ridge Comets",
+   "subset": "Base",
+   "rookie": true,
+   "image": ""
+  },
+  {
+   "id": "c17",
+   "number": "17",
+   "player": "Eli Vance",
+   "team": "Ironvale Miners",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c18",
+   "number": "18",
+   "player": "Diego Soto",
+   "team": "Sunport Pelicans",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c19",
+   "number": "19",
+   "player": "Wes Harlan",
+   "team": "Harbor City Gulls",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c20",
+   "number": "20",
+   "player": "Jalen Greer",
+   "team": "Mesa Rattlers",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c21",
+   "number": "21",
+   "player": "Theo Lindqvist",
+   "team": "Northfield Pines",
+   "subset": "Base",
+   "rookie": true,
+   "image": ""
+  },
+  {
+   "id": "c22",
+   "number": "22",
+   "player": "Bryce Calloway",
+   "team": "Bay Ridge Comets",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c23",
+   "number": "23",
+   "player": "Omar Haddad",
+   "team": "Ironvale Miners",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "c24",
+   "number": "24",
+   "player": "Miles Tran",
+   "team": "Sunport Pelicans",
+   "subset": "Base",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "fp1",
+   "number": "FP-1",
+   "player": "Alex Rivera",
+   "team": "Harbor City Gulls",
+   "subset": "Future Phenoms",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "fp2",
+   "number": "FP-2",
+   "player": "Devin Brooks",
+   "team": "Bay Ridge Comets",
+   "subset": "Future Phenoms",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "fp3",
+   "number": "FP-3",
+   "player": "Sam Okafor",
+   "team": "Mesa Rattlers",
+   "subset": "Future Phenoms",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "fp4",
+   "number": "FP-4",
+   "player": "Mateo Ferraro",
+   "team": "Sunport Pelicans",
+   "subset": "Future Phenoms",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "fp5",
+   "number": "FP-5",
+   "player": "Grant Pryor",
+   "team": "Bay Ridge Comets",
+   "subset": "Future Phenoms",
+   "rookie": false,
+   "image": ""
+  },
+  {
+   "id": "fp6",
+   "number": "FP-6",
+   "player": "Theo Lindqvist",
+   "team": "Northfield Pines",
+   "subset": "Future Phenoms",
+   "rookie": false,
+   "image": ""
+  }
+ ]
+}
