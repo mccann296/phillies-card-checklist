@@ -1,4 +1,4 @@
-const VERSION = 'cc-v2';
+const VERSION = 'cc-v3';
 const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'sample-set.json',
   'data/index.json', 'data/s1.json', 'data/s2.json', 'data/upd.json', 'data/chrome.json',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];

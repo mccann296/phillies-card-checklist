@@ -2167,63 +2167,19 @@
 "team": "Philadelphia Phillies",
 "subset": "Fanatical",
 "rookie": false,
-"parallels": [],
+"parallels": [
+"superfractor-1",
+"red-refractor-5",
+"black-refractor-10",
+"orange-refractor-25",
+"gold-refractor-50"
+],
 "image": "img/chrome/fanatical-fan-2.jpg",
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-fanatical/bryce-harper-fan-2"
+"images": {
+"black-refractor-10": "img/chrome/fanatical-fan-2--black-refractor-10.jpg",
+"gold-refractor-50": "img/chrome/fanatical-fan-2--gold-refractor-50.jpg",
+"orange-refractor-25": "img/chrome/fanatical-fan-2--orange-refractor-25.jpg"
 },
-{
-"id": "fanatical-black-refractor-fan-2",
-"number": "FAN-2",
-"player": "Bryce Harper",
-"team": "Philadelphia Phillies",
-"subset": "Fanatical Black Refractor",
-"rookie": false,
-"parallels": [],
-"image": "img/chrome/fanatical-black-refractor-fan-2.jpg",
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-fanatical/bryce-harper-fan-2"
-},
-{
-"id": "fanatical-gold-refractor-fan-2",
-"number": "FAN-2",
-"player": "Bryce Harper",
-"team": "Philadelphia Phillies",
-"subset": "Fanatical Gold Refractor",
-"rookie": false,
-"parallels": [],
-"image": "img/chrome/fanatical-gold-refractor-fan-2.jpg",
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-fanatical/bryce-harper-fan-2"
-},
-{
-"id": "fanatical-orange-refractor-fan-2",
-"number": "FAN-2",
-"player": "Bryce Harper",
-"team": "Philadelphia Phillies",
-"subset": "Fanatical Orange Refractor",
-"rookie": false,
-"parallels": [],
-"image": "img/chrome/fanatical-orange-refractor-fan-2.jpg",
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-fanatical/bryce-harper-fan-2"
-},
-{
-"id": "fanatical-red-refractor-fan-2",
-"number": "FAN-2",
-"player": "Bryce Harper",
-"team": "Philadelphia Phillies",
-"subset": "Fanatical Red Refractor",
-"rookie": false,
-"parallels": [],
-"image": "img/chrome/fanatical-red-refractor-fan-2.jpg",
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-fanatical/bryce-harper-fan-2"
-},
-{
-"id": "fanatical-superfractor-fan-2",
-"number": "FAN-2",
-"player": "Bryce Harper",
-"team": "Philadelphia Phillies",
-"subset": "Fanatical SuperFractor",
-"rookie": false,
-"parallels": [],
-"image": "img/chrome/fanatical-superfractor-fan-2.jpg",
 "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-fanatical/bryce-harper-fan-2"
 },
 {
@@ -2242,19 +2198,10 @@
 "team": "Philadelphia Phillies",
 "subset": "Helix",
 "rookie": false,
-"parallels": [],
+"parallels": [
+"superfractor-1"
+],
 "image": "img/chrome/helix-hx-7.jpg",
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-helix/bryce-harper-hx-7"
-},
-{
-"id": "helix-superfractor-hx-7",
-"number": "HX-7",
-"player": "Bryce Harper",
-"team": "Philadelphia Phillies",
-"subset": "Helix SuperFractor",
-"rookie": false,
-"parallels": [],
-"image": "img/chrome/helix-superfractor-hx-7.jpg",
 "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-helix/bryce-harper-hx-7"
 },
 {
@@ -2623,19 +2570,13 @@
 "team": "Philadelphia Phillies",
 "subset": "Ultraviolet",
 "rookie": false,
-"parallels": [],
+"parallels": [
+"superfractor-1"
+],
 "image": "img/chrome/ultraviolet-uv-10.jpg",
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-ultra-violet/bryce-harper-uv-10"
+"images": {
+"superfractor-1": "img/chrome/ultraviolet-uv-10--superfractor-1.jpg"
 },
-{
-"id": "ultraviolet-superfractor-uv-10",
-"number": "UV-10",
-"player": "Bryce Harper",
-"team": "Philadelphia Phillies",
-"subset": "Ultraviolet SuperFractor",
-"rookie": false,
-"parallels": [],
-"image": "img/chrome/ultraviolet-superfractor-uv-10.jpg",
 "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-ultra-violet/bryce-harper-uv-10"
 },
 {
