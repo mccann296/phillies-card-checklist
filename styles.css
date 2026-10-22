@@ -129,3 +129,17 @@ details a{color:var(--accent)}
 .warn { color: #d97706; }
 .hidden-deal { opacity: .55; }
 .deals-card { border: 1px solid rgba(22,163,74,.45); }
+/* v6: big full-set grids (350 cards) — skip layout/paint of off-screen tiles; images are lazy + async-decoded */
+.grid .tile{content-visibility:auto;contain-intrinsic-size:auto 230px}
+.swatch.sm{width:10px;height:10px;display:inline-block;vertical-align:middle;border-radius:3px}
+.badge.est{background:var(--surface2);color:var(--muted);font-weight:700;font-size:11px;padding:1px 6px}
+.deal-math{display:flex;flex-wrap:wrap;gap:4px 8px}
+.folder .grow b{font-size:16px}
+.serial{font-weight:700;color:var(--text)}
+.serial.jersey,.tile-serial.jersey{background:linear-gradient(90deg,#f7d046,#f59e0b);color:#3b2600;border-radius:6px;padding:0 5px}
+.tile-serial{position:absolute;left:6px;bottom:6px;padding:1px 6px;border-radius:999px;background:rgba(0,0,0,.72);color:#fff;font-size:11px;font-weight:800}
+.bar.rainbow i{background:linear-gradient(90deg,#e0303a,#f07a1a,#facc15,#22a55a,#2f7cf6,#8a5cf6)}
+.rb-list{display:flex;flex-direction:column;gap:4px}
+.rb-item{display:flex;align-items:center;gap:6px;min-height:40px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);text-align:left;font:inherit;cursor:pointer;opacity:.75}
+.rb-item.on{opacity:1;border-color:var(--ok);background:var(--surface2)}
+.rb-item .ok{color:var(--ok)}

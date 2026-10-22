@@ -1,6 +1,6 @@
-const VERSION = 'cc-v5';
+const VERSION = 'cc-v6';
 const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'sample-set.json',
-  'data/index.json', 'data/s1.json', 'data/s2.json', 'data/upd.json', 'data/chrome.json', 'data/t08gold.json', 'data/od08.json', 'data/ch08.json', 'data/extra.json', 'prices.json',
+  'data/index.json', 'data/s1.json', 'data/s2.json', 'data/upd.json', 'data/chrome.json', 'data/t08gold.json', 'data/od08.json', 'data/ch08.json', 'data/s1all.json', 'data/s2all.json', 'data/updall.json', 'data/harper-psa10.json', 'data/spvar.json', 'data/extra.json', 'prices.json',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION && k !== 'cc-img').map(k => caches.delete(k)))).then(() => self.clients.claim())); });

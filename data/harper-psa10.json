@@ -1,0 +1,298 @@
+{
+ "format": "card-checklist-set",
+ "version": 2,
+ "dataVersion": 1,
+ "id": "harper-psa10-flagship",
+ "name": "Bryce Harper PSA 10 \u2014 Topps Flagship Base",
+ "year": "2012\u20132026",
+ "brand": "Topps",
+ "sport": "Baseball",
+ "baseName": "Base",
+ "grade": "PSA 10",
+ "pinned": true,
+ "pinFirst": true,
+ "notes": "One Topps flagship base card per season, 2012 Update US183 RC through 2026 \u2014 the goal is a PSA 10 of each. Card numbers verified against SportsCardsPro set listings plus The Phillies Room and Baseball Almanac. Where Harper has more than one flagship base card in a year the extras are listed on the card; multi-player cards and image variations are excluded. Price = SportsCardsPro PSA 10 sold column; Whatnot listings matched to PSA 10 slabs only.",
+ "sources": [
+  "https://www.sportscardspro.com",
+  "https://www.thephilliesroom.com",
+  "https://www.baseball-almanac.com"
+ ],
+ "parallels": [
+  {
+   "id": "psa-10",
+   "name": "PSA 10"
+  }
+ ],
+ "cards": [
+  {
+   "id": "2012",
+   "number": "US183",
+   "player": "Bryce Harper",
+   "team": "Washington Nationals",
+   "subset": "2012 Topps Update",
+   "rookie": true,
+   "year": 2012,
+   "product": "Topps Update",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2012-topps-update/bryce-harper-us183",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2012-topps-update/bryce-harper-us183",
+   "image": "img/harper/2012.jpg",
+   "notes": "Rookie card. Other flagship base Harper cards this year: Series 2 #661 RC. Excluded: US299 SSP (image variation)."
+  },
+  {
+   "id": "2013",
+   "number": "1",
+   "player": "Bryce Harper",
+   "team": "Washington Nationals",
+   "subset": "2013 Topps Series 1",
+   "rookie": false,
+   "year": 2013,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2013-topps/bryce-harper-1",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2013-topps/bryce-harper-1",
+   "image": "img/harper/2013.jpg",
+   "notes": "Other flagship base Harper cards this year: Series 2 #369, Update US100, Update US180."
+  },
+  {
+   "id": "2014",
+   "number": "100",
+   "player": "Bryce Harper",
+   "team": "Washington Nationals",
+   "subset": "2014 Topps Series 1",
+   "rookie": false,
+   "year": 2014,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2014-topps/bryce-harper-100",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2014-topps/bryce-harper-100",
+   "image": "img/harper/2014.jpg",
+   "notes": "Other flagship base Harper cards this year: Series 2 #390."
+  },
+  {
+   "id": "2015",
+   "number": "207",
+   "player": "Bryce Harper",
+   "team": "Washington Nationals",
+   "subset": "2015 Topps Series 1",
+   "rookie": false,
+   "year": 2015,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2015-topps/bryce-harper-207",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2015-topps/bryce-harper-207",
+   "image": "img/harper/2015.jpg",
+   "notes": ""
+  },
+  {
+   "id": "2016",
+   "number": "100",
+   "player": "Bryce Harper",
+   "team": "Washington Nationals",
+   "subset": "2016 Topps Series 1",
+   "rookie": false,
+   "year": 2016,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2016-topps/bryce-harper-100",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2016-topps/bryce-harper-100",
+   "image": "img/harper/2016.jpg",
+   "notes": "Other flagship base Harper cards this year: Update US297. Excluded: league-leader cards #337/#338 (multi-player)."
+  },
+  {
+   "id": "2017",
+   "number": "34",
+   "player": "Bryce Harper",
+   "team": "Washington Nationals",
+   "subset": "2017 Topps Series 1",
+   "rookie": false,
+   "year": 2017,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2017-topps/bryce-harper-34",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2017-topps/bryce-harper-34",
+   "image": "img/harper/2017.jpg",
+   "notes": ""
+  },
+  {
+   "id": "2018",
+   "number": "351",
+   "player": "Bryce Harper",
+   "team": "Washington Nationals",
+   "subset": "2018 Topps Series 2",
+   "rookie": false,
+   "year": 2018,
+   "product": "Topps Series 2",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2018-topps/bryce-harper-351",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2018-topps/bryce-harper-351",
+   "image": "img/harper/2018.jpg",
+   "notes": "No solo Harper in 2018 Series 1 (#126 is a Rizzo/Harper combo \u2014 excluded). Other flagship base Harper cards this year: Update US202, Update US209."
+  },
+  {
+   "id": "2019",
+   "number": "400",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "2019 Topps Series 2",
+   "rookie": false,
+   "year": 2019,
+   "product": "Topps Series 2",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2019-topps/bryce-harper-400",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2019-topps/bryce-harper-400",
+   "image": "img/harper/2019.jpg",
+   "notes": "First flagship base card as a Phillie. Excluded: Update US260 Freeman/Harper combo."
+  },
+  {
+   "id": "2020",
+   "number": "250",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "2020 Topps Series 1",
+   "rookie": false,
+   "year": 2020,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2020-topps/bryce-harper-250",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2020-topps/bryce-harper-250",
+   "image": "img/harper/2020.jpg",
+   "notes": "Other flagship base Harper cards this year: Update U-255, Update U-279. Excluded combos: U-74, #446."
+  },
+  {
+   "id": "2021",
+   "number": "250",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "2021 Topps Series 1",
+   "rookie": false,
+   "year": 2021,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2021-topps/bryce-harper-250",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2021-topps/bryce-harper-250",
+   "image": "img/harper/2021.jpg",
+   "notes": "Raw price on SportsCardsPro looks unusually high for a base card \u2014 check before paying."
+  },
+  {
+   "id": "2022",
+   "number": "250",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "2022 Topps Series 1",
+   "rookie": false,
+   "year": 2022,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2022-topps/bryce-harper-250",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2022-topps/bryce-harper-250",
+   "image": "img/harper/2022.jpg",
+   "notes": "Excluded multi-player cards: #59 Turner/Soto/Harper, #367 Franco/Harper, Update US112 Harper/Hoskins."
+  },
+  {
+   "id": "2023",
+   "number": "3",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "2023 Topps Series 1",
+   "rookie": false,
+   "year": 2023,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2023-topps/bryce-harper-3",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2023-topps/bryce-harper-3",
+   "image": "img/harper/2023.jpg",
+   "notes": ""
+  },
+  {
+   "id": "2024",
+   "number": "200",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "2024 Topps Series 1",
+   "rookie": false,
+   "year": 2024,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2024-topps/bryce-harper-200",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2024-topps/bryce-harper-200",
+   "image": "img/harper/2024.jpg",
+   "notes": ""
+  },
+  {
+   "id": "2025",
+   "number": "250",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "2025 Topps Series 1",
+   "rookie": false,
+   "year": 2025,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2025-topps/bryce-harper-250",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2025-topps/bryce-harper-250",
+   "image": "img/harper/2025.jpg",
+   "notes": "Excluded: Update US107 combo."
+  },
+  {
+   "id": "2026",
+   "number": "250",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "2026 Topps Series 1",
+   "rookie": false,
+   "year": 2026,
+   "product": "Topps Series 1",
+   "noBase": true,
+   "parallels": [
+    "psa-10"
+   ],
+   "scpPath": "baseball-cards-2026-topps/bryce-harper-250",
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps/bryce-harper-250",
+   "image": "img/harper/2026.jpg",
+   "notes": "Other flagship Harper base-style card this year: Update US131 Cycle Complete (season highlight \u2014 no PSA 10 sales on SportsCardsPro yet)."
+  }
+ ]
+}

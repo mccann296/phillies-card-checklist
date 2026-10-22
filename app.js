@@ -29,7 +29,11 @@ const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; 
 let sets = load(LS_SETS, []);
 let coll = load(LS_COLL, {});
 let prefs = load(LS_PREFS, { theme: 'auto', seeded: false });
-const saveSets = () => localStorage.setItem(LS_SETS, JSON.stringify(sets));
+// Big bundled full checklists (all-teams base sets, SP/SSP/Variations) are NOT copied into localStorage
+// (phone storage is ~5 MB): only a slim stub with your own added cards/parallels is saved, and the cards are
+// re-read from the bundled data file (cached offline by the service worker) on every start.
+const slimSet = s => (!s.fullSet || !pubLoaded) ? s : { ...s, slim: true, cards: s.cards.filter(c => !PUB.has(pubKey(s.id, c.id)) || c.parallels?.length) };
+const saveSets = () => { try { localStorage.setItem(LS_SETS, JSON.stringify(sets.map(slimSet))); } catch (e) { console.warn('saveSets', e); toast('Phone storage is full — export a backup'); } };
 const saveColl = () => localStorage.setItem(LS_COLL, JSON.stringify(coll));
 const savePrefs = () => localStorage.setItem(LS_PREFS, JSON.stringify(prefs));
 // my own prices (override the weekly published price; never touched by the refresh): {setId:{cardId:{vid:number}}}
@@ -94,6 +98,7 @@ function normalizeSet(raw) {
     brand: String(raw.brand || '').trim(), sport: String(raw.sport || '').trim(),
     baseName: String(raw.baseName || 'Base').trim(), example: !!raw.example, notes: raw.notes || '',
     team: raw.team || '', chase: !!raw.chase, pinned: !!raw.pinned, chasePlayer: raw.chasePlayer || '', sources: Array.isArray(raw.sources) ? raw.sources : [], dataVersion: raw.dataVersion || 0,
+    grade: raw.grade || '', pinFirst: !!raw.pinFirst, hidden: !!raw.hidden, fullSet: !!raw.fullSet, variations: !!raw.variations, subsetLabel: raw.subsetLabel || '',
     parallels: [], cards: []
   };
   const pids = new Set([BASE_ID]);
@@ -103,7 +108,9 @@ function normalizeSet(raw) {
     let id = slug(p.id || `${p.name}${printRun ? '-' + printRun : ''}`); while (pids.has(id)) id += '-2'; pids.add(id);
     let applies = p.appliesTo ?? p.applies_to ?? [];
     if (typeof applies === 'string') applies = applies.split('|').map(x => x.trim()).filter(Boolean);
-    s.parallels.push({ id, name: String(p.name).trim(), printRun, color: p.color || guessColor(p.name), appliesTo: applies });
+    const par = { id, name: String(p.name).trim(), printRun, color: p.color || guessColor(p.name), appliesTo: applies };
+    if (p.cardOnly) par.cardOnly = true; // added to one card only ("Add a parallel to this card") — never applies set-wide
+    s.parallels.push(par);
   }
   const cids = new Set();
   for (const c of raw.cards || []) {
@@ -119,14 +126,14 @@ function normalizeSet(raw) {
     if (c.noBase === true || /^(y|yes|true|1)$/i.test(String(c.noBase || ''))) card.noBase = true;
     if (c.featured === true || /^(y|yes|true|1)$/i.test(String(c.featured || ''))) card.featured = true;
     if (c.images && typeof c.images === 'object') card.images = c.images;
-    for (const k of ['notes', 'ref', 'players', 'year', 'product', 'series']) if (c[k]) card[k] = String(c[k]);
+    for (const k of ['notes', 'ref', 'players', 'year', 'product', 'series', 'sp', 'odds']) if (c[k]) card[k] = String(c[k]);
     s.cards.push(card);
   }
   return s;
 }
 const baseVersion = set => ({ id: BASE_ID, name: set.baseName === 'Base' ? 'Base' : set.baseName, printRun: null, color: '' });
 const versionsFor = (set, card) => {
-  const pars = card.parallels ? set.parallels.filter(p => card.parallels.includes(p.id)) : set.parallels.filter(p => !p.appliesTo?.length || p.appliesTo.includes(card.subset));
+  const pars = card.parallels ? set.parallels.filter(p => card.parallels.includes(p.id)) : set.parallels.filter(p => !p.cardOnly && (!p.appliesTo?.length || p.appliesTo.includes(card.subset)));
   return card.noBase ? pars : [baseVersion(set), ...pars];
 };
 const verImage = (card, vid) => vid === BASE_ID ? card.image : (card.images && card.images[vid]) || '';
@@ -141,6 +148,8 @@ function setOwn(setId, cardId, parId, patch) {
 const ownedCount = (set, card) => versionsFor(set, card).filter(v => own(set.id, card.id, v.id)).length;
 const isHit = c => /autograph|relic|swatch|material|stitches|patch|real one auto/i.test(c.subset);
 const subsets = set => [...new Set(set.cards.map(c => c.subset))];
+const teamsOf = c => String(c.team || '').split(' / ').map(t => t.trim()).filter(Boolean); // combo cards: "Team A / Team B"
+const priceKind = set => set.grade || 'Raw';
 
 function stats(set) {
   const st = { combos: 0, owned: 0, anyCards: 0, qty: 0, base: { t: 0, o: 0 }, subsets: {}, par: {} };
@@ -181,7 +190,7 @@ document.addEventListener('error', e => { const img = e.target; if (img.tagName 
 function imgTag(set, card, ver, { pk, alt = '', src: forced } = {}) {
   const fb = artURL(set, card, ver);
   const src = forced || (ver && verImage(card, ver.id)) || card.image || fb;
-  return `<img loading="lazy" alt="${esc(alt)}" src="${esc(src)}" data-fallback="${esc(fb)}" ${pk ? `data-pk="${esc(pk)}"` : ''}>`;
+  return `<img loading="lazy" decoding="async" alt="${esc(alt)}" src="${esc(src)}" data-fallback="${esc(fb)}" ${pk ? `data-pk="${esc(pk)}"` : ''}>`;
 }
 
 // First owned version that has one of my photos (used as thumbnail when the card has no reference image)
@@ -222,12 +231,19 @@ const lookupURL = (set, card, ver) => 'https://www.sportscardspro.com/search-pro
 const ebayURL = (set, card, ver, mode = 'bin') => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(cardQuery(set, card, ver)) + '&_sacat=261328' +
   (mode === 'sold' ? '&LH_Sold=1&LH_Complete=1&_sop=13' : mode === 'auction' ? '&LH_Auction=1&_sop=1' : '&LH_BIN=1&_sop=15');
 const whatnotURL = (set, card, ver) => 'https://www.whatnot.com/search?query=' + encodeURIComponent(cardQuery(set, card, ver)) + '&referringSource=typed';
-// weekly snapshot of the lowest listed price found (prices.json "l"): {wn:[price, url, iso]} — can be outdated
+// weekly snapshot of the lowest listed price found (prices.json "l"): {wn:[price, url, iso, title, shipping|null]} — can be outdated.
+// Everything compares the total landed cost = price + shipping. Shipping is the listing's own shipping when the source
+// exposes it (x[4]); otherwise the default from Settings (prefs.dealShip, $4) and it's labelled "est. shipping".
+function landed(x) {
+  const known = x[4] != null && !isNaN(x[4]); const ship = known ? +x[4] : dealShip();
+  return { price: x[0], ship, est: !known, total: Math.round((x[0] + ship) * 100) / 100 };
+}
 function listedOf(sid, cid, vid) {
   const e = PRICES?.l?.[sid]?.[cid]?.[vid]; if (!e) return null;
-  const best = Object.entries(e).filter(([, x]) => x && x[0] != null).map(([site, x]) => ({ site, v: x[0], url: x[1], t: x[2] })).sort((a, b) => a.v - b.v)[0];
+  const best = Object.entries(e).filter(([, x]) => x && x[0] != null).map(([site, x]) => { const L = landed(x); return { site, v: L.total, price: L.price, ship: L.ship, est: L.est, url: x[1], t: x[2], title: x[3] || '' }; }).sort((a, b) => a.v - b.v)[0];
   return best || null;
 }
+const shipTxt = l => l.ship === 0 && !l.est ? 'free shipping' : `${money(l.ship)} ${l.est ? 'est. shipping' : 'shipping'}`;
 const SITE = { wn: 'Whatnot', eb: 'eBay' };
 const shortDay = iso => { try { return new Date(iso).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); } catch { return iso; } };
 function buyLinks(set, card, v) {
@@ -237,7 +253,7 @@ function priceLine(set, card, v) {
   const p = priceOf(set, card, v.id), l = listedOf(set.id, card.id, v.id);
   if (!p && !l) return '';
   const cheaper = p && l ? (l.v < p.v ? 'l' : 'p') : '';
-  return `<div class="small pl">${p ? `<span class="${cheaper === 'p' ? 'best' : ''}">${p.mine ? 'My price' : 'Raw sold'} ${money(p.v)}</span>` : ''}${l ? `${p ? ' · ' : ''}<span class="${cheaper === 'l' ? 'best' : ''}">Listed ${money(l.v)} on ${SITE[l.site] || l.site}</span>` : ''}</div>`;
+  return `<div class="small pl">${p ? `<span class="${cheaper === 'p' ? 'best' : ''}">${p.mine ? 'My price' : priceKind(set) + ' sold'} ${money(p.v)}</span>` : ''}${l ? `${p ? ' · ' : ''}<span class="${cheaper === 'l' ? 'best' : ''}" title="${esc(money(l.price) + ' + ' + shipTxt(l))}">Listed ${money(l.v)} incl. ${l.est ? 'est. ' : ''}ship on ${SITE[l.site] || l.site}</span>` : ''}</div>`;
 }
 // best known price used for sorting: my price > raw sold > lowest listed
 const sortPrice = (set, card, vid) => priceOf(set, card, vid)?.v ?? listedOf(set.id, card.id, vid)?.v ?? null;
@@ -258,11 +274,11 @@ function computeDeals({ includeHidden = false } = {}) {
         const e = LC[v.id]; if (!e) continue;
         for (const [site, x] of Object.entries(e)) {
           if (!x || x[0] == null) continue;
-          const total = x[0] + dealShip(), off = 1 - total / raw.v;
+          const L = landed(x), total = L.total, off = 1 - total / raw.v; // % under market on the total landed cost
           if (off * 100 < dealPct()) continue;
           const key = `${s.id}|${c.id}|${v.id}|${x[1]}`, hidden = !!hid[key];
           if (hidden && !includeHidden) continue;
-          out.push({ s, c, v, site, price: x[0], url: x[1], t: x[2], title: x[3] || '', raw, total, off, key, hidden });
+          out.push({ s, c, v, site, price: x[0], ship: L.ship, est: L.est, url: x[1], t: x[2], title: x[3] || '', raw, total, off, key, hidden });
         }
       }
     }
@@ -276,7 +292,8 @@ function dealHtml(d) {
       <div class="grow" style="min-width:0">
         <div class="row"><b class="grow ellipsis">${esc(d.c.player)} #${esc(d.c.number)}</b><span class="off">−${Math.round(d.off * 100)}%</span></div>
         <div class="small ellipsis">${esc(d.v.id === BASE_ID ? 'Base' : d.v.name)} · <span class="muted">${esc(d.s.year)} ${esc(d.s.name.replace(/ — .*/, ''))}</span></div>
-        <div class="small" style="margin-top:4px"><b class="best">${money(d.price)}</b> + ~${money(dealShip())} ship on ${SITE[d.site] || d.site} <span class="muted">vs raw ${money(d.raw.v)}</span></div>
+        <div class="deal-math small" style="margin-top:4px"><span>Price <b>${money(d.price)}</b></span><span>+ ${d.ship === 0 && !d.est ? 'Free shipping' : `Shipping <b>${money(d.ship)}</b>${d.est ? ' <span class="badge est">est. shipping</span>' : ''}`}</span><span>= Total <b class="best">${money(d.total)}</b></span></div>
+        <div class="small">on ${SITE[d.site] || d.site} <span class="muted">vs ${esc(priceKind(d.s))} market ${money(d.raw.v)} → −${Math.round(d.off * 100)}% on total</span></div>
         <div class="small muted">checked ${esc(shortDay(d.t))}${d.title ? ` · “${esc(d.title.slice(0, 70))}”` : ''}</div>
         ${d.off > 0.8 ? '<div class="small warn">Unusually low — check the photos/description before buying.</div>' : ''}
         <div class="buy" style="margin-top:6px"><a class="btn sm primary" href="${esc(d.url)}" target="_blank" rel="noopener">Open listing ↗</a><a class="btn sm" href="${esc(d.raw.url)}" target="_blank" rel="noopener">Market</a><button class="btn sm" data-hide-deal="${esc(d.key)}">${d.hidden ? 'Unhide' : 'Hide'}</button></div>
@@ -288,16 +305,16 @@ function renderDeals() {
   const all = computeDeals({ includeHidden: dealState.showHidden }); const nHidden = Object.keys(prefs.dealHide || {}).length;
   const at = PRICES?.listedAt ? shortDay(PRICES.listedAt) : null;
   view.innerHTML = `<div class="card">
-      <div class="small"><b>Weekly snapshot</b> of the lowest Buy-It-Now listing found on Whatnot${at ? ` (checked ${esc(at)})` : ''}, compared with the raw (ungraded) market price from SportsCardsPro. Listings sell or change — always check before buying.</div>
+      <div class="small"><b>Weekly snapshot</b> of the lowest Buy-It-Now listing found on Whatnot${at ? ` (checked ${esc(at)})` : ''}. The discount is the <b>total landed cost</b> (price + shipping) vs the SportsCardsPro market price (raw / ungraded; PSA 10 for the Harper PSA 10 chase), biggest first. Whatnot's public pages don't show a listing's shipping (it's set at checkout), so your default of ${money(dealShip())} is used and marked <span class="badge est">est. shipping</span> — change it in ⋯ → Settings or below. Listings sell or change — always check before buying.</div>
       <div class="small muted" style="margin-top:6px">Only versions you don't own, in sets where you own at least one card. eBay isn't checked automatically (its search pages are off-limits to bots) — use the eBay buttons on each card.</div>
       <div class="row" style="gap:10px;margin-top:10px;flex-wrap:wrap">
         <label class="small">At least <select id="dPct" class="input" style="width:auto;display:inline-block;padding:4px 8px">${[10, 15, 20, 25, 30, 40, 50].map(p => `<option value="${p}" ${p === dealPct() ? 'selected' : ''}>${p}%</option>`).join('')}</select> under</label>
-        <label class="small">Shipping ~$<input id="dShip" class="input" type="number" min="0" step="0.5" inputmode="decimal" value="${dealShip()}" style="width:64px;display:inline-block;padding:4px 8px"></label>
+        <label class="small">Default shipping $<input id="dShip" class="input" type="number" min="0" step="0.5" inputmode="decimal" value="${dealShip()}" style="width:64px;display:inline-block;padding:4px 8px"></label>
         ${nHidden ? `<button class="btn sm" id="dHid">${dealState.showHidden ? 'Hide hidden' : `Show hidden (${nHidden})`}</button>` : ''}
       </div></div>
     <div class="card row" style="gap:10px"><div class="grow small">🔔 <b>Deal alerts</b> for the featured chases (40%+ under market).<div class="muted">${prefs.pushSub ? 'On — subscription saved on this phone.' : 'Works from the home-screen app (iOS 16.4+).'}</div></div><button class="btn sm" data-action="push">${prefs.pushSub ? 'Manage' : 'Enable'}</button></div>
     ${!PRICES?.l ? '<div class="empty"><p>No listing snapshot yet — connect to the internet and reopen the app.</p></div>'
-      : all.length ? `<div class="section-title">${all.length} deal${all.length === 1 ? '' : 's'} · biggest discount first</div>${all.map(dealHtml).join('')}`
+      : all.length ? `<div class="section-title">${all.length} deal${all.length === 1 ? '' : 's'} · biggest % under market (on total) first</div>${all.map(dealHtml).join('')}`
       : `<div class="empty"><p>No deals at ${dealPct()}%+ under market in this week's snapshot. Try a lower threshold.</p></div>`}`;
   $('#dPct').onchange = e => { prefs.dealPct = +e.target.value; savePrefs(); renderDeals(); };
   $('#dShip').onchange = e => { const v = parseFloat(e.target.value); prefs.dealShip = isNaN(v) || v < 0 ? 4 : v; savePrefs(); renderDeals(); };
@@ -313,7 +330,7 @@ function openPush() {
   const supported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
   const sub = prefs.pushSub;
   openSheet(`<h2>🔔 Deal alerts</h2>
-    <p class="small" style="margin-top:0">Get a notification when a card in your <b>featured chases</b> (Cool Crushers, Cycle Complete, VJ Edgecombe, Tyrese Maxey and the three 2008 Phillies sets) is listed at least <b>40% under</b> its raw market price in the weekly snapshot.</p>
+    <p class="small" style="margin-top:0">Get a notification when a card in your <b>featured chases</b> (Cool Crushers, Cycle Complete, the Bryce Harper PSA 10 flagship run, VJ Edgecombe, Tyrese Maxey and the three 2008 Phillies sets) is listed at least <b>40% under</b> its market price (raw; PSA 10 for the Harper run) in the weekly snapshot.</p>
     ${!supported || !isStandalone() ? `<p class="small warn">${isStandalone() ? 'This browser doesn’t support web push.' : 'On iPhone this only works from the <b>home-screen app</b> (iOS 16.4 or later): Safari → Share → “Add to Home Screen”, then open it from the home screen icon and tap Enable here.'}</p>` : ''}
     ${sub ? `<p class="small">✅ Alerts are set up on this phone. If you haven't yet, send this to Groky in our chat (it's also included in “Send my cards to Groky”):</p>
        <textarea class="input" id="psT" readonly style="height:120px;font-size:12px;font-family:ui-monospace,monospace">${esc(pushText(sub))}</textarea>
@@ -382,11 +399,11 @@ function grokyPayload() {
   const items = list.map(([s, c]) => ({
     set: { id: s.id, name: s.name, year: s.year, brand: s.brand, sport: s.sport, chase: !!s.chase },
     card: { id: c.id, number: c.number, player: c.player, team: c.team, subset: c.subset, rookie: !!c.rookie, year: c.year || '', product: c.product || '' },
-    owned: versionsFor(s, c).filter(v => own(s.id, c.id, v.id)).map(v => { const o = own(s.id, c.id, v.id); return { version: v.id, name: v.name, q: o.q || 1, note: o.note || '', cond: o.cond || '', serial: o.serial || '', myPrice: myPrice(s.id, c.id, v.id) ?? null }; }),
+    owned: versionsFor(s, c).filter(v => own(s.id, c.id, v.id)).map(v => { const o = own(s.id, c.id, v.id); return { version: v.id, name: v.name, printRun: v.printRun || null, q: o.q || 1, note: o.note || '', cond: o.cond || '', serial: o.serial || '', cert: o.cert || '', myPrice: myPrice(s.id, c.id, v.id) ?? null }; }),
     sentBefore: !!prefs.sent?.[pubKey(s.id, c.id)]
   }));
   const lines = items.map(i => {
-    const own_ = i.owned.length ? i.owned.map(o => `${o.name}${o.q > 1 ? ' ×' + o.q : ''}${o.note ? ' (' + o.note + ')' : ''}`).join(', ') : 'not owned';
+    const own_ = i.owned.length ? i.owned.map(o => `${o.name}${o.serial ? ' #' + o.serial : ''}${o.cert ? ' cert ' + o.cert : ''}${o.q > 1 ? ' ×' + o.q : ''}${o.note ? ' (' + o.note + ')' : ''}`).join(', ') : 'not owned';
     return `• ${[i.card.year || i.set.year, i.card.product || i.set.name].filter(Boolean).join(' ')} #${i.card.number} ${i.card.player}${i.card.subset && i.card.subset !== 'Base' ? ' — ' + i.card.subset : ''}${i.card.rookie ? ' RC' : ''} [${i.set.name}] — ${own_}`;
   });
   const json = { format: 'cc-user-cards', v: 1, exportedAt: new Date().toISOString(), cards: items };
@@ -435,9 +452,10 @@ function render() {
   if (parts[0] === 'set' && getSet(parts[1])) {
     const set = getSet(parts[1]);
     if (parts[2] === 'cards') { parent = `#/set/${set.id}`; renderGrid(set); }
-    else if (parts[2] === 'card' && set.cards.find(c => c.id === parts[3])) { parent = `#/set/${set.id}/cards`; renderDetail(set, set.cards.find(c => c.id === parts[3])); }
+    else if (parts[2] === 'card' && set.cards.find(c => c.id === parts[3])) { const c = set.cards.find(c => c.id === parts[3]); parent = set.hidden ? `#/parallels/${folderOf(set, c)}` : `#/set/${set.id}/cards`; renderDetail(set, c); }
     else { parent = '#/'; renderOverview(set); }
   } else if (parts[0] === 'deals') { parent = '#/'; renderDeals(); }
+  else if (parts[0] === 'parallels' && PAR_FOLDERS.some(F => F.key === parts[1])) { parent = '#/'; renderParFolder(parts[1]); }
   else renderHome();
   back.hidden = !parent; back.dataset.href = parent || '';
   requestAnimationFrame(() => window.scrollTo(0, scrollMem[key] || 0));
@@ -446,6 +464,46 @@ window.addEventListener('hashchange', () => { if (!sheet.hidden) closeSheet(); r
 $('#backBtn').addEventListener('click', e => { location.hash = e.currentTarget.dataset.href; });
 const setTitle = t => { $('#title').textContent = t; document.title = t + ' · Card Checklist'; };
 
+
+/* ---------------- serial numbers + rainbow (Cool Crushers & Cycle Complete only) ---------------- */
+// 2026 jersey numbers, verified on MLB.com / MLB Stats API (Oct 2026): Harper #3, Schwarber #12.
+const JERSEY = { 'bryce harper': 3, 'kyle schwarber': 12 };
+const normSerial = (txt, run) => { const t = String(txt || '').replace(/[#\s]/g, ''); if (!t) return ''; const m = t.match(/^(\d+)(?:\/(\d+))?$/); if (!m) return t; return run ? `${+m[1]}/${m[2] || run}` : t; };
+const serialNo = o => { const m = String(o?.serial || '').match(/^#?(\d+)/); return m ? +m[1] : null; };
+function jerseyMatch(card, o) {
+  const n = serialNo(o); if (n == null) return null;
+  const names = `${card.player} / ${card.players || ''}`.toLowerCase();
+  for (const [nm, j] of Object.entries(JERSEY)) if (j === n && names.includes(nm)) return { name: nm.replace(/\b\w/g, c => c.toUpperCase()), n: j };
+  return null;
+}
+function serialHtml(card, v, o) {
+  if (!o?.serial || !v?.printRun) return '';
+  const jm = jerseyMatch(card, o);
+  return `<span class="serial${jm ? ' jersey' : ''}" title="${jm ? esc(`Matches ${jm.name}'s jersey #${jm.n}`) : ''}">#${esc(o.serial)}${jm ? ` 🎽 ${esc(jm.name.split(' ').pop())}'s #${jm.n}` : ''}</span>`;
+}
+const RAINBOW = new Set(['2026-topps-s1-phillies|197', '2026-topps-upd-phillies|season-highlights-us131']);
+const isRainbow = (set, card) => RAINBOW.has(set.id + '|' + card.id);
+// every parallel of the card (base excluded), in print-run order: unnumbered first, then /399 … down to 1/1
+function rainbowVers(set, card) {
+  const pv = versionsFor(set, card).filter(v => v.id !== BASE_ID).map((v, i) => ({ v, i }));
+  pv.sort((a, b) => (a.v.printRun ? 1 : 0) - (b.v.printRun ? 1 : 0) || (b.v.printRun || 0) - (a.v.printRun || 0) || a.i - b.i);
+  return pv.map(x => x.v);
+}
+const rainbowCount = (set, card) => { const r = rainbowVers(set, card); return { n: r.filter(v => own(set.id, card.id, v.id)).length, t: r.length }; };
+
+
+const rbState = { show: 'all' };
+function rainbowHtml(set, card) {
+  const rv = rainbowVers(set, card); const n = rv.filter(v => own(set.id, card.id, v.id)).length;
+  const chip = v => { const o = own(set.id, card.id, v.id); return `<button class="rb-item ${o ? 'on' : ''}" data-rb="${esc(v.id)}"><span class="swatch sm" style="background:${esc(v.color || '#999')}"></span> <span class="grow ellipsis">${esc(v.name)}</span> <span class="small muted">${v.printRun ? esc(fmtRun(v.printRun)) : 'unnumbered'}</span>${o ? ` <b class="ok">✓</b>${o.serial ? ' ' + serialHtml(card, v, o) : ''}` : ''}</button>`; };
+  const list = rbState.show === 'owned' ? rv.filter(v => own(set.id, card.id, v.id)) : rbState.show === 'missing' ? rv.filter(v => !own(set.id, card.id, v.id)) : rv;
+  return `<div class="section-title">🌈 Rainbow</div><div class="card rainbow-card">
+    <div class="row"><b class="grow" style="font-size:18px">${n} of ${rv.length} parallels owned</b><span class="small muted">${pct(n, rv.length)}%</span></div>
+    <div class="bar rainbow" style="margin:6px 0 10px"><i style="width:${pct(n, rv.length)}%"></i></div>
+    <div class="chips" style="margin-bottom:8px">${[['all', `All ${rv.length}`], ['owned', `Owned ${n}`], ['missing', `Missing ${rv.length - n}`]].map(([k, l]) => `<button class="chip ${rbState.show === k ? 'on' : ''}" data-rbshow="${k}">${l}</button>`).join('')}</div>
+    <div class="small muted" style="margin-bottom:6px">Print-run order: unnumbered first, then the lowest numbered last (1/1). Tap one to open it below. Base card not counted.</div>
+    <div class="rb-list">${list.map(chip).join('') || '<div class="small muted">Nothing here.</div>'}</div></div>`;
+}
 /* ---------------- views ---------------- */
 function progressRow(label, o, t, color, href) {
   return `<div class="par-row" ${href ? `data-go="${href}" style="cursor:pointer"` : ''}>
@@ -479,7 +537,7 @@ function pinnedHtml(s) {
   const pc = s.cards.find(c => c.image);
   return `<div class="card set-item feat" data-go="#/set/${esc(s.id)}">
       <div class="thumb" style="width:64px;flex:none">${pc ? imgTag(s, pc, versionsFor(s, pc)[0], { alt: s.name }) : ''}</div>
-      <div class="grow"><div class="small muted">${esc(s.year)} · ${s.cards.length} cards${s.parallels.length ? '' : ' · base only'}</div>
+      <div class="grow"><div class="small muted">${s.grade ? `${esc(s.grade)} · ${s.cards.length} cards` : `${esc(s.year)} · ${s.cards.length} cards${s.parallels.length ? '' : ' · base only'}`}</div>
         <div class="ellipsis"><b>${esc(s.name.replace(/^2008 /, ''))}</b></div>
         <div class="small muted">${st.owned}/${st.combos} owned · ${Math.round(pct(st.owned, st.combos))}%</div>
         ${vl ? `<div class="small value">💲 ${vl}</div>` : ''}
@@ -488,17 +546,26 @@ function pinnedHtml(s) {
 }
 function renderHome() {
   setTitle('Card Checklist');
-  const feat = featuredCards(); const chases = sets.filter(s => s.chase); const pinned = sets.filter(s => s.pinned && !s.chase);
+  const feat = featuredCards(); const chases = sets.filter(s => s.chase); const pinned = sets.filter(s => s.pinned && !s.chase && !s.pinFirst);
+  const pinFirst = sets.filter(s => s.pinned && !s.chase && s.pinFirst); // e.g. Harper PSA 10 — right after Cycle Complete
   const featHtml = feat.length || chases.length || pinned.length ? `<div class="section-title">★ Featured chases</div>${feat.map(([s, c]) => {
     const vers = versionsFor(s, c); const n = vers.filter(v => own(s.id, c.id, v.id)).length;
     return `<div class="card set-item feat" data-go="#/set/${esc(s.id)}/card/${esc(c.id)}">
       <div class="thumb" style="width:64px;flex:none">${imgTag(s, c, null, { alt: c.player, pk: thumbPk(s, c) })}</div>
       <div class="grow"><div class="small muted">${esc(s.year)} ${esc(s.name.replace(/ — .*/, ''))} · #${esc(c.number)}</div>
         <div class="ellipsis"><b>${esc(c.player)}</b></div>
-        <div class="small muted">${n}/${vers.length} versions owned (rainbow)</div>
+        ${isRainbow(s, c) ? (() => { const r = rainbowCount(s, c); return `<div class="small muted">🌈 ${r.n} of ${r.t} parallels owned${own(s.id, c.id, BASE_ID) ? ' · base ✓' : ''}</div>`; })() : `<div class="small muted">${n}/${vers.length} versions owned</div>`}
         ${(() => { const vl = valueLine(valueOf([{ ...s, cards: [c] }])); return vl ? `<div class="small value">💲 ${vl}</div>` : ''; })()}
-        <div class="bar" style="margin-top:6px"><i style="width:${pct(n, vers.length)}%"></i></div></div></div>`; }).join('')}${chases.map(chaseHtml).join('')}${pinned.map(pinnedHtml).join('')}` : '';
-  const list = sets.filter(s => !s.chase).map(s => { const st = stats(s); return `
+        ${(() => { const r = isRainbow(s, c) ? rainbowCount(s, c) : { n, t: vers.length }; return `<div class="bar${isRainbow(s, c) ? ' rainbow' : ''}" style="margin-top:6px"><i style="width:${pct(r.n, r.t)}%"></i></div>`; })()}</div></div>`; }).join('')}${pinFirst.map(pinnedHtml).join('')}${chases.map(chaseHtml).join('')}${pinned.map(pinnedHtml).join('')}` : '';
+  const pf = parFolders();
+  const folders = sets.some(s => !s.example) ? `<div class="section-title">My parallels</div>${PAR_FOLDERS.map(F => { const items = pf[F.key]; const vl = valueLine(valueOfItems(items)); return `
+    <div class="card set-item folder" data-go="#/parallels/${F.key}">
+      <div style="font-size:30px;flex:none">${F.icon}</div>
+      <div class="grow"><div class="ellipsis"><b>${esc(F.name)}</b></div>
+        <div class="small muted">${items.length ? `${items.length} parallel${items.length === 1 ? '' : 's'} owned · ${new Set(items.map(i => i.s.id)).size} set${new Set(items.map(i => i.s.id)).size === 1 ? '' : 's'}` : 'Empty — fills in as you mark parallels owned'}</div>
+        ${vl ? `<div class="small value">💲 ${vl}</div>` : ''}</div>
+      <span class="muted" style="font-size:22px">›</span></div>`; }).join('')}` : '';
+  const list = sets.filter(s => !s.chase && !s.hidden).map(s => { const st = stats(s); return `
     <div class="card set-item" data-go="#/set/${esc(s.id)}">
       <div class="ring" style="--p:${pct(st.owned, st.combos)};width:64px;height:64px"><span style="width:50px;height:50px;font-size:14px">${Math.round(pct(st.owned, st.combos))}%</span></div>
       <div class="grow"><div class="ellipsis"><b>${esc(s.year)} ${esc(s.name)}</b></div>
@@ -509,10 +576,10 @@ function renderHome() {
   setTimeout(() => hydratePhotos(), 0);
   const tv = valueOf(sets.filter(s => !s.example)); const nUser = pubLoaded ? userCards().length : 0;
   const totals = sets.length ? `<div class="card totals">
-      <div class="row" style="align-items:flex-end"><div class="grow"><div class="small muted">My collection · raw value</div>
+      <div class="row" style="align-items:flex-end"><div class="grow"><div class="small muted">My collection · market value</div>
         <div class="big-money">${tv.priced ? money(tv.v) : '—'}</div>
         <div class="small muted">${tv.items} card${tv.items === 1 ? '' : 's'} owned · ${tv.priced} priced${tv.unpriced ? ` · ${tv.unpriced} without a price` : ''}</div>
-        <div class="small muted">${PRICES?.updated ? `Ungraded prices as of ${esc(PRICES.updated)} · <a href="https://www.sportscardspro.com" target="_blank" rel="noopener">SportsCardsPro</a>` : 'Prices load when you’re online'}</div></div></div>
+        <div class="small muted">${PRICES?.updated ? `Raw (ungraded) prices; PSA 10 for the Harper PSA 10 chase · as of ${esc(PRICES.updated)} · <a href="https://www.sportscardspro.com" target="_blank" rel="noopener">SportsCardsPro</a>` : 'Prices load when you’re online'}</div></div></div>
       <button class="btn block" style="margin-top:10px" data-action="send-groky">📤 Send my cards to Groky${nUser ? ` (${nUser})` : ''}</button></div>` : '';
   const deals = computeDeals();
   const dealsCard = sets.some(s => !s.example) ? `<div class="card set-item deals-card" data-go="#/deals">
@@ -521,7 +588,7 @@ function renderHome() {
         <div class="small muted">${!PRICES?.l ? 'Weekly listing snapshot loads when you’re online' : deals.length ? `Best: ${esc(deals[0].c.player.replace(/ \(.*/, ''))} ${esc(deals[0].v.id === BASE_ID ? 'Base' : deals[0].v.name)} −${Math.round(deals[0].off * 100)}% · ${dealPct()}%+ under market` : `None ${dealPct()}%+ under market this week`}</div>
         <div class="small muted">Weekly snapshot${PRICES?.listedAt ? ' · checked ' + esc(shortDay(PRICES.listedAt)) : ''}</div></div>
       <span class="muted" style="font-size:22px">›</span></div>` : '';
-  view.innerHTML = `${totals}${dealsCard}${featHtml}
+  view.innerHTML = `${totals}${dealsCard}${featHtml}${folders}
     ${list ? `<div class="section-title">My sets</div>${list}` : `<div class="empty"><div style="font-size:48px">🃏</div><p>No sets yet. Import a checklist to get started.</p></div>`}
     <div class="section-title">Add a set</div>
     <div class="card"><div class="btn-row">
@@ -550,7 +617,7 @@ function renderOverview(set) {
         ${set.cards.length ? `<button class="btn block" style="margin-top:10px" data-go="#/set/${esc(set.id)}/cards">Browse my ${set.cards.length} card${set.cards.length === 1 ? '' : 's'}</button>` : '<p class="small muted" style="margin:10px 2px 0">No cards yet. Tap “Add a card” for each card you own — pick a photo from your camera or gallery.</p>'}`
       : `<button class="btn primary block" style="margin-top:14px" data-go="#/set/${esc(set.id)}/cards">Browse cards</button>`}
     </div>
-    ${set.cards.filter(c => c.featured).map(c => { const vers = versionsFor(set, c); const n = vers.filter(v => own(set.id, c.id, v.id)).length; return `<div class="card set-item feat" data-go="#/set/${esc(set.id)}/card/${esc(c.id)}"><div class="thumb" style="width:56px;flex:none">${imgTag(set, c, null)}</div><div class="grow"><div class="small muted">★ Featured · #${esc(c.number)}</div><b>${esc(c.player)}</b>${progressRow('Rainbow', n, vers.length)}</div></div>`; }).join('')}
+    ${set.cards.filter(c => c.featured).map(c => { const vers = versionsFor(set, c); const n = vers.filter(v => own(set.id, c.id, v.id)).length; return `<div class="card set-item feat" data-go="#/set/${esc(set.id)}/card/${esc(c.id)}"><div class="thumb" style="width:56px;flex:none">${imgTag(set, c, null)}</div><div class="grow"><div class="small muted">★ Featured · #${esc(c.number)}</div><b>${esc(c.player)}</b>${isRainbow(set, c) ? (() => { const r = rainbowCount(set, c); return progressRow(`🌈 Rainbow · ${r.n} of ${r.t} parallels owned`, r.n, r.t); })() : progressRow('Versions owned', n, vers.length)}</div></div>`; }).join('')}
     <div class="section-title">Completion</div>
     <div class="card">
       ${progressRow('Overall (every card × every parallel)', st.owned, st.combos)}
@@ -582,9 +649,11 @@ const tpVal = t => t == null ? null : typeof t === 'object' ? t.from : t;
 function renderGrid(set) {
   setTitle(set.name);
   const f = getFilter(set);
-  const teams = [...new Set(set.cards.map(c => c.team).filter(Boolean))].sort(natCmp);
+  const teams = [...new Set(set.cards.flatMap(teamsOf))].sort(natCmp);
   const subs = subsets(set);
   const series = [...new Set(set.cards.map(c => c.series).filter(Boolean))].sort(natCmp);
+  const spk = [...new Set(set.cards.map(c => c.sp).filter(Boolean))].sort(natCmp);
+  const subLabel = set.subsetLabel || 'subsets';
   view.innerHTML = `
     <div class="searchbar">
       <input class="input" id="q" type="search" placeholder="Search player, team, number…" value="${esc(f.q)}" autocomplete="off">
@@ -593,8 +662,9 @@ function renderGrid(set) {
         <select class="chip ${f.par !== 'any' ? 'on' : ''}" id="fPar" aria-label="Parallel">
           <option value="any">Any version</option>${set.cards.some(c => !c.noBase) ? `<option value="${BASE_ID}" ${f.par === BASE_ID ? 'selected' : ''}>${esc(baseVersion(set).name)}</option>` : ''}
           ${set.parallels.map(p => `<option value="${esc(p.id)}" ${f.par === p.id ? 'selected' : ''}>${esc(p.name)} ${fmtRun(p.printRun)}</option>`).join('')}</select>
-        ${subs.length > 1 ? `<select class="chip ${f.subset ? 'on' : ''}" id="fSub" aria-label="Subset"><option value="">All subsets</option>${subs.map(s => `<option ${f.subset === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>` : ''}
+        ${subs.length > 1 ? `<select class="chip ${f.subset ? 'on' : ''}" id="fSub" aria-label="Subset"><option value="">All ${esc(subLabel)}</option>${subs.map(s => `<option ${f.subset === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>` : ''}
         ${series.length > 1 ? `<select class="chip ${f.series ? 'on' : ''}" id="fSer" aria-label="Series"><option value="">All series</option>${series.map(t => `<option ${f.series === t ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>` : ''}
+        ${spk.length ? `<select class="chip ${f.sp ? 'on' : ''}" id="fSp" aria-label="SP / SSP"><option value="">SP / SSP: all</option>${spk.map(t => `<option ${f.sp === t ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>` : ''}
         ${teams.length ? `<select class="chip ${f.team ? 'on' : ''}" id="fTeam" aria-label="Team"><option value="">All teams</option>${teams.map(t => `<option ${f.team === t ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>` : ''}
         ${set.cards.some(isHit) ? `<button class="chip ${f.nohits ? 'on' : ''}" data-nohits>Hide autos/relics</button>` : ''}
         ${set.cards.some(c => c.featured) ? `<button class="chip ${f.feat ? 'on' : ''}" data-feat>★ Featured</button>` : ''}
@@ -607,11 +677,13 @@ function renderGrid(set) {
     <button class="fab" data-action="add-card">＋ Card</button>`;
   drawGrid(set);
   const q = $('#q'); let t;
-  q.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { f.q = q.value; drawGrid(set); }, 120); });
+  q.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { f.q = q.value; delete gridLims[set.id]; drawGrid(set); }, 120); });
+  view.querySelectorAll('.searchbar select, .searchbar .chip').forEach(el => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'click', () => { delete gridLims[set.id]; }, { capture: true }));
   $('#fPar').addEventListener('change', e => { f.par = e.target.value; renderGrid(set); });
   $('#fSub')?.addEventListener('change', e => { f.subset = e.target.value; renderGrid(set); });
   $('#fTeam')?.addEventListener('change', e => { f.team = e.target.value; renderGrid(set); });
   $('#fSer')?.addEventListener('change', e => { f.series = e.target.value; renderGrid(set); });
+  $('#fSp')?.addEventListener('change', e => { f.sp = e.target.value; renderGrid(set); });
   $('#fSort').addEventListener('change', e => { f.sort = e.target.value; drawGrid(set); });
 }
 function drawGrid(set) {
@@ -619,8 +691,9 @@ function drawGrid(set) {
   const parV = f.par === 'any' ? null : (f.par === BASE_ID ? baseVersion(set) : set.parallels.find(p => p.id === f.par));
   let cards = set.cards.filter(c => {
     if (f.subset && c.subset !== f.subset) return false;
-    if (f.team && c.team !== f.team) return false;
+    if (f.team && !teamsOf(c).includes(f.team)) return false;
     if (f.series && c.series !== f.series) return false;
+    if (f.sp && c.sp !== f.sp) return false;
     if (f.rc && !c.rookie) return false;
     if (f.feat && !c.featured) return false;
     if (f.nohits && isHit(c)) return false;
@@ -636,7 +709,7 @@ function drawGrid(set) {
   if (f.sort !== 'num') { const dir = f.sort === 'price-asc' ? 1 : -1; cards = cards.map(c => [c, tpVal(tilePrice(set, c, parV))]).sort((a, b) => a[1] == null ? (b[1] == null ? 0 : 1) : b[1] == null ? -1 : (a[1] - b[1]) * dir).map(x => x[0]); }
   const owned = cards.filter(c => parV ? own(set.id, c.id, parV.id) : ownedCount(set, c)).length;
   $('#gridArea').innerHTML = `<div class="small muted" style="margin:2px 2px 10px">${cards.length} cards${parV ? ` · ${esc(parV.name)} ${fmtRun(parV.printRun)}` : ''} · ${owned} owned</div>` +
-    (cards.length ? `<div class="grid">${cards.map(c => {
+    (cards.length ? `<div class="grid">${cards.slice(0, gridLims[set.id] || GRID_PAGE).map(c => {
       const vers = versionsFor(set, c);
       const n = vers.filter(v => own(set.id, c.id, v.id)).length;
       const has = parV ? !!own(set.id, c.id, parV.id) : n > 0;
@@ -644,13 +717,23 @@ function drawGrid(set) {
       return `<button class="tile ${has ? '' : 'missing'}" data-go="#/set/${esc(set.id)}/card/${esc(c.id)}">
         <div class="thumb">${imgTag(set, c, parV, { pk, alt: c.player })}
           ${parV ? (has ? '<span class="own">✓</span>' : '') : (n ? `<span class="own">${n}/${vers.length}</span>` : '')}
+          ${(() => { const sv = (parV ? [parV] : vers).filter(v => v.printRun && own(set.id, c.id, v.id)?.serial); if (!sv.length) return ''; const o = own(set.id, c.id, sv[0].id); const jm = jerseyMatch(c, o);
+            return `<span class="tile-serial${jm ? ' jersey' : ''}">#${esc(o.serial)}${jm ? ' 🎽' : ''}${sv.length > 1 ? ` +${sv.length - 1}` : ''}</span>`; })()}
           ${!parV && vers.length > 1 ? `<div class="dots">${vers.filter(v => own(set.id, c.id, v.id)).slice(0, 12).map(v => `<i style="background:${esc(v.color || '#fff')}"></i>`).join('')}</div>` : ''}
         </div>
         ${(() => { const tp = tilePrice(set, c, parV); return tp == null ? '' : `<span class="tile-price">${typeof tp === 'object' ? 'from ' + money(tp.from) : money(tp)}</span>`; })()}
         <div class="cap"><b class="ellipsis">${c.featured ? '★ ' : ''}${esc(c.player || '—')}</b><span class="muted ellipsis" style="display:block">${c.year || c.product ? esc(cardLine(set, c)) + ' · ' : ''}#${esc(c.number)}${c.subset !== set.baseName ? ' · ' + esc(c.subset) : ''}${c.rookie ? ' · RC' : ''}</span></div>
-      </button>`; }).join('')}</div>` : `<div class="empty">No cards match.</div>`);
+      </button>`; }).join('')}</div>${cards.length > (gridLims[set.id] || GRID_PAGE) ? `<button class="btn" id="moreTiles" style="width:100%;margin:12px 0">Show more · ${cards.length - (gridLims[set.id] || GRID_PAGE)} more cards</button>` : ''}` : `<div class="empty">No cards match.</div>`);
   hydratePhotos($('#gridArea'));
+  const more = $('#moreTiles');
+  if (more) {
+    const go = () => { const y = window.scrollY; gridLims[set.id] = (gridLims[set.id] || GRID_PAGE) + GRID_PAGE; drawGrid(set); window.scrollTo(0, y); };
+    more.addEventListener('click', go);
+    if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: '600px' }); io.observe(more); }
+  }
 }
+// big sets (350+ cards) render in pages of 120 tiles; more load as you scroll
+const GRID_PAGE = 120; const gridLims = {};
 
 function drawMissingByPrice(set, cards, parV) {
   // every version you still need (in the current filters), cheapest first — for shopping
@@ -707,17 +790,18 @@ function renderDetail(set, card) {
           <div class="bar" style="margin-top:6px"><i style="width:${pct(n, vers.length)}%"></i></div>
           <div class="small muted" style="margin-top:8px">${esc(set.year)} ${esc(set.name)}</div>
           ${(() => { const bp = vers.length ? priceOf(set, card, vers[0].id) : null; const mv = valueOf([{ ...set, cards: [card] }]);
-            return `<div class="price-box"><div><span class="muted small">Raw ${esc(vers[0]?.name || '')}:</span> <b>${bp ? money(bp.v) : '—'}</b>${bp?.mine ? ' <span class="badge">my price</span>' : ''}</div>
+            return `<div class="price-box"><div><span class="muted small">${set.grade ? esc(set.grade) + ' sold' : 'Raw ' + esc(vers[0]?.name || '')}:</span> <b>${bp ? money(bp.v) : '—'}</b>${bp?.mine ? ' <span class="badge">my price</span>' : ''}</div>
               ${mv.priced ? `<div><span class="muted small">My copies:</span> <b>${money(mv.v)}</b></div>` : ''}
               <div class="small muted">${bp && !bp.mine ? `as of ${esc(bp.date)} · <a href="${esc(bp.url)}" target="_blank" rel="noopener">SportsCardsPro ↗</a>` : `<a href="${esc(lookupURL(set, card, null))}" target="_blank" rel="noopener">Look up price ↗</a>`}</div></div>`; })()}
         </div>
       </div>
       ${card.notes ? `<details class="small" style="margin:12px 0 0;padding:4px 10px;border-radius:10px;background:var(--surface2)"><summary style="min-height:36px;display:flex;align-items:center;cursor:pointer">⚠️ Checklist notes</summary><p style="margin:4px 0 8px">${esc(card.notes)}</p></details>` : ''}
     </div>
-    <div class="section-title row"><span class="grow">${set.chase ? 'My copy' : 'Versions &amp; parallels'}</span></div>
-    <div class="chips" style="margin-bottom:8px;${set.chase ? 'display:none' : ''}">${['all', 'owned', 'missing'].map(x => `<button class="chip ${vf === x ? 'on' : ''}" data-vf="${x}">${x === 'all' ? `All ${vers.length}` : x === 'owned' ? `Owned ${n}` : `Missing ${vers.length - n}`}</button>`).join('')}
+    ${isRainbow(set, card) ? rainbowHtml(set, card) : ''}
+    <div class="section-title row"><span class="grow">${set.chase ? 'My copy' : set.grade ? `My copy · ${esc(set.grade)}` : 'Versions &amp; parallels'}</span></div>
+    <div class="chips" style="margin-bottom:8px;${set.chase || set.grade ? 'display:none' : ''}">${['all', 'owned', 'missing'].map(x => `<button class="chip ${vf === x ? 'on' : ''}" data-vf="${x}">${x === 'all' ? `All ${vers.length}` : x === 'owned' ? `Owned ${n}` : `Missing ${vers.length - n}`}</button>`).join('')}
       <select class="chip ${detailState.vs !== 'default' ? 'on' : ''}" id="vSort" aria-label="Sort versions"><option value="default">Checklist order</option><option value="price-desc" ${detailState.vs === 'price-desc' ? 'selected' : ''}>Price: high → low</option><option value="price-asc" ${detailState.vs === 'price-asc' ? 'selected' : ''}>Price: low → high</option></select></div>
-    ${PRICES?.updated ? `<p class="small muted" style="margin:-2px 4px 8px">Raw = ungraded sold price from <a href="https://www.sportscardspro.com" target="_blank" rel="noopener">SportsCardsPro</a>, as of ${esc(PRICES.updated)}.${PRICES.l ? ` “Listed” = cheapest Buy-It-Now found in a weekly snapshot (${esc(shortDay(PRICES.listedAt || PRICES.updated))}), before shipping — may be gone or changed.` : ''}</p>` : ''}
+    ${PRICES?.updated ? `<p class="small muted" style="margin:-2px 4px 8px">${set.grade ? `${esc(set.grade)} = graded ${esc(set.grade)} sold price` : 'Raw = ungraded sold price'} from <a href="https://www.sportscardspro.com" target="_blank" rel="noopener">SportsCardsPro</a>, as of ${esc(PRICES.updated)}.${PRICES.l ? ` “Listed” = cheapest Buy-It-Now in a weekly snapshot (${esc(shortDay(PRICES.listedAt || PRICES.updated))})${set.grade ? `, ${esc(set.grade)} slabs only` : ''}, shown as the total incl. shipping (your default ${money(dealShip())} when the listing doesn't show it — “est.”) — may be gone or changed.` : ''}</p>` : ''}
     <div class="card">${shown.length ? shown.map(v => {
       const o = own(set.id, card.id, v.id); const k = pkey(set.id, card.id, v.id); const hasPhoto = photoKeys.has(k);
       const ref = verImage(card, v.id); const open = detailState.open[v.id];
@@ -726,25 +810,28 @@ function renderDetail(set, card) {
           ${hasPhoto ? `<img class="pv-mini" data-pk="${esc(k)}" data-hero="p:${esc(v.id)}" alt="">` : ref ? `<img class="pv-mini" loading="lazy" src="${esc(ref)}" data-hero="r:${esc(v.id)}" alt="">` : `<span class="swatch" style="background:${esc(v.color || 'var(--surface)')}"></span>`}
           <div class="grow" style="min-width:0"><b>${esc(v.name)}</b> <span class="muted small">${fmtRun(v.printRun)}</span>${(() => { const p = priceOf(set, card, v.id); return p ? ` <span class="price-tag ${p.mine ? 'mine' : ''}">${money(p.v)}</span>` : ''; })()}
             ${priceLine(set, card, v)}
-            ${o ? `<div class="small muted ellipsis">${[o.serial ? '#' + o.serial : '', o.cond, o.note].filter(Boolean).map(esc).join(' · ') || (hasPhoto ? '📷 photo' : '')}</div>` : ''}</div>
+            ${o ? `<div class="small muted ellipsis">${serialHtml(card, v, o)}${[o.cert ? 'Cert ' + o.cert : '', o.serial && !v.printRun ? '#' + o.serial : '', o.cond, o.note].filter(Boolean).map(esc).join(' · ') || (hasPhoto && !(o.serial && v.printRun) ? '📷 photo' : '')}</div>` : ''}</div>
           ${o ? `<div class="stepper"><button data-qty="-1" aria-label="Less">−</button><span>${o.q || 1}</span><button data-qty="1" aria-label="More">+</button></div>` : ''}
           <button class="toggle ${o ? 'on' : ''}" data-toggle>${o ? 'Owned ✓' : 'Missing'}</button>
         </div>
         <div class="row" style="gap:8px;align-items:center"><button class="link grow" style="text-align:left" data-open>${open ? 'Hide details' : (o ? 'Details, price & photo' : 'Price, photo & details')}</button>${buyLinks(set, card, v)}</div>
         ${open ? `<div class="pv-extra">
-          <label class="field" style="margin:0">Condition<select class="input" data-field="cond">${CONDITIONS.map(c => `<option ${o?.cond === c ? 'selected' : ''} value="${c}">${c || '—'}</option>`).join('')}</select></label>
-          <label class="field" style="margin:0">Note (grade, serial #, where bought…)<input class="input" data-field="note" value="${esc(o?.note || '')}" placeholder="e.g. PSA 9, #23/50"></label>
+          ${set.grade ? `<label class="field" style="margin:0">${esc(set.grade)} cert number<input class="input" data-field="cert" inputmode="numeric" value="${esc(o?.cert || '')}" placeholder="e.g. 12345678"></label>`
+            : `<label class="field" style="margin:0">Condition<select class="input" data-field="cond">${CONDITIONS.map(c => `<option ${o?.cond === c ? 'selected' : ''} value="${c}">${c || '—'}</option>`).join('')}</select></label>`}
+          ${v.printRun ? `<label class="field" style="margin:0">Serial # of my copy <span class="small muted" style="font-weight:400">(numbered ${esc(fmtRun(v.printRun))}${o ? '' : ' — saving it marks this owned'})</span><input class="input" data-field="serial" value="${esc(o?.serial || '')}" placeholder="e.g. 23/${esc(v.printRun)}"></label>` : ''}
+          <label class="field" style="margin:0">Note (${set.grade ? 'where bought, pop…' : 'grade, serial #, where bought…'})<input class="input" data-field="note" value="${esc(o?.note || '')}" placeholder="${set.grade ? 'e.g. bought on eBay' : 'e.g. PSA 9, #23/50'}"></label>
           ${(() => { const pp = pubPrice(set.id, card.id, v.id); const mp = myPrice(set.id, card.id, v.id);
             return `<label class="field" style="margin:0">My price ($) <span class="small muted" style="font-weight:400">— overrides the weekly price; leave blank to use it</span>
               <input class="input" data-myprice inputmode="decimal" value="${mp != null ? esc(mp) : ''}" placeholder="${pp ? esc(pp.v.toFixed(2)) : 'e.g. 12.50'}"></label>
-              <div class="small muted">${pp ? `Raw (ungraded) ${money(pp.v)} as of ${esc(pp.date)} · <a href="${esc(pp.url)}" target="_blank" rel="noopener">SportsCardsPro ↗</a>` : `No published price · <a href="${esc(lookupURL(set, card, v))}" target="_blank" rel="noopener">Look up price ↗</a>`}</div>
-              ${(() => { const l = listedOf(set.id, card.id, v.id); return l ? `<div class="small muted">Lowest listed: <b>${money(l.v)}</b> + shipping on <a href="${esc(l.url)}" target="_blank" rel="noopener">${SITE[l.site] || l.site} ↗</a> (checked ${esc(shortDay(l.t))} — snapshot, may be outdated)</div>` : ''; })()}
+              <div class="small muted">${pp ? `${set.grade ? esc(set.grade) + ' (graded)' : 'Raw (ungraded)'} ${money(pp.v)} as of ${esc(pp.date)} · <a href="${esc(pp.url)}" target="_blank" rel="noopener">SportsCardsPro ↗</a>` : `No published price · <a href="${esc(lookupURL(set, card, v))}" target="_blank" rel="noopener">Look up price ↗</a>`}</div>
+              ${(() => { const l = listedOf(set.id, card.id, v.id); return l ? `<div class="small muted">Lowest listed: ${money(l.price)} + ${shipTxt(l)} = <b>${money(l.v)}</b> total on <a href="${esc(l.url)}" target="_blank" rel="noopener">${SITE[l.site] || l.site} ↗</a> (checked ${esc(shortDay(l.t))} — snapshot, may be outdated)</div>` : ''; })()}
               <div class="small muted">Shop: <a href="${esc(ebayURL(set, card, v))}" target="_blank" rel="noopener">eBay Buy It Now (lowest + shipping)</a> · <a href="${esc(ebayURL(set, card, v, 'auction'))}" target="_blank" rel="noopener">eBay auctions</a> · <a href="${esc(ebayURL(set, card, v, 'sold'))}" target="_blank" rel="noopener">eBay sold</a> · <a href="${esc(whatnotURL(set, card, v))}" target="_blank" rel="noopener">Whatnot</a></div>`; })()}
           <div class="row">${hasPhoto ? `<img class="pv-photo" data-pk="${esc(k)}" alt="">` : ''}
             <div class="grow btn-row"><button class="btn" data-photo>📷 ${hasPhoto ? 'Replace' : 'Add'} photo</button>${hasPhoto ? '<button class="btn danger" data-delphoto>Remove</button>' : ''}</div></div>
         </div>` : ''}
       </div>`; }).join('') : '<div class="empty">Nothing here.</div>'}</div>
     ${card.ref ? `<p class="small muted" style="margin:4px 4px 12px">Reference photos via <a href="${esc(card.ref)}" target="_blank" rel="noopener">SportsCardsPro</a>. Tap a thumbnail to view it large.</p>` : ''}
+    ${!set.chase && !set.grade ? `<button class="btn block" style="margin:0 0 10px" data-action="card-parallel">＋ Add a parallel to this card</button>` : ''}
     <div class="btn-row"><button class="btn" data-action="edit-card">Edit card</button><button class="btn danger" data-action="delete-card">Delete card</button></div>`;
   hydratePhotos();
   $('#vSort')?.addEventListener('change', e => { detailState.vs = e.target.value; renderDetail(set, card); });
@@ -756,9 +843,11 @@ function renderDetail(set, card) {
   }));
   view.querySelectorAll('[data-field]').forEach(inp => inp.addEventListener('change', e => {
     const vid = e.target.closest('[data-ver]').dataset.ver;
-    const val = e.target.value.trim();
+    let val = e.target.value.trim();
+    if (e.target.dataset.field === 'serial') { const v = vers.find(x => x.id === vid); val = normSerial(val, v?.printRun); }
     if (!own(set.id, card.id, vid) && !val) return;
     setOwn(set.id, card.id, vid, { [e.target.dataset.field]: val }); renderDetail(set, card);
+    const jm = e.target.dataset.field === 'serial' && jerseyMatch(card, own(set.id, card.id, vid)); if (jm) toast(`🎽 #${val} matches ${jm.name}'s jersey number!`, 3000);
   }));
 }
 
@@ -845,6 +934,137 @@ function openParallels(set) {
       for (const cid in coll[set.id] || {}) { delete coll[set.id][cid][p.id]; }
       saveSets(); saveColl(); render(); openParallels(set);
     }));
+  });
+}
+
+/* ---------------- per-card parallels ---------------- */
+// Adds a parallel to ONE card (any set). Stored as a set parallel flagged cardOnly + the card's own version list, so it
+// never spreads to the other cards of the set. Ownership is recorded like any other version (coll[set][card][parallel]).
+function openCardParallel(set, card) {
+  openSheet(`<h2>Add a parallel <span class="muted small" style="font-weight:600">· #${esc(card.number)} ${esc(card.player)}</span></h2><form id="f" autocomplete="off">
+    <label class="field">Parallel name<input class="input" name="name" required list="pnames" placeholder="e.g. Gold, Rainbow Foil, Black /1"></label>
+    <datalist id="pnames">${[...new Set(sets.flatMap(s => s.parallels.map(p => p.name)))].slice(0, 200).map(n => `<option>${esc(n)}</option>`).join('')}</datalist>
+    <div class="two"><label class="field">Print run (blank = unnumbered)<input class="input" name="printRun" inputmode="numeric" placeholder="e.g. 50"></label>
+    <label class="field">Serial # (if you own it)<input class="input" name="serial" placeholder="e.g. 23/50"></label></div>
+    <label class="row" style="min-height:48px;font-weight:600"><input type="checkbox" name="owned" checked style="width:22px;height:22px"> I own this parallel</label>
+    <button class="btn primary block big-add">Add parallel</button></form>`, el => {
+    $('#f', el).addEventListener('submit', e => {
+      e.preventDefault(); const fd = new FormData(e.target); const g = k => String(fd.get(k) || '').trim();
+      const name = g('name'); const printRun = parseInt(g('printRun').replace(/^\D*\/?/, ''), 10) || null; if (!name) return;
+      const pid = addCardParallel(set, card, name, printRun);
+      if (fd.get('owned')) setOwn(set.id, card.id, pid, { q: own(set.id, card.id, pid)?.q || 1, ...(g('serial') && printRun ? { serial: normSerial(g('serial'), printRun) } : {}) });
+      saveSets(); closeSheet(); detailState.open[pid] = true; render();
+      toast(fd.get('owned') ? `Added — filed in ${PAR_FOLDERS.find(F => F.key === folderOf(set, card)).name}` : 'Parallel added');
+    });
+  });
+}
+function addCardParallel(set, card, name, printRun) {
+  // reuse an existing parallel of this set with the same name + print run; otherwise a new card-only one
+  let p = set.parallels.find(x => x.name.toLowerCase() === name.toLowerCase() && (x.printRun || null) === (printRun || null));
+  if (!p) {
+    let id = slug(`${name}${printRun ? '-' + printRun : ''}`); while (id === BASE_ID || set.parallels.some(x => x.id === id)) id += '-2';
+    p = { id, name, printRun, color: guessColor(name), appliesTo: [], cardOnly: true }; set.parallels.push(p);
+  }
+  // pin the card's current versions first so the new parallel only lands on this card
+  if (!card.parallels) card.parallels = versionsFor(set, card).filter(v => v.id !== BASE_ID).map(v => v.id);
+  if (!card.parallels.includes(p.id)) card.parallels.push(p.id);
+  return p.id;
+}
+
+/* ---------------- My Phillies Parallels / My Other Teams Parallels (computed folders) ---------------- */
+// No copies: both folders are computed from the one ownership store (coll) every time they're shown — every owned
+// non-base version of a baseball card in any set, split by the card's team. Cards that aren't in any checklist live in
+// one backing set ("my-parallels", hidden from My sets) and are filed by the team typed in.
+const PAR_FOLDERS = [{ key: 'phillies', name: 'My Phillies Parallels', icon: '🔴' }, { key: 'other', name: 'My Other Teams Parallels', icon: '⚾' }];
+const MLB_TEAMS = ['Arizona Diamondbacks', 'Athletics', 'Atlanta Braves', 'Baltimore Orioles', 'Boston Red Sox', 'Chicago Cubs', 'Chicago White Sox', 'Cincinnati Reds', 'Cleveland Guardians', 'Colorado Rockies', 'Detroit Tigers', 'Houston Astros', 'Kansas City Royals', 'Los Angeles Angels', 'Los Angeles Dodgers', 'Miami Marlins', 'Milwaukee Brewers', 'Minnesota Twins', 'New York Mets', 'New York Yankees', 'Philadelphia Phillies', 'Pittsburgh Pirates', 'San Diego Padres', 'San Francisco Giants', 'Seattle Mariners', 'St. Louis Cardinals', 'Tampa Bay Rays', 'Texas Rangers', 'Toronto Blue Jays', 'Washington Nationals'];
+const MY_PAR_SET = 'my-parallels';
+const isBaseballSet = s => !/basketball|football|hockey|soccer/i.test(s.sport || '') && !/76ers|eagles|flyers|union/i.test(s.team || '');
+const folderOf = (s, c) => /phillies/i.test(c.team || s.team || '') ? 'phillies' : 'other';
+function parFolders() {
+  const out = { phillies: [], other: [] };
+  for (const s of sets) {
+    if (s.example || s.grade || s.chase || !isBaseballSet(s)) continue;
+    const C = coll[s.id]; if (!C) continue;
+    for (const c of s.cards) { if (!C[c.id]) continue;
+      for (const v of versionsFor(s, c)) { if (v.id === BASE_ID) continue; const o = C[c.id][v.id]; if (o) out[folderOf(s, c)].push({ s, c, v, o }); } }
+  }
+  return out;
+}
+function valueOfItems(items) {
+  const r = { v: 0, priced: 0, unpriced: 0, items: 0 };
+  for (const { s, c, v, o } of items) { const q = o.q || 1; r.items += q; const p = priceOf(s, c, v.id); if (p) { r.v += p.v * q; r.priced++; } else r.unpriced++; }
+  return r;
+}
+function renderParFolder(key) {
+  const F = PAR_FOLDERS.find(x => x.key === key); setTitle(F.name);
+  const items = parFolders()[key]; const groups = new Map();
+  for (const it of items) { if (!groups.has(it.s)) groups.set(it.s, []); groups.get(it.s).push(it); }
+  const vl = valueLine(valueOfItems(items));
+  view.innerHTML = `<div class="card">
+      <div class="small muted">${key === 'phillies' ? 'Every parallel you own of a Phillies card' : 'Every parallel you own of the other 29 MLB teams'}, from all your sets — it fills in automatically when you mark a parallel owned. Base cards aren't listed.</div>
+      <div style="margin-top:6px"><b>${items.length}</b> parallel${items.length === 1 ? '' : 's'} owned${vl ? ` · 💲 ${vl}` : ''}</div>
+      <button class="btn primary block big-add" style="margin-top:12px" data-action="add-my-parallel" data-folder="${key}">＋ Add a parallel I own</button>
+      <p class="small muted" style="margin:8px 2px 0">For a card that's in one of your checklists, open the card and tap a parallel's “Missing” button (or “Add a parallel to this card”). Use the button above for cards that aren't in any checklist — they're filed here by team.</p></div>
+    ${groups.size ? [...groups].map(([s, its]) => `<div class="section-title">${esc(s.id === MY_PAR_SET ? 'Not in a checklist' : `${s.year} ${s.name}`)} <span class="muted small">· ${its.length}</span></div>
+      <div class="card">${its.sort((a, b) => natCmp(a.c.number, b.c.number)).map(({ s, c, v, o }) => { const k = pkey(s.id, c.id, v.id); const p = priceOf(s, c, v.id); return `
+        <div class="mbp"><div class="mbp-main" data-go="#/set/${esc(s.id)}/card/${esc(c.id)}">
+          <div class="thumb" style="width:52px;flex:none">${imgTag(s, c, v, { alt: c.player, pk: photoKeys.has(k) ? k : undefined })}</div>
+          <div class="grow" style="min-width:0"><b class="ellipsis" style="display:block">${esc(c.player || '—')} <span class="muted small">#${esc(c.number)}</span></b>
+            <div class="small ellipsis"><span class="swatch sm" style="background:${esc(v.color || '#999')}"></span> ${esc(v.name)} <span class="muted">${v.printRun ? 'print run ' + esc(fmtRun(v.printRun)) : 'unnumbered'}</span></div>
+            <div class="small muted ellipsis">${serialHtml(c, v, o)} ${[c.year || c.product ? cardLine(s, c) : '', key === 'other' ? c.team : '', o.serial && !v.printRun ? 'Serial #' + o.serial : '', o.note, (o.q || 1) > 1 ? '×' + o.q : ''].filter(Boolean).map(esc).join(' · ') || '&nbsp;'}</div></div>
+          <div style="text-align:right;flex:none">${p ? `<b class="value">${money(p.v)}</b>${p.mine ? '<div class="small muted">my price</div>' : ''}` : '<span class="small muted">no price</span>'}</div></div></div>`; }).join('')}</div>`).join('')
+      : `<div class="empty"><div style="font-size:42px">${F.icon}</div><p>No parallels here yet.</p></div>`}`;
+  hydratePhotos();
+}
+function openAddMyParallel(key) {
+  const others = MLB_TEAMS.filter(t => t !== 'Philadelphia Phillies');
+  openSheet(`<h2>Add a parallel I own <span class="muted small" style="font-weight:600">· ${esc(PAR_FOLDERS.find(F => F.key === key).name)}</span></h2><form id="f" autocomplete="off">
+    <label class="photo-pick"><input type="file" name="photo" accept="image/*"><span id="ppTxt">📷 Photo — take or choose from gallery</span><img id="ppImg" alt="" hidden></label>
+    <div class="two"><label class="field">Year<input class="input" name="year" inputmode="numeric" placeholder="2026"></label>
+    <label class="field">Card #<input class="input" name="number" placeholder="e.g. 123"></label></div>
+    <label class="field">Product<input class="input" name="product" list="prods" placeholder="e.g. Topps Chrome"></label>
+    <datalist id="prods">${['Topps', 'Topps Update', 'Topps Chrome', 'Bowman', 'Bowman Chrome', 'Topps Heritage', 'Topps Finest', 'Stadium Club', 'Allen & Ginter'].map(x => `<option>${esc(x)}</option>`).join('')}</datalist>
+    <label class="field">Player<input class="input" name="player" required></label>
+    <label class="field">Team${key === 'phillies' ? `<input class="input" name="team" value="Philadelphia Phillies" list="mlb">` : `<select class="input" name="team">${others.map(t => `<option>${esc(t)}</option>`).join('')}<option value="Philadelphia Phillies">Philadelphia Phillies (files it under My Phillies Parallels)</option></select>`}</label>
+    <datalist id="mlb">${MLB_TEAMS.map(t => `<option>${esc(t)}</option>`).join('')}</datalist>
+    <div class="two"><label class="field">Parallel<input class="input" name="pname" required placeholder="e.g. Gold Refractor"></label>
+    <label class="field">Print run<input class="input" name="printRun" inputmode="numeric" placeholder="e.g. 50"></label></div>
+    <div class="two"><label class="field">Serial #<input class="input" name="serial" placeholder="e.g. 23/50"></label>
+    <label class="field">Note<input class="input" name="note" placeholder="where you got it…"></label></div>
+    <button class="btn primary block big-add">Save as owned ✓</button></form>`, el => {
+    const fi = $('input[type=file]', el), img = $('#ppImg', el);
+    fi.addEventListener('change', () => { const f = fi.files[0]; if (!f) return; img.src = URL.createObjectURL(f); img.hidden = false; $('#ppTxt', el).textContent = '📷 Change photo'; });
+    $('#f', el).addEventListener('submit', async e => {
+      e.preventDefault(); const fd = new FormData(e.target); const g = k => String(fd.get(k) || '').trim();
+      const team = g('team') || (key === 'phillies' ? 'Philadelphia Phillies' : ''); const player = g('player'), number = g('number').replace(/^#/, ''), year = g('year'), product = g('product');
+      let set = getSet(MY_PAR_SET);
+      if (!set) { set = normalizeSet({ id: MY_PAR_SET, name: 'My parallels (not in a checklist)', sport: 'Baseball', baseName: 'Base', hidden: true, notes: 'Parallels you own of cards that are not in any checklist. Shown in My Phillies Parallels / My Other Teams Parallels by team.' }); sets.push(set); }
+      const cid = slug(`${year}-${product}-${number || ''}-${player}`) || slug(player);
+      let card = set.cards.find(c => c.id === cid);
+      if (!card) { card = { id: cid, number, player, team, subset: 'Base', rookie: false, image: '', year, product, noBase: true, parallels: [] }; set.cards.push(card); }
+      else card.team = team;
+      const pr = parseInt(g('printRun').replace(/^\D*\/?/, ''), 10) || null;
+      const pid = addCardParallel(set, card, g('pname'), pr); card.noBase = true;
+      const prev = own(set.id, card.id, pid);
+      saveSets(); setOwn(set.id, card.id, pid, { q: prev ? (prev.q || 1) + 1 : 1, ...(g('serial') && pr ? { serial: normSerial(g('serial'), pr) } : {}), ...(g('note') ? { note: g('note') } : {}) });
+      const f = fi.files[0];
+      if (f) { try { toast('Saving photo…'); await photoPut(pkey(set.id, card.id, pid), await resizeImage(f)); } catch (err) { toast('Photo failed: ' + err.message, 3000); } }
+      const dest = folderOf(set, card); closeSheet(); location.hash = `#/parallels/${dest}`; render();
+      toast(`Saved — filed in ${PAR_FOLDERS.find(F => F.key === dest).name}`, 2600);
+    });
+  });
+}
+function openSettings() {
+  openSheet(`<h2>⚙️ Settings</h2>
+    <label class="field">Default shipping ($) <span class="small muted" style="font-weight:400">— added to a listing's price when the listing doesn't show its shipping (marked “est. shipping”). Deals use price + shipping.</span>
+      <input class="input" id="sShip" type="number" min="0" step="0.25" inputmode="decimal" value="${dealShip()}"></label>
+    <label class="field">Deals: at least % under market (on total)<select class="input" id="sPct">${[10, 15, 20, 25, 30, 40, 50].map(p => `<option value="${p}" ${p === dealPct() ? 'selected' : ''}>${p}%</option>`).join('')}</select></label>
+    <p class="small muted">Push deal alerts are worked out on Groky's box with the same rule (40%+ under market on the total, $4 default shipping when a listing doesn't show it). Tell Groky if you want a different default for alerts.</p>
+    <button class="btn primary block" id="sSave">Save</button>`, el => {
+    $('#sSave', el).onclick = () => {
+      const v = parseFloat($('#sShip', el).value); prefs.dealShip = isNaN(v) || v < 0 ? 4 : Math.round(v * 100) / 100; prefs.dealPct = +$('#sPct', el).value;
+      savePrefs(); closeSheet(); render(); toast(`Default shipping ${money(prefs.dealShip)} · deals ${prefs.dealPct}%+`);
+    };
   });
 }
 
@@ -1031,6 +1251,7 @@ $('#menuBtn').addEventListener('click', () => {
     <button class="menu-item" data-m="restore">♻️ Restore backup</button>
     <button class="menu-item" data-m="send-groky">📤 Send my cards to Groky</button>
     <button class="menu-item" data-m="deals">🔥 Deals</button>
+    <button class="menu-item" data-m="settings">⚙️ Settings (default shipping ${money(dealShip())})</button>
     <button class="menu-item" data-m="push">🔔 Deal alerts${prefs.pushSub ? ' (on)' : ''}</button>
     <button class="menu-item" data-m="import">📥 Import checklist</button>
     <button class="menu-item" data-m="offline">📶 Save all card images for offline</button>
@@ -1049,6 +1270,7 @@ $('#menuBtn').addEventListener('click', () => {
       if (m === 'send-groky') openSendToGroky();
       if (m === 'deals') { closeSheet(); location.hash = '#/deals'; }
       if (m === 'push') openPush();
+      if (m === 'settings') openSettings();
       if (m === 'offline') { closeSheet(); cacheAllImages(); }
       if (m === 'reload') { closeSheet(); seedDefault(true).then(render); }
       if (m === 'example') { closeSheet(); seedExample().then(render); }
@@ -1096,6 +1318,8 @@ view.addEventListener('click', async e => {
   if (e.target.closest('[data-rc]') && set) { getFilter(set).rc = !getFilter(set).rc; renderGrid(set); return; }
   if (e.target.closest('[data-mbp]') && set) { const f = getFilter(set); f.mbp = !f.mbp; if (f.mbp && f.sort === 'num') f.sort = 'price-asc'; renderGrid(set); return; }
   const hero = e.target.closest('[data-hero]'); if (hero && card) { detailState.hero = hero.dataset.hero; renderDetail(set, card); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+  const rbs = e.target.closest('[data-rbshow]'); if (rbs && card) { rbState.show = rbs.dataset.rbshow; renderDetail(set, card); return; }
+  const rbi = e.target.closest('[data-rb]'); if (rbi && card) { const vid = rbi.dataset.rb; detailState.vf = 'all'; detailState.open[vid] = true; renderDetail(set, card); const el = view.querySelector(`.pv[data-ver="${CSS.escape(vid)}"]`); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
   const vfb = e.target.closest('[data-vf]'); if (vfb && card) { detailState.vf = vfb.dataset.vf; renderDetail(set, card); return; }
   const ver = e.target.closest('[data-ver]')?.dataset.ver;
   if (ver && card) {
@@ -1126,6 +1350,9 @@ view.addEventListener('click', async e => {
     set.cards = set.cards.filter(c => c !== card); if (coll[set.id]) delete coll[set.id][card.id]; saveSets(); saveColl(); location.hash = `#/set/${set.id}/cards`;
   }
   if (act === 'parallels' && set) openParallels(set);
+  if (act === 'card-parallel' && card) openCardParallel(set, card);
+  if (act === 'add-my-parallel') openAddMyParallel(e.target.closest('[data-folder]')?.dataset.folder || 'phillies');
+  if (act === 'settings') openSettings();
   if (act === 'edit-set' && set) openSetEditor(set);
   if (act === 'export-set' && set) { const { example, ...s } = set; download(`${slug(set.year + '-' + set.brand + '-' + set.name)}.json`, JSON.stringify({ ...s, example }, null, 1)); }
   if (act === 'delete-set' && set && confirm(`Delete “${set.name}” and everything you've tracked in it?`)) {
@@ -1149,18 +1376,29 @@ async function seedDefault(force) {
       const ns = normalizeSet(j); const cur = getSet(ns.id);
       for (const c of ns.cards) PUB.add(pubKey(ns.id, c.id));
       if (!cur) { if (force || !known.has(ns.id)) { sets.push(ns); changed++; } }
+      else if (cur.slim || (ns.fullSet && cur.cards.length < ns.cards.length && (ns.dataVersion || 0) >= (cur.dataVersion || 0))) {
+        // slim stub of a big bundled checklist: rebuild from the data file, keep your own cards/parallels
+        const ids = new Set(ns.cards.map(c => c.id)), pids = new Set(ns.parallels.map(p => p.id));
+        for (const c of cur.cards) { if (!ids.has(c.id)) ns.cards.push(c); else if (c.parallels?.length) { const t = ns.cards.find(x => x.id === c.id); t.parallels = [...new Set([...(t.parallels || []), ...c.parallels])]; } }
+        for (const p of cur.parallels) if (!pids.has(p.id)) ns.parallels.push(p);
+        ns.pinned = cur.pinned; sets[sets.indexOf(cur)] = ns; if (!cur.slim) changed++;
+      }
       else if (!!cur.pinned !== !!ns.pinned && (ns.dataVersion || 0) <= (cur.dataVersion || 0)) { cur.pinned = ns.pinned; changed++; }
       else if ((ns.dataVersion || 0) > (cur.dataVersion || 0)) {
         // refresh the checklist but keep cards & parallels you added yourself (ownership/photos/prices are keyed by id)
         const ids = new Set(ns.cards.map(c => c.id)), pids = new Set(ns.parallels.map(p => p.id));
         for (const c of cur.cards) if (!ids.has(c.id)) ns.cards.push(c);
         for (const p of cur.parallels) if (!pids.has(p.id)) ns.parallels.push(p);
+        // parallels you added to single cards ("Add a parallel to this card") stay on those cards
+        const mine = new Set(cur.parallels.filter(p => !pids.has(p.id)).map(p => p.id));
+        for (const c of ns.cards) { const old = cur.cards.find(x => x.id === c.id); const add = (old?.parallels || []).filter(id => mine.has(id));
+          if (add.length) { if (!c.parallels) c.parallels = versionsFor(ns, c).filter(v => v.id !== BASE_ID).map(v => v.id); for (const id of add) if (!c.parallels.includes(id)) c.parallels.push(id); } }
         sets[sets.indexOf(cur)] = ns; changed++;
       }
     }
+    pubLoaded = true;
     if (changed) saveSets();
     prefs.knownSets = [...new Set([...known, ...sets.map(s => s.id)])];
-    pubLoaded = true;
     prefs.seededDefault = true; savePrefs();
     if (force) toast(changed ? 'Checklists loaded' : 'Already up to date');
     return changed;
@@ -1198,4 +1436,6 @@ async function cacheAllImages() {
   }
   if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
 })();
+// read-only hooks for self-tests / troubleshooting
+window.ccDebug = { get sets() { return sets; }, getSet, priceOf, versionsFor, parFolders };
 })();
