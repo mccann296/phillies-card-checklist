@@ -1,7 +1,7 @@
 {
 "format": "card-checklist-set",
 "version": 2,
-"dataVersion": 2,
+"dataVersion": 3,
 "id": "2026-topps-upd-phillies",
 "name": "Topps Update Series — Phillies",
 "year": 2026,
@@ -169,9 +169,10 @@
 },
 {
 "id": "value-box-holiday-variation",
-"name": "Value Box Holiday Variation",
+"name": "Holiday Variation (Orange & Black)",
 "printRun": null,
-"color": "#d9480f"
+"color": "#d9480f",
+"q": "Holiday Variation Orange & Black"
 },
 {
 "id": "value-box-holiday-variation-bats",
@@ -602,7 +603,10 @@
 ],
 "notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
 "image": "img/upd/us2.jpg",
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/justin-crawford-us2"
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/justin-crawford-us2",
+"images": {
+"value-box-holiday-variation": "img/upd/us2--value-box-holiday-variation.jpg"
+}
 },
 {
 "id": "us12",
@@ -798,7 +802,10 @@
 ],
 "notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
 "image": "img/upd/us63.jpg",
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/andrew-painter-us63"
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/andrew-painter-us63",
+"images": {
+"value-box-holiday-variation": "img/upd/us63--value-box-holiday-variation.jpg"
+}
 },
 {
 "id": "us155",
@@ -1187,7 +1194,10 @@
 ],
 "notes": "Green Diamante Foil /99, Gold Diamante Foil /50, Orange Diamante Foil /25, Black Diamante Foil /10, Red Diamante Foil /5: print run from Checklist Insider parallel list (blank on Breakninja).",
 "image": "img/upd/rookie-debut-us57.jpg",
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/andrew-painter-us57"
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/andrew-painter-us57",
+"images": {
+"value-box-holiday-variation": "img/upd/rookie-debut-us57--value-box-holiday-variation.jpg"
+}
 },
 {
 "id": "season-highlights-us131",
@@ -1263,7 +1273,8 @@
 "image": "img/upd/season-highlights-us131.jpg",
 "images": {
 "green-diamante-foil-99": "img/upd/season-highlights-us131--green-diamante-foil-99.jpg",
-"team-color-border-variation": "img/upd/season-highlights-us131--team-color-border-variation.jpg"
+"team-color-border-variation": "img/upd/season-highlights-us131--team-color-border-variation.jpg",
+"value-box-holiday-variation": "img/upd/season-highlights-us131--value-box-holiday-variation.jpg"
 },
 "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/bryce-harper-us131"
 },
@@ -1340,7 +1351,8 @@
 "image": "img/upd/season-highlights-us262.jpg",
 "images": {
 "gold-2026": "img/upd/season-highlights-us262--gold-2026.jpg",
-"rainbow-foil": "img/upd/season-highlights-us262--rainbow-foil.jpg"
+"rainbow-foil": "img/upd/season-highlights-us262--rainbow-foil.jpg",
+"value-box-holiday-variation": "img/upd/season-highlights-us262--value-box-holiday-variation.jpg"
 },
 "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/kyle-schwarber-us262"
 },

@@ -114,6 +114,7 @@ function normalizeSet(raw) {
     let applies = p.appliesTo ?? p.applies_to ?? [];
     if (typeof applies === 'string') applies = applies.split('|').map(x => x.trim()).filter(Boolean);
     const par = { id, name: String(p.name).trim(), printRun, color: p.color || guessColor(p.name), appliesTo: applies };
+    if (p.q) par.q = String(p.q); // search wording for the eBay/Whatnot links when the display name has a parenthesised part
     if (p.unconfirmed) par.unconfirmed = true; // listed by aggregators only — shown, but not counted in the rainbow total
     if (p.cardOnly) par.cardOnly = true; // added to one card only ("Add a parallel to this card") — never applies set-wide
     s.parallels.push(par);
@@ -230,7 +231,7 @@ const valueLine = r => r.priced ? `${money(r.v)}${r.unpriced ? ` <span class="mu
 function cardQuery(set, card, ver) {
   const y = String(card.year || set.year || '').match(/(19|20)\d\d/)?.[0] || '';
   const prod = card.product || [set.brand, set.name.replace(/ — .*/, '').replace(/^Topps /, '')].filter(Boolean).join(' ');
-  return [y, prod, (card.player || '').split(' / ')[0], card.number, ver && ver.id !== BASE_ID ? ver.name.replace(/\(.*?\)/g, '') : ''].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+  return [y, prod, (card.player || '').split(' / ')[0], card.number, ver && ver.id !== BASE_ID ? (ver.q || ver.name.replace(/\(.*?\)/g, '')) : ''].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
 }
 const lookupURL = (set, card, ver) => 'https://www.sportscardspro.com/search-products?type=prices&q=' + encodeURIComponent(cardQuery(set, card, ver));
 // eBay: Sports Trading Card Singles (261328); Buy It Now sorted by price + shipping lowest first / sold / auctions
@@ -1145,6 +1146,11 @@ function vjPreload() {
 // (a later un-tick, note or serial on the phone wins) and never re-adds after the user removes it.
 const OWN_PRELOADS = [
   { key: 'misiorowski-us136-gold-sandglitter', set: '2026-topps-upd-all', card: 'us136', ver: 'gold-sandglitter-50' }, // 2026 Topps Update #US136 Jacob Misiorowski Gold Sandglitter /50 — serial left blank for the user
+  // Holiday Variations (Value Box exclusives, unnumbered) — the user's own copies, photos shipped as img/own/…. Series 2 'Orange Sun' (Schwarber #650) and Update 'Orange & Black' (Crawford US2 RC, Painter US63 RC). Update US262 Schwarber NOT marked (only partly visible in the photo — awaiting the user's confirmation).
+  { key: 'hol-s2-650-schwarber-orange-sun', set: '2026-topps-s2-phillies', card: '650', ver: 'holiday-variation-orange-sun', photo: 'img/own/s2-650--holiday-variation-orange-sun.jpg' },
+  { key: 'hol-s2-562-stott-orange-sun', set: '2026-topps-s2-phillies', card: '562', ver: 'holiday-variation-orange-sun' }, // user owns it (no photo yet)
+  { key: 'hol-upd-us2-crawford-orange-black', set: '2026-topps-upd-phillies', card: 'us2', ver: 'value-box-holiday-variation', photo: 'img/own/upd-us2--holiday-variation-orange-black.jpg' },
+  { key: 'hol-upd-us63-painter-orange-black', set: '2026-topps-upd-phillies', card: 'us63', ver: 'value-box-holiday-variation', photo: 'img/own/upd-us63--holiday-variation-orange-black.jpg' },
   // 2026 Topps Chrome green /99 parallels — the user's own copies (photos shipped as img/own/…; serials read from the user's photos).
   // Pattern ID (SportsCardsPro photo sets for Wave vs RayWave across players/colors + a Green RayWave Schwarber 48/99 listing): fine-ripple foil = WAVE, big rainbow squiggle = RAYWAVE.
   // 2026 Topps Series 1 #197 Cool Crushers (Harper/Schwarber) — the user's own copies, serials left blank (the user told Groky they own these four)

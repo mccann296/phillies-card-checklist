@@ -1,7 +1,7 @@
 {
 "format": "card-checklist-set",
 "version": 2,
-"dataVersion": 2,
+"dataVersion": 3,
 "id": "2026-topps-s2-phillies",
 "name": "Topps Series 2 — Phillies",
 "year": 2026,
@@ -76,6 +76,13 @@
 "name": "Golden Mirror Variations",
 "printRun": null,
 "color": "#d4a017"
+},
+{
+"id": "holiday-variation-orange-sun",
+"name": "Holiday Variation (Orange Sun)",
+"printRun": null,
+"color": "#f07a1a",
+"q": "Holiday Variation Orange Sun"
 },
 {
 "id": "holo-foil",
@@ -772,6 +779,7 @@
 "aqua-rainbow-foil",
 "golden-mirror-variations",
 "true-photo-variations",
+"holiday-variation-orange-sun",
 "big-apple-foil-variations",
 "all-star-game-platinum-1",
 "big-apple-foil-variations-rose-gold-1",
@@ -814,7 +822,8 @@
 "pink-diamante-foil": "img/s2/363--pink-diamante-foil.jpg",
 "rainbow-foil": "img/s2/363--rainbow-foil.jpg",
 "silver-crackle-foil": "img/s2/363--silver-crackle-foil.jpg",
-"topps-pattern": "img/s2/363--topps-pattern.jpg"
+"topps-pattern": "img/s2/363--topps-pattern.jpg",
+"holiday-variation-orange-sun": "img/s2/363--holiday-variation-orange-sun.jpg"
 },
 "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-series-2/jt-realmuto-363"
 },
@@ -1080,6 +1089,7 @@
 "aqua-rainbow-foil",
 "golden-mirror-variations",
 "true-photo-variations",
+"holiday-variation-orange-sun",
 "big-apple-foil-variations",
 "all-star-game-platinum-1",
 "big-apple-foil-variations-rose-gold-1",
@@ -1125,7 +1135,8 @@
 "pink-diamante-foil": "img/s2/463--pink-diamante-foil.jpg",
 "rainbow-foil": "img/s2/463--rainbow-foil.jpg",
 "sandglitter": "img/s2/463--sandglitter.jpg",
-"yellow-rainbow-foil-399": "img/s2/463--yellow-rainbow-foil-399.jpg"
+"yellow-rainbow-foil-399": "img/s2/463--yellow-rainbow-foil-399.jpg",
+"holiday-variation-orange-sun": "img/s2/463--holiday-variation-orange-sun.jpg"
 },
 "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-series-2/aaron-nola-463"
 },
@@ -1198,6 +1209,7 @@
 "aqua-rainbow-foil",
 "golden-mirror-variations",
 "true-photo-variations",
+"holiday-variation-orange-sun",
 "big-apple-foil-variations",
 "all-star-game-platinum-1",
 "big-apple-foil-variations-rose-gold-1",
@@ -1247,7 +1259,8 @@
 "rainbow-foil": "img/s2/562--rainbow-foil.jpg",
 "sandglitter": "img/s2/562--sandglitter.jpg",
 "sandglitter-orange-25": "img/s2/562--sandglitter-orange-25.jpg",
-"silver-crackle-foil": "img/s2/562--silver-crackle-foil.jpg"
+"silver-crackle-foil": "img/s2/562--silver-crackle-foil.jpg",
+"holiday-variation-orange-sun": "img/s2/562--holiday-variation-orange-sun.jpg"
 },
 "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-series-2/bryson-stott-562"
 },
@@ -1521,6 +1534,7 @@
 "aqua-rainbow-foil",
 "golden-mirror-variations",
 "true-photo-variations",
+"holiday-variation-orange-sun",
 "big-apple-foil-variations",
 "all-star-game-platinum-1",
 "big-apple-foil-variations-rose-gold-1",
@@ -1569,7 +1583,8 @@
 "silver-crackle-foil": "img/s2/650--silver-crackle-foil.jpg",
 "yellow-rainbow-foil-399": "img/s2/650--yellow-rainbow-foil-399.jpg",
 "diamante-foil": "img/s2/650--diamante-foil.jpg",
-"holo-foil": "img/s2/650--holo-foil.jpg"
+"holo-foil": "img/s2/650--holo-foil.jpg",
+"holiday-variation-orange-sun": "img/s2/650--holiday-variation-orange-sun.jpg"
 },
 "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-series-2/kyle-schwarber-650"
 },
