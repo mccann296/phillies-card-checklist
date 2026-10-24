@@ -1,4 +1,4 @@
-const VERSION = 'cc-v10';
+const VERSION = 'cc-v11';
 const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'sample-set.json',
   'data/index.json', 'data/s1.json', 'data/s2.json', 'data/upd.json', 'data/chrome.json', 'data/t08gold.json', 'data/od08.json', 'data/ch08.json', 'data/s1all.json', 'data/s2all.json', 'data/updall.json', 'data/harper-psa10.json', 'data/spvar.json', 'data/extra.json', 'prices.json',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];

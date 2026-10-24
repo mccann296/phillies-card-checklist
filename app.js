@@ -1095,15 +1095,17 @@ function vjPreload() {
 // (a later un-tick, note or serial on the phone wins) and never re-adds after the user removes it.
 const OWN_PRELOADS = [
   { key: 'misiorowski-us136-gold-sandglitter', set: '2026-topps-upd-all', card: 'us136', ver: 'gold-sandglitter-50' }, // 2026 Topps Update #US136 Jacob Misiorowski Gold Sandglitter /50 — serial left blank for the user
-  // 2026 Topps Chrome Green Wave Refractor /99 — the user's own copies (photo shipped as img/own/…; serial from the photo, Schwarber's left blank)
+  // 2026 Topps Chrome green /99 parallels — the user's own copies (photos shipped as img/own/…; serials read from the user's photos).
+  // Pattern ID (SportsCardsPro photo sets for Wave vs RayWave across players/colors + a Green RayWave Schwarber 48/99 listing): fine-ripple foil = WAVE, big rainbow squiggle = RAYWAVE.
   // 2026 Topps Series 1 #197 Cool Crushers (Harper/Schwarber) — the user's own copies, serials left blank (the user told Groky they own these four)
   { key: 'cool-crushers-197-confetti', set: '2026-topps-s1-phillies', card: '197', ver: 'confetti' },
   { key: 'cool-crushers-197-pink-confetti', set: '2026-topps-s1-phillies', card: '197', ver: 'pink-confetti-100' },
   { key: 'cool-crushers-197-opening-day-foil', set: '2026-topps-s1-phillies', card: '197', ver: 'opening-day-foil' },
   { key: 'cool-crushers-197-topps-foil-pattern', set: '2026-topps-s1-phillies', card: '197', ver: 'topps-foil-pattern' },
-  { key: 'chrome-233-realmuto-green-wave-99', set: '2026-topps-chrome-phillies', card: '233', ver: 'green-wave-refractor-99', serial: '29/99', photo: 'img/own/chrome-233--green-wave-refractor-99.jpg' },
-  { key: 'chrome-123-schwarber-green-wave-99', set: '2026-topps-chrome-phillies', card: '123', ver: 'green-wave-refractor-99', serial: '35/99', photo: 'img/own/chrome-123--green-wave-refractor-99-closeup.jpg' }, // serial read from the user's close-up (last 9 partly under the sleeve edge — user to confirm)
-  { key: 'chrome-206-garcia-green-wave-99', set: '2026-topps-chrome-phillies', card: '206', ver: 'green-wave-refractor-99', serial: '54/99', photo: 'img/own/chrome-206--green-wave-refractor-99.jpg' }
+  { key: 'chrome-233-realmuto-green-raywave-99', set: '2026-topps-chrome-phillies', card: '233', ver: 'green-raywave-refractor-99', supersedes: 'chrome-233-realmuto-green-wave-99', serial: '29/99', photo: 'img/own/chrome-233--green-raywave-refractor-99.jpg' },
+  { key: 'chrome-206-garcia-green-raywave-99', set: '2026-topps-chrome-phillies', card: '206', ver: 'green-raywave-refractor-99', supersedes: 'chrome-206-garcia-green-wave-99', serial: '54/99', photo: 'img/own/chrome-206--green-raywave-refractor-99.jpg' },
+  { key: 'chrome-123-schwarber-green-raywave-99', set: '2026-topps-chrome-phillies', card: '123', ver: 'green-raywave-refractor-99', serial: '58/99', photo: 'img/own/chrome-123--green-raywave-refractor-99.jpg' }, // 58/99 read from two photos (pinstripes cross the digits) — user to confirm
+  { key: 'chrome-123-schwarber-green-wave-99', set: '2026-topps-chrome-phillies', card: '123', ver: 'green-wave-refractor-99', serial: '35/99', photo: 'img/own/chrome-123--green-wave-refractor-99-closeup.jpg' }
 ];
 // Names a user might already have typed in for a version the bundled checklist now carries (so we never double-add)
 const VER_ALIASES = {
@@ -1114,7 +1116,7 @@ const resolveVer = (s, c, id) => { const vs = versionsFor(s, c); return vs.find(
 function applyOwnPreloads() {
   prefs.ownPreloads ??= []; let changed = false;
   for (const x of OWN_PRELOADS) {
-    if (prefs.ownPreloads.includes(x.key)) continue;
+    if (prefs.ownPreloads.includes(x.key) || (x.supersedes && prefs.ownPreloads.includes(x.supersedes))) continue; // superseded = an earlier mis-filed preload; applyOwnMoves handles it
     const s = getSet(x.set), c = s?.cards.find(c => c.id === x.card), v = c && resolveVer(s, c, x.ver); if (!v) continue; // checklist not loaded yet — try next start
     if (!own(s.id, c.id, v.id)) setOwn(s.id, c.id, v.id, { q: 1, ...(x.serial ? { serial: x.serial } : {}) });
     prefs.ownPreloads.push(x.key); changed = true;
@@ -1140,6 +1142,31 @@ async function applyOwnFixes() {
       if (!cur || cur.size === f.oldPhotoSize) { const r = await fetch(x.photo); if (!r.ok) continue; await photoPut(k, await r.blob()); changed = true; }
       prefs.ownFixes.push(f.key);
     } catch { /* offline — try next start */ }
+  }
+  savePrefs(); return changed;
+}
+// Earlier preloads that were filed under the wrong parallel (Realmuto/García were first marked Green Wave; their big-squiggle pattern is RayWave).
+// Moves only an UNTOUCHED entry (qty 1, no note/grade/cert, serial blank or the one we set); anything the user edited stays where it is.
+const OWN_MOVES = [
+  { key: 'move-chrome-233-to-raywave', pre: 'chrome-233-realmuto-green-wave-99', set: '2026-topps-chrome-phillies', card: '233', from: 'green-wave-refractor-99', to: 'green-raywave-refractor-99', oldSerial: '29/99', oldPhotoSize: 106405 },
+  { key: 'move-chrome-206-to-raywave', pre: 'chrome-206-garcia-green-wave-99', set: '2026-topps-chrome-phillies', card: '206', from: 'green-wave-refractor-99', to: 'green-raywave-refractor-99', oldSerial: '54/99', oldPhotoSize: 113472 }
+];
+async function applyOwnMoves() {
+  prefs.ownMoves ??= []; let changed = false;
+  for (const m of OWN_MOVES) {
+    if (prefs.ownMoves.includes(m.key) || !prefs.ownPreloads?.includes(m.pre)) continue;
+    const o = own(m.set, m.card, m.from), to = OWN_PRELOADS.find(p => p.card === m.card && p.ver === m.to);
+    try {
+      if (o && (o.q || 1) === 1 && !o.note && !o.cond && !o.cert && (!o.serial || o.serial === m.oldSerial)) {
+        if (!own(m.set, m.card, m.to)) setOwn(m.set, m.card, m.to, { q: 1, ...(to?.serial ? { serial: to.serial } : {}) });
+        setOwn(m.set, m.card, m.from, null);
+        const k = pkey(m.set, m.card, m.from), cur = photoKeys.has(k) ? await photoGet(k) : null;
+        if (cur && cur.size === m.oldPhotoSize) await photoDel(k);
+        if (to && !prefs.ownPreloads.includes(to.key)) prefs.ownPreloads.push(to.key);
+        changed = true;
+      }
+      prefs.ownMoves.push(m.key);
+    } catch { /* try next start */ }
   }
   savePrefs(); return changed;
 }
@@ -1515,7 +1542,7 @@ async function cacheAllImages() {
   await seedDefault(false);
   ensureChases();
   applyOwnPreloads();
-  applyOwnPhotos().then(() => applyOwnFixes()).then(() => render());
+  applyOwnMoves().then(() => applyOwnPhotos()).then(() => applyOwnFixes()).then(() => render());
   for (const c of CHASES) if (c.preload) for (const pc of c.preload().cards) PUB.add(pubKey(c.id, pc.id));
   render();
   // prices + Groky-published cards: network first (cached by the service worker for offline), then re-render
