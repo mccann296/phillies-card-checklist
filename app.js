@@ -14,7 +14,7 @@ const natCmp = (a, b) => String(a).localeCompare(String(b), undefined, { numeric
 const hashHue = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h % 360; };
 const fmtRun = r => r ? (r === 1 ? '1/1' : '/' + r) : '';
 function toastAct(msg, actions, ms = 6500) { // toast with buttons (Undo, …): actions = [[label, fn]]
-  const t = $('#toast'); t.textContent = ''; const sp = document.createElement('span'); sp.textContent = msg; t.append(sp);
+  const t = $('#toast'); t.textContent = ''; const sp = document.createElement('span'); sp.className = 'toast-msg'; sp.textContent = msg; t.append(sp);
   for (const [label, fn] of actions) { const b = document.createElement('button'); b.type = 'button'; b.className = 'toast-btn'; b.textContent = label; b.onclick = () => { t.hidden = true; clearTimeout(toast._t); fn(); }; t.append(b); }
   t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, ms);
 }

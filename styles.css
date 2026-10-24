@@ -154,6 +154,7 @@ details a{color:var(--accent)}
 @keyframes tilepop{0%{transform:scale(.9)}55%{transform:scale(1.05)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.tile.pop .thumb{animation:none}}
 .tap-hint{margin:-4px 2px 10px;color:var(--muted)}
-.toast{display:flex;align-items:center;gap:12px}
+.toast{display:flex;align-items:center;gap:12px;width:max-content;max-width:calc(100vw - 32px);font-size:14px}
+.toast .toast-msg{flex:1;min-width:0}
 .toast-btn{border:0;background:transparent;color:inherit;font-weight:800;text-decoration:underline;padding:6px 4px;min-height:36px;cursor:pointer}
 .toast[hidden]{display:none}
