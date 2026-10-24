@@ -1040,13 +1040,15 @@ const MLB_TEAMS = ['Arizona Diamondbacks', 'Athletics', 'Atlanta Braves', 'Balti
 const MY_PAR_SET = 'my-parallels';
 const isBaseballSet = s => !/basketball|football|hockey|soccer/i.test(s.sport || '') && !/76ers|eagles|flyers|union/i.test(s.team || '');
 const folderOf = (s, c) => /phillies/i.test(c.team || s.team || '') ? 'phillies' : 'other';
+// sets whose plain base version is itself a parallel (the Logofractor Edition base = the MLB-logo refractor): owned base copies are listed in the folders too
+const FOLDER_BASE_SETS = new Set(['2026-topps-chrome-logofractor-phillies']);
 function parFolders() {
   const out = { phillies: [], other: [] };
   for (const s of sets) {
     if (s.example || s.grade || s.chase || !isBaseballSet(s)) continue;
     const C = coll[s.id]; if (!C) continue;
     for (const c of s.cards) { if (!C[c.id]) continue;
-      for (const v of versionsFor(s, c)) { if (v.id === BASE_ID) continue; const o = C[c.id][v.id]; if (o) out[folderOf(s, c)].push({ s, c, v, o }); } }
+      for (const v of versionsFor(s, c)) { if (v.id === BASE_ID && !FOLDER_BASE_SETS.has(s.id)) continue; const o = C[c.id][v.id]; if (o) out[folderOf(s, c)].push({ s, c, v, o }); } }
   }
   return out;
 }
@@ -1061,7 +1063,7 @@ function renderParFolder(key) {
   for (const it of items) { if (!groups.has(it.s)) groups.set(it.s, []); groups.get(it.s).push(it); }
   const vl = valueLine(valueOfItems(items));
   view.innerHTML = `<div class="card">
-      <div class="small muted">${key === 'phillies' ? 'Every parallel you own of a Phillies card' : 'Every parallel you own of the other 29 MLB teams'}, from all your sets — it fills in automatically when you mark a parallel owned. Base cards aren't listed.</div>
+      <div class="small muted">${key === 'phillies' ? 'Every parallel you own of a Phillies card' : 'Every parallel you own of the other 29 MLB teams'}, from all your sets — it fills in automatically when you mark a parallel owned. Base cards aren't listed (except the Logofractor Edition's plain Logofractor, which is the MLB-logo refractor).</div>
       <div style="margin-top:6px"><b>${items.length}</b> parallel${items.length === 1 ? '' : 's'} owned${vl ? ` · 💲 ${vl}` : ''}</div>
       <button class="btn primary block big-add" style="margin-top:12px" data-action="add-my-parallel" data-folder="${key}">＋ Add a parallel I own</button>
       <p class="small muted" style="margin:8px 2px 0">For a card that's in one of your checklists, open the card and tap a parallel's “Missing” button (or “Add a parallel to this card”). Use the button above for cards that aren't in any checklist — they're filed here by team.</p></div>
