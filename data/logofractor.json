@@ -1,0 +1,685 @@
+{
+ "format": "card-checklist-set",
+ "version": 2,
+ "dataVersion": 1,
+ "id": "2026-topps-chrome-logofractor-phillies",
+ "name": "Topps Chrome Logofractor Edition — Phillies",
+ "year": 2026,
+ "brand": "Topps",
+ "sport": "Baseball",
+ "team": "Philadelphia Phillies",
+ "baseName": "Logofractor",
+ "notes": "Phillies cards only. 2026 Topps Chrome Logofractor Edition is its own product (released Aug 19, 2026; early sales Aug 5 at the MLB flagship store): the same 300 Chrome cards printed with the repeating MLB logo (\"Logofractor\"). The plain Logofractor is unnumbered; colors run Pink /250, Blue /150, Green /99, Purple /75, Gold /50, Orange /25, Black /10, Red /5, Rose Gold 1/1. Inserts (1991 Topps, Big Ticket Players, Wrecking Crew) start at Green /99; Rookie Autos are \"MLB Refractor\" (+ White /30, no Pink). Harper #244 also has the Image Variation versions. Photos/prices: SportsCardsPro.",
+ "sources": [
+  "https://cardsmithsbreaks.com/full-checklist/2026-topps-chrome-baseball-logofractor-edition/",
+  "https://baseballcardpedia.com/index.php/2026_Topps_Chrome_Logofractor",
+  "https://www.beckett.com/news/2026-topps-chrome-logofractor-baseball-cards/",
+  "https://www.checklistinsider.com/2026-topps-chrome-logofractor-baseball",
+  "https://www.sportscardspro.com/console/baseball-cards-2026-topps-chrome-logofractor"
+ ],
+ "parallels": [
+  {
+   "id": "pink-logofractor-250",
+   "name": "Pink Logofractor",
+   "printRun": 250,
+   "color": "#f48fb1"
+  },
+  {
+   "id": "blue-logofractor-150",
+   "name": "Blue Logofractor",
+   "printRun": 150,
+   "color": "#2f6fdc"
+  },
+  {
+   "id": "green-logofractor-99",
+   "name": "Green Logofractor",
+   "printRun": 99,
+   "color": "#2e9e5b"
+  },
+  {
+   "id": "purple-logofractor-75",
+   "name": "Purple Logofractor",
+   "printRun": 75,
+   "color": "#7b3fe4"
+  },
+  {
+   "id": "gold-logofractor-50",
+   "name": "Gold Logofractor",
+   "printRun": 50,
+   "color": "#d4af37"
+  },
+  {
+   "id": "orange-logofractor-25",
+   "name": "Orange Logofractor",
+   "printRun": 25,
+   "color": "#f28c28"
+  },
+  {
+   "id": "black-logofractor-10",
+   "name": "Black Logofractor",
+   "printRun": 10,
+   "color": "#222222"
+  },
+  {
+   "id": "red-logofractor-5",
+   "name": "Red Logofractor",
+   "printRun": 5,
+   "color": "#d62828"
+  },
+  {
+   "id": "rose-gold-logofractor-1",
+   "name": "Rose Gold Logofractor",
+   "printRun": 1,
+   "color": "#e8a598"
+  },
+  {
+   "id": "image-variation-logofractor",
+   "name": "Logofractor Image Variation",
+   "printRun": null,
+   "color": "#9aa7b8"
+  },
+  {
+   "id": "image-variation-gold-logofractor-50",
+   "name": "Gold Logofractor Image Variation",
+   "printRun": 50,
+   "color": "#d4af37"
+  },
+  {
+   "id": "image-variation-orange-logofractor-25",
+   "name": "Orange Logofractor Image Variation",
+   "printRun": 25,
+   "color": "#f28c28"
+  },
+  {
+   "id": "image-variation-black-logofractor-10",
+   "name": "Black Logofractor Image Variation",
+   "printRun": 10,
+   "color": "#222222"
+  },
+  {
+   "id": "image-variation-red-logofractor-5",
+   "name": "Red Logofractor Image Variation",
+   "printRun": 5,
+   "color": "#d62828"
+  },
+  {
+   "id": "image-variation-rose-gold-logofractor-1",
+   "name": "Rose Gold Logofractor Image Variation",
+   "printRun": 1,
+   "color": "#e8a598"
+  },
+  {
+   "id": "blue-mlb-refractor-150",
+   "name": "Blue MLB Refractor",
+   "printRun": 150,
+   "color": "#2f6fdc"
+  },
+  {
+   "id": "green-mlb-refractor-99",
+   "name": "Green MLB Refractor",
+   "printRun": 99,
+   "color": "#2e9e5b"
+  },
+  {
+   "id": "purple-mlb-refractor-75",
+   "name": "Purple MLB Refractor",
+   "printRun": 75,
+   "color": "#7b3fe4"
+  },
+  {
+   "id": "gold-mlb-refractor-50",
+   "name": "Gold MLB Refractor",
+   "printRun": 50,
+   "color": "#d4af37"
+  },
+  {
+   "id": "white-mlb-refractor-30",
+   "name": "White MLB Refractor",
+   "printRun": 30,
+   "color": "#f1f1f1"
+  },
+  {
+   "id": "orange-mlb-refractor-25",
+   "name": "Orange MLB Refractor",
+   "printRun": 25,
+   "color": "#f28c28"
+  },
+  {
+   "id": "black-mlb-refractor-10",
+   "name": "Black MLB Refractor",
+   "printRun": 10,
+   "color": "#222222"
+  },
+  {
+   "id": "red-mlb-refractor-5",
+   "name": "Red MLB Refractor",
+   "printRun": 5,
+   "color": "#d62828"
+  },
+  {
+   "id": "rose-gold-mlb-refractor-1",
+   "name": "Rose Gold MLB Refractor",
+   "printRun": 1,
+   "color": "#e8a598"
+  }
+ ],
+ "cards": [
+  {
+   "id": "5",
+   "number": "5",
+   "player": "Trea Turner",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/5--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/5--blue-logofractor-150.jpg",
+    "green-logofractor-99": "img/logofractor/5--green-logofractor-99.jpg",
+    "gold-logofractor-50": "img/logofractor/5--gold-logofractor-50.jpg",
+    "orange-logofractor-25": "img/logofractor/5--orange-logofractor-25.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/trea-turner-5",
+   "image": "img/logofractor/5.jpg"
+  },
+  {
+   "id": "73",
+   "number": "73",
+   "player": "Justin Crawford",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": true,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/73--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/73--blue-logofractor-150.jpg",
+    "green-logofractor-99": "img/logofractor/73--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/73--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/73--gold-logofractor-50.jpg",
+    "black-logofractor-10": "img/logofractor/73--black-logofractor-10.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/justin-crawford-73",
+   "image": "img/logofractor/73.jpg"
+  },
+  {
+   "id": "123",
+   "number": "123",
+   "player": "Kyle Schwarber",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/123--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/123--blue-logofractor-150.jpg",
+    "green-logofractor-99": "img/logofractor/123--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/123--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/123--gold-logofractor-50.jpg",
+    "orange-logofractor-25": "img/logofractor/123--orange-logofractor-25.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/kyle-schwarber-123",
+   "image": "img/logofractor/123.jpg"
+  },
+  {
+   "id": "160",
+   "number": "160",
+   "player": "Andrew Painter",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": true,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/160--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/160--blue-logofractor-150.jpg",
+    "green-logofractor-99": "img/logofractor/160--green-logofractor-99.jpg",
+    "gold-logofractor-50": "img/logofractor/160--gold-logofractor-50.jpg",
+    "orange-logofractor-25": "img/logofractor/160--orange-logofractor-25.jpg",
+    "red-logofractor-5": "img/logofractor/160--red-logofractor-5.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/andrew-painter-160",
+   "image": "img/logofractor/160.jpg"
+  },
+  {
+   "id": "206",
+   "number": "206",
+   "player": "Adolis García",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/206--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/206--blue-logofractor-150.jpg",
+    "green-logofractor-99": "img/logofractor/206--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/206--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/206--gold-logofractor-50.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/adolis-garcia-206",
+   "image": "img/logofractor/206.jpg"
+  },
+  {
+   "id": "229",
+   "number": "229",
+   "player": "Otto Kemp",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": true,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/229--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/229--blue-logofractor-150.jpg",
+    "purple-logofractor-75": "img/logofractor/229--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/229--gold-logofractor-50.jpg",
+    "black-logofractor-10": "img/logofractor/229--black-logofractor-10.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/otto-kemp-229",
+   "image": "img/logofractor/229.jpg"
+  },
+  {
+   "id": "233",
+   "number": "233",
+   "player": "J.T. Realmuto",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/233--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/233--blue-logofractor-150.jpg",
+    "purple-logofractor-75": "img/logofractor/233--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/233--gold-logofractor-50.jpg",
+    "orange-logofractor-25": "img/logofractor/233--orange-logofractor-25.jpg",
+    "black-logofractor-10": "img/logofractor/233--black-logofractor-10.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/jt-realmuto-233",
+   "image": "img/logofractor/233.jpg"
+  },
+  {
+   "id": "244",
+   "number": "244",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1",
+    "image-variation-logofractor",
+    "image-variation-gold-logofractor-50",
+    "image-variation-orange-logofractor-25",
+    "image-variation-black-logofractor-10",
+    "image-variation-red-logofractor-5",
+    "image-variation-rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/244--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/244--blue-logofractor-150.jpg",
+    "green-logofractor-99": "img/logofractor/244--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/244--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/244--gold-logofractor-50.jpg",
+    "black-logofractor-10": "img/logofractor/244--black-logofractor-10.jpg",
+    "image-variation-logofractor": "img/logofractor/244--image-variation-logofractor.jpg",
+    "image-variation-gold-logofractor-50": "img/logofractor/244--image-variation-gold-logofractor-50.jpg",
+    "image-variation-orange-logofractor-25": "img/logofractor/244--image-variation-orange-logofractor-25.jpg",
+    "image-variation-red-logofractor-5": "img/logofractor/244--image-variation-red-logofractor-5.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/bryce-harper-244",
+   "image": "img/logofractor/244.jpg"
+  },
+  {
+   "id": "248",
+   "number": "248",
+   "player": "Bryson Stott",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/248--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/248--blue-logofractor-150.jpg",
+    "green-logofractor-99": "img/logofractor/248--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/248--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/248--gold-logofractor-50.jpg",
+    "orange-logofractor-25": "img/logofractor/248--orange-logofractor-25.jpg",
+    "black-logofractor-10": "img/logofractor/248--black-logofractor-10.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/bryson-stott-248",
+   "image": "img/logofractor/248.jpg"
+  },
+  {
+   "id": "265",
+   "number": "265",
+   "player": "Jesús Luzardo",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/265--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/265--blue-logofractor-150.jpg",
+    "green-logofractor-99": "img/logofractor/265--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/265--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/265--gold-logofractor-50.jpg",
+    "red-logofractor-5": "img/logofractor/265--red-logofractor-5.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/jesus-luzardo-265"
+  },
+  {
+   "id": "270",
+   "number": "270",
+   "player": "Cristopher Sánchez",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/270--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/270--blue-logofractor-150.jpg",
+    "green-logofractor-99": "img/logofractor/270--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/270--purple-logofractor-75.jpg",
+    "orange-logofractor-25": "img/logofractor/270--orange-logofractor-25.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/cristopher-sanchez-270",
+   "image": "img/logofractor/270.jpg"
+  },
+  {
+   "id": "290",
+   "number": "290",
+   "player": "Zack Wheeler",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "pink-logofractor-250",
+    "blue-logofractor-150",
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "pink-logofractor-250": "img/logofractor/290--pink-logofractor-250.jpg",
+    "blue-logofractor-150": "img/logofractor/290--blue-logofractor-150.jpg",
+    "green-logofractor-99": "img/logofractor/290--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/290--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/290--gold-logofractor-50.jpg",
+    "orange-logofractor-25": "img/logofractor/290--orange-logofractor-25.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor/zack-wheeler-290",
+   "image": "img/logofractor/290.jpg"
+  },
+  {
+   "id": "1991-topps-baseball-91cb-3",
+   "number": "91CB-3",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "1991 Topps Baseball",
+   "rookie": false,
+   "parallels": [
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "purple-logofractor-75": "img/logofractor/1991-topps-baseball-91cb-3--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/1991-topps-baseball-91cb-3--gold-logofractor-50.jpg",
+    "orange-logofractor-25": "img/logofractor/1991-topps-baseball-91cb-3--orange-logofractor-25.jpg",
+    "black-logofractor-10": "img/logofractor/1991-topps-baseball-91cb-3--black-logofractor-10.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor-1991/bryce-harper-91cb-3",
+   "image": "img/logofractor/1991-topps-baseball-91cb-3.jpg"
+  },
+  {
+   "id": "big-ticket-players-btp-19",
+   "number": "BTP-19",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "Big Ticket Players",
+   "rookie": false,
+   "parallels": [
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "green-logofractor-99": "img/logofractor/big-ticket-players-btp-19--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/big-ticket-players-btp-19--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/big-ticket-players-btp-19--gold-logofractor-50.jpg",
+    "orange-logofractor-25": "img/logofractor/big-ticket-players-btp-19--orange-logofractor-25.jpg",
+    "black-logofractor-10": "img/logofractor/big-ticket-players-btp-19--black-logofractor-10.jpg",
+    "rose-gold-logofractor-1": "img/logofractor/big-ticket-players-btp-19--rose-gold-logofractor-1.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor-big-ticket-players/bryce-harper-btp-19",
+   "image": "img/logofractor/big-ticket-players-btp-19.jpg"
+  },
+  {
+   "id": "wrecking-crew-wc-3",
+   "number": "WC-3",
+   "player": "Kyle Schwarber",
+   "team": "Philadelphia Phillies",
+   "subset": "Wrecking Crew",
+   "rookie": false,
+   "parallels": [
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "green-logofractor-99": "img/logofractor/wrecking-crew-wc-3--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/wrecking-crew-wc-3--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/wrecking-crew-wc-3--gold-logofractor-50.jpg",
+    "orange-logofractor-25": "img/logofractor/wrecking-crew-wc-3--orange-logofractor-25.jpg",
+    "red-logofractor-5": "img/logofractor/wrecking-crew-wc-3--red-logofractor-5.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor-wrecking-crew/kyle-schwarber-wc-3",
+   "image": "img/logofractor/wrecking-crew-wc-3.jpg"
+  },
+  {
+   "id": "wrecking-crew-wc-4",
+   "number": "WC-4",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "Wrecking Crew",
+   "rookie": false,
+   "parallels": [
+    "green-logofractor-99",
+    "purple-logofractor-75",
+    "gold-logofractor-50",
+    "orange-logofractor-25",
+    "black-logofractor-10",
+    "red-logofractor-5",
+    "rose-gold-logofractor-1"
+   ],
+   "images": {
+    "green-logofractor-99": "img/logofractor/wrecking-crew-wc-4--green-logofractor-99.jpg",
+    "purple-logofractor-75": "img/logofractor/wrecking-crew-wc-4--purple-logofractor-75.jpg",
+    "gold-logofractor-50": "img/logofractor/wrecking-crew-wc-4--gold-logofractor-50.jpg",
+    "orange-logofractor-25": "img/logofractor/wrecking-crew-wc-4--orange-logofractor-25.jpg",
+    "black-logofractor-10": "img/logofractor/wrecking-crew-wc-4--black-logofractor-10.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor-wrecking-crew/bryce-harper-wc-4",
+   "image": "img/logofractor/wrecking-crew-wc-4.jpg"
+  },
+  {
+   "id": "logofractor-autographs-ra-ap",
+   "number": "RA-AP",
+   "player": "Andrew Painter",
+   "team": "Philadelphia Phillies",
+   "subset": "Topps Chrome Logofractor Autographs",
+   "rookie": true,
+   "parallels": [
+    "blue-mlb-refractor-150",
+    "green-mlb-refractor-99",
+    "purple-mlb-refractor-75",
+    "gold-mlb-refractor-50",
+    "white-mlb-refractor-30",
+    "orange-mlb-refractor-25",
+    "black-mlb-refractor-10",
+    "red-mlb-refractor-5",
+    "rose-gold-mlb-refractor-1"
+   ],
+   "notes": "On-card rookie auto. The plain version is the \"MLB Refractor\" (unnumbered per the Cardsmiths checklist); colors are Blue /150, Green /99, Purple /75, Gold /50, White /30, Orange /25, Black /10, Red /5, Rose Gold MLB Refractor 1/1.",
+   "images": {
+    "blue-mlb-refractor-150": "img/logofractor/logofractor-autographs-ra-ap--blue-mlb-refractor-150.jpg",
+    "green-mlb-refractor-99": "img/logofractor/logofractor-autographs-ra-ap--green-mlb-refractor-99.jpg",
+    "purple-mlb-refractor-75": "img/logofractor/logofractor-autographs-ra-ap--purple-mlb-refractor-75.jpg",
+    "gold-mlb-refractor-50": "img/logofractor/logofractor-autographs-ra-ap--gold-mlb-refractor-50.jpg",
+    "white-mlb-refractor-30": "img/logofractor/logofractor-autographs-ra-ap--white-mlb-refractor-30.jpg",
+    "orange-mlb-refractor-25": "img/logofractor/logofractor-autographs-ra-ap--orange-mlb-refractor-25.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor-rookie-autograph/andrew-painter-ra-ap"
+  },
+  {
+   "id": "logofractor-autographs-ra-ok",
+   "number": "RA-OK",
+   "player": "Otto Kemp",
+   "team": "Philadelphia Phillies",
+   "subset": "Topps Chrome Logofractor Autographs",
+   "rookie": true,
+   "parallels": [
+    "blue-mlb-refractor-150",
+    "green-mlb-refractor-99",
+    "purple-mlb-refractor-75",
+    "gold-mlb-refractor-50",
+    "white-mlb-refractor-30",
+    "orange-mlb-refractor-25",
+    "black-mlb-refractor-10",
+    "red-mlb-refractor-5",
+    "rose-gold-mlb-refractor-1"
+   ],
+   "notes": "On-card rookie auto. The plain version is the \"MLB Refractor\" (unnumbered per the Cardsmiths checklist); colors are Blue /150, Green /99, Purple /75, Gold /50, White /30, Orange /25, Black /10, Red /5, Rose Gold MLB Refractor 1/1.",
+   "images": {
+    "blue-mlb-refractor-150": "img/logofractor/logofractor-autographs-ra-ok--blue-mlb-refractor-150.jpg",
+    "green-mlb-refractor-99": "img/logofractor/logofractor-autographs-ra-ok--green-mlb-refractor-99.jpg",
+    "purple-mlb-refractor-75": "img/logofractor/logofractor-autographs-ra-ok--purple-mlb-refractor-75.jpg",
+    "gold-mlb-refractor-50": "img/logofractor/logofractor-autographs-ra-ok--gold-mlb-refractor-50.jpg",
+    "white-mlb-refractor-30": "img/logofractor/logofractor-autographs-ra-ok--white-mlb-refractor-30.jpg",
+    "black-mlb-refractor-10": "img/logofractor/logofractor-autographs-ra-ok--black-mlb-refractor-10.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-logofractor-rookie-autograph/otto-kemp-ra-ok",
+   "image": "img/logofractor/logofractor-autographs-ra-ok.jpg"
+  }
+ ]
+}

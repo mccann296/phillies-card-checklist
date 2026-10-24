@@ -1151,6 +1151,14 @@ const OWN_PRELOADS = [
   { key: 'hol-s2-562-stott-orange-sun', set: '2026-topps-s2-phillies', card: '562', ver: 'holiday-variation-orange-sun' }, // user owns it (no photo yet)
   { key: 'hol-upd-us2-crawford-orange-black', set: '2026-topps-upd-phillies', card: 'us2', ver: 'value-box-holiday-variation', photo: 'img/own/upd-us2--holiday-variation-orange-black.jpg' },
   { key: 'hol-upd-us63-painter-orange-black', set: '2026-topps-upd-phillies', card: 'us63', ver: 'value-box-holiday-variation', photo: 'img/own/upd-us63--holiday-variation-orange-black.jpg' },
+  // 2026 Topps Chrome LOGOFRACTOR EDITION (MLB-logo refractor) — the user's own base Logofractor copies (the user clarified the "logo refractor" is the MLB-logo one, not the silver Topps Refractor).
+  { key: 'lf-160-painter-logofractor', set: '2026-topps-chrome-logofractor-phillies', card: '160', ver: 'base' },
+  { key: 'lf-248-stott-logofractor', set: '2026-topps-chrome-logofractor-phillies', card: '248', ver: 'base' },
+  { key: 'lf-123-schwarber-logofractor', set: '2026-topps-chrome-logofractor-phillies', card: '123', ver: 'base' },
+  { key: 'lf-229-kemp-logofractor', set: '2026-topps-chrome-logofractor-phillies', card: '229', ver: 'base' },
+  { key: 'lf-233-realmuto-logofractor', set: '2026-topps-chrome-logofractor-phillies', card: '233', ver: 'base' },
+  { key: 'lf-265-luzardo-logofractor', set: '2026-topps-chrome-logofractor-phillies', card: '265', ver: 'base' },
+  { key: 'lf-244-harper-logofractor', set: '2026-topps-chrome-logofractor-phillies', card: '244', ver: 'base' },
   // 2026 Topps Chrome green /99 parallels — the user's own copies (photos shipped as img/own/…; serials read from the user's photos).
   // Pattern ID (SportsCardsPro photo sets for Wave vs RayWave across players/colors + a Green RayWave Schwarber 48/99 listing): fine-ripple foil = WAVE, big rainbow squiggle = RAYWAVE.
   // 2026 Topps Series 1 #197 Cool Crushers (Harper/Schwarber) — the user's own copies, serials left blank (the user told Groky they own these four)
@@ -1562,7 +1570,7 @@ function adoptUserParallels(ns, cur) {
   }
 }
 // where a newly bundled set is slotted into the home list (instead of the end): right after its sibling
-const SET_AFTER = { '2026-topps-chrome-sapphire-phillies': '2026-topps-chrome-phillies' };
+const SET_AFTER = { '2026-topps-chrome-sapphire-phillies': '2026-topps-chrome-phillies', '2026-topps-chrome-logofractor-phillies': '2026-topps-chrome-sapphire-phillies' };
 async function seedDefault(force) {
   try {
     const idx = await (await fetch('data/index.json', { cache: 'no-cache' })).json();
