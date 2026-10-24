@@ -1,7 +1,7 @@
 {
  "format": "card-checklist-set",
  "version": 2,
- "dataVersion": 1,
+ "dataVersion": 2,
  "id": "2026-topps-upd-all",
  "name": "Topps Update Series \u2014 Base Set (All Teams)",
  "year": 2026,
@@ -15,7 +15,15 @@
   "https://www.dugoutvault.app/checklists/2026-topps-update",
   "https://www.sportscardspro.com/console/baseball-cards-2026-topps-update"
  ],
- "parallels": [],
+ "parallels": [
+  {
+   "id": "gold-sandglitter-50",
+   "name": "Gold Sandglitter",
+   "printRun": 50,
+   "color": "#d4a017",
+   "cardOnly": true
+  }
+ ],
  "cards": [
   {
    "id": "us1",
@@ -1534,10 +1542,12 @@
    "team": "Milwaukee Brewers",
    "subset": "Rookie Debut",
    "rookie": true,
-   "parallels": [],
+   "parallels": [
+    "gold-sandglitter-50"
+   ],
    "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-update/jacob-misiorowski-us136",
    "image": "img/updall/US136.jpg",
-   "notes": "RC flag: Dugout Vault lists this card as a rookie card, My Card Batch doesn't; SportsCardsPro tags it [RC], so it is shown as RC. Unconfirmed \u2014 the official Topps checklist PDF could not be downloaded (403)."
+   "notes": "RC flag: Dugout Vault lists this card as a rookie card, My Card Batch doesn't; SportsCardsPro tags it [RC], so it is shown as RC. Unconfirmed \u2014 the official Topps checklist PDF could not be downloaded (403). Gold Sandglitter /50 (owned): SportsCardsPro has no photo and no sales for this parallel yet \u2014 the photo is the base card and the price shown is the base raw price."
   },
   {
    "id": "us137",

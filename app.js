@@ -1012,7 +1012,7 @@ function renderParFolder(key) {
           <div class="grow" style="min-width:0"><b class="ellipsis" style="display:block">${esc(c.player || '—')} <span class="muted small">#${esc(c.number)}</span></b>
             <div class="small ellipsis"><span class="swatch sm" style="background:${esc(v.color || '#999')}"></span> ${esc(v.name)} <span class="muted">${v.printRun ? 'print run ' + esc(fmtRun(v.printRun)) : 'unnumbered'}</span></div>
             <div class="small muted ellipsis">${serialHtml(c, v, o)} ${[c.year || c.product ? cardLine(s, c) : '', key === 'other' ? c.team : '', o.serial && !v.printRun ? 'Serial #' + o.serial : '', o.note, (o.q || 1) > 1 ? '×' + o.q : ''].filter(Boolean).map(esc).join(' · ') || '&nbsp;'}</div></div>
-          <div style="text-align:right;flex:none">${p ? `<b class="value">${money(p.v)}</b>${p.mine ? '<div class="small muted">my price</div>' : ''}` : '<span class="small muted">no price</span>'}</div></div></div>`; }).join('')}</div>`).join('')
+          <div style="text-align:right;flex:none">${p ? `<b class="value">${money(p.v)}</b>${p.mine ? '<div class="small muted">my price</div>' : ''}` : (() => { const bp = !c.noBase || s.id !== MY_PAR_SET ? priceOf(s, c, BASE_ID) : null; return bp ? `<span class="small muted">no sales yet<br>base ${money(bp.v)}</span>` : '<span class="small muted">no price</span>'; })()}</div></div></div>`; }).join('')}</div>`).join('')
       : `<div class="empty"><div style="font-size:42px">${F.icon}</div><p>No parallels here yet.</p></div>`}`;
   hydratePhotos();
 }
@@ -1079,6 +1079,21 @@ function vjPreload() {
   return { parallels: [], cards: [{ id: '2025-26-topps-chrome-253', number: '253', player: 'VJ Edgecombe', team: 'Philadelphia 76ers', subset: 'Base', rookie: true, year: '2025-26', product: 'Topps Chrome',
     image: 'img/chase/vj-253.jpg', ref: 'https://www.sportscardspro.com/game/basketball-cards-2025-topps-chrome/vj-edgecombe-253',
     notes: '2025-26 Topps Chrome Basketball #253 VJ Edgecombe RC (base set, Rookies) — verified on Checklist Insider and Topps Ripped checklists. Reference photo via SportsCardsPro (listing photo).' }] };
+}
+// Cards the user told Groky they own, marked owned ONCE (prefs.ownPreloads). Never overwrites an existing entry
+// (a later un-tick, note or serial on the phone wins) and never re-adds after the user removes it.
+const OWN_PRELOADS = [
+  { key: 'misiorowski-us136-gold-sandglitter', set: '2026-topps-upd-all', card: 'us136', ver: 'gold-sandglitter-50' } // 2026 Topps Update #US136 Jacob Misiorowski Gold Sandglitter /50 — serial left blank for the user
+];
+function applyOwnPreloads() {
+  prefs.ownPreloads ??= []; let changed = false;
+  for (const x of OWN_PRELOADS) {
+    if (prefs.ownPreloads.includes(x.key)) continue;
+    const s = getSet(x.set), c = s?.cards.find(c => c.id === x.card); if (!c || !versionsFor(s, c).some(v => v.id === x.ver)) continue; // checklist not loaded yet — try next start
+    if (!own(s.id, c.id, x.ver)) setOwn(s.id, c.id, x.ver, { q: 1 });
+    prefs.ownPreloads.push(x.key); changed = true;
+  }
+  if (changed) savePrefs();
 }
 function ensureChases() {
   prefs.chasesAdded ??= []; let changed = false;
@@ -1424,6 +1439,7 @@ async function cacheAllImages() {
   await loadPhotoKeys().catch(err => console.warn('Photo storage unavailable', err));
   await seedDefault(false);
   ensureChases();
+  applyOwnPreloads();
   for (const c of CHASES) if (c.preload) for (const pc of c.preload().cards) PUB.add(pubKey(c.id, pc.id));
   render();
   // prices + Groky-published cards: network first (cached by the service worker for offline), then re-render
