@@ -13,6 +13,11 @@ const pct = (a, b) => b ? Math.round(a / b * 1000) / 10 : 0;
 const natCmp = (a, b) => String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: 'base' });
 const hashHue = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h % 360; };
 const fmtRun = r => r ? (r === 1 ? '1/1' : '/' + r) : '';
+function toastAct(msg, actions, ms = 6500) { // toast with buttons (Undo, …): actions = [[label, fn]]
+  const t = $('#toast'); t.textContent = ''; const sp = document.createElement('span'); sp.textContent = msg; t.append(sp);
+  for (const [label, fn] of actions) { const b = document.createElement('button'); b.type = 'button'; b.className = 'toast-btn'; b.textContent = label; b.onclick = () => { t.hidden = true; clearTimeout(toast._t); fn(); }; t.append(b); }
+  t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, ms);
+}
 function toast(msg, ms = 2200) { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, ms); }
 function download(name, text, type = 'application/json') {
   const blob = new Blob([text], { type });
@@ -648,6 +653,44 @@ function renderOverview(set) {
     </div>`;
 }
 
+// One-tap owned: a grid tile that stands for exactly one version (a parallel picked in the filter, or a card that only has one version)
+const tapOwnOn = () => prefs.tapOwn !== false;
+function tapVer(set, c, parV, allSingle) { // allSingle: every card shown has just one version (so no tile is a many-version "base card")
+  if (!tapOwnOn()) return null;
+  if (parV) return versionsFor(set, c).find(v => v.id === parV.id) || null;
+  const vs = versionsFor(set, c); return allSingle && vs.length === 1 ? vs[0] : null;
+}
+const tapLP = { t: 0, fired: 0, x: 0, y: 0 };
+function tapRedraw(set, id) {
+  const y = window.scrollY; drawGrid(set); window.scrollTo(0, y);
+  const el = view.querySelector(`.tile[data-cid="${CSS.escape(id)}"]`); if (el) { el.classList.add('pop'); setTimeout(() => el.classList.remove('pop'), 600); }
+}
+function tapOpenCardSerial(set, c, v) {
+  location.hash = `#/set/${set.id}/card/${c.id}`;
+  setTimeout(() => { detailState.open[v.id] = true; renderDetail(set, c); const el = view.querySelector(`.pv[data-ver="${CSS.escape(v.id)}"]`); if (el) { el.scrollIntoView({ block: 'center' }); el.querySelector('[data-field=serial]')?.focus({ preventScroll: true }); } }, 260);
+}
+function tapTile(set, cid, vid) {
+  const c = set.cards.find(x => x.id === cid), v = c && versionsFor(set, c).find(x => x.id === vid); if (!v) return;
+  const o = own(set.id, c.id, v.id); const label = `${c.player || '#' + c.number} · ${v.id === BASE_ID ? v.name : v.name + (v.printRun ? ' ' + fmtRun(v.printRun) : '')}`;
+  if (!o) {
+    setOwn(set.id, c.id, v.id, { q: 1 }); if (navigator.vibrate) navigator.vibrate(12);
+    tapRedraw(set, c.id);
+    const acts = [['Undo', () => { setOwn(set.id, c.id, v.id, null); tapRedraw(set, c.id); toast('Undone'); }]];
+    if (v.printRun) acts.push(['Add serial', () => tapOpenCardSerial(set, c, v)]);
+    toastAct(`✓ Owned — ${label}`, acts);
+    return;
+  }
+  const extra = [o.serial ? `serial #${o.serial}` : '', o.note ? 'a note' : '', (o.q || 1) > 1 ? `${o.q} copies` : '', o.cond || o.cert ? 'grade/cert info' : ''].filter(Boolean);
+  $('#toast').hidden = true; clearTimeout(toast._t);
+  openSheet(`<h2>Unmark as owned?</h2><p><b>${esc(label)}</b>${extra.length ? `<br><span class="small muted">Unmarking also clears ${esc(extra.join(', '))} (your photo is kept). You can Undo right after.</span>` : ''}</p>
+    <button class="btn primary block" data-close>Keep it owned</button>
+    <button class="btn danger block" id="tapUn" style="margin-top:10px">Unmark</button>
+    <button class="btn block" id="tapOpen" style="margin-top:10px">Open card instead</button>`, el => {
+    $('#tapUn', el).onclick = () => { const prev = { ...o }; closeSheet(); setOwn(set.id, c.id, v.id, null); tapRedraw(set, c.id);
+      toastAct(`Unmarked — ${label}`, [['Undo', () => { setOwn(set.id, c.id, v.id, prev); tapRedraw(set, c.id); toast('Restored'); }]]); };
+    $('#tapOpen', el).onclick = () => { closeSheet(); location.hash = `#/set/${set.id}/card/${c.id}`; };
+  });
+}
 function getFilter(set) { return filters[set.id] ??= { q: '', status: 'all', par: 'any', team: '', subset: '', rc: false, sort: 'num', mbp: false }; }
 function tilePrice(set, c, parV) {
   if (parV) return sortPrice(set, c, parV.id);
@@ -718,22 +761,27 @@ function drawGrid(set) {
   if (f.mbp) return drawMissingByPrice(set, cards, parV);
   if (f.sort !== 'num') { const dir = f.sort === 'price-asc' ? 1 : -1; cards = cards.map(c => [c, tpVal(tilePrice(set, c, parV))]).sort((a, b) => a[1] == null ? (b[1] == null ? 0 : 1) : b[1] == null ? -1 : (a[1] - b[1]) * dir).map(x => x[0]); }
   const owned = cards.filter(c => parV ? own(set.id, c.id, parV.id) : ownedCount(set, c)).length;
-  $('#gridArea').innerHTML = `<div class="small muted" style="margin:2px 2px 10px">${cards.length} cards${parV ? ` · ${esc(parV.name)} ${fmtRun(parV.printRun)}` : ''} · ${owned} owned</div>` +
+  const allSingle = !parV && cards.length > 0 && cards.every(c => versionsFor(set, c).length === 1);
+  const tapHint = tapOwnOn() && cards.some(c => tapVer(set, c, parV, allSingle));
+  $('#gridArea').innerHTML = `<div class="small muted" style="margin:2px 2px 10px">${cards.length} cards${parV ? ` · ${esc(parV.name)} ${fmtRun(parV.printRun)}` : ''} · ${owned} owned</div>${tapHint ? '<div class="small tap-hint">👆 Tap a card to mark it owned · <b>i</b> button or press &amp; hold opens the card</div>' : ''}` +
     (cards.length ? `<div class="grid">${cards.slice(0, gridLims[set.id] || GRID_PAGE).map(c => {
       const vers = versionsFor(set, c);
       const n = vers.filter(v => own(set.id, c.id, v.id)).length;
       const has = parV ? !!own(set.id, c.id, parV.id) : n > 0;
       const pk = [parV?.id, BASE_ID, ...vers.map(v => v.id)].filter(Boolean).map(id => pkey(set.id, c.id, id)).find(k => photoKeys.has(k));
-      return `<button class="tile ${has ? '' : 'missing'}" data-go="#/set/${esc(set.id)}/card/${esc(c.id)}">
+      const tv = tapVer(set, c, parV, allSingle); // the single version this tile stands for (tap = own), or null
+      const open = `#/set/${esc(set.id)}/card/${esc(c.id)}`;
+      return `${tv ? `<div class="tile tappable ${has ? '' : 'missing'}" role="button" tabindex="0" data-tap="${esc(tv.id)}" data-cid="${esc(c.id)}" aria-pressed="${has}" aria-label="${esc(c.player || c.number)} — ${has ? 'owned, tap to unmark' : 'not owned, tap to mark owned'}">` : `<button class="tile ${has ? '' : 'missing'}" data-cid="${esc(c.id)}" data-go="${open}">`}
         <div class="thumb">${imgTag(set, c, parV, { pk, alt: c.player })}
-          ${parV ? (has ? '<span class="own">✓</span>' : '') : (n ? `<span class="own">${n}/${vers.length}</span>` : '')}
+          ${tv ? (has ? '<span class="own">✓</span>' : '') : parV ? (has ? '<span class="own">✓</span>' : '') : (n ? `<span class="own">${n}/${vers.length}</span>` : '')}
+          ${tv ? `<button class="tile-info" data-go="${open}" aria-label="Open card details" title="Open card details">i</button>` : ''}
           ${(() => { const sv = (parV ? [parV] : vers).filter(v => v.printRun && own(set.id, c.id, v.id)?.serial); if (!sv.length) return ''; const o = own(set.id, c.id, sv[0].id); const jm = jerseyMatch(c, o);
             return `<span class="tile-serial${jm ? ' jersey' : ''}">#${esc(o.serial)}${jm ? ' 🎽' : ''}${sv.length > 1 ? ` +${sv.length - 1}` : ''}</span>`; })()}
           ${!parV && vers.length > 1 ? `<div class="dots">${vers.filter(v => own(set.id, c.id, v.id)).slice(0, 12).map(v => `<i style="background:${esc(v.color || '#fff')}"></i>`).join('')}</div>` : ''}
         </div>
         ${(() => { const tp = tilePrice(set, c, parV); return tp == null ? '' : `<span class="tile-price">${typeof tp === 'object' ? 'from ' + money(tp.from) : money(tp)}</span>`; })()}
         <div class="cap"><b class="ellipsis">${c.featured ? '★ ' : ''}${esc(c.player || '—')}</b><span class="muted ellipsis" style="display:block">${c.year || c.product ? esc(cardLine(set, c)) + ' · ' : ''}#${esc(c.number)}${c.subset !== set.baseName ? ' · ' + esc(c.subset) : ''}${c.rookie ? ' · RC' : ''}</span></div>
-      </button>`; }).join('')}</div>${cards.length > (gridLims[set.id] || GRID_PAGE) ? `<button class="btn" id="moreTiles" style="width:100%;margin:12px 0">Show more · ${cards.length - (gridLims[set.id] || GRID_PAGE)} more cards</button>` : ''}` : `<div class="empty">No cards match.</div>`);
+      ${tv ? '</div>' : '</button>'}`; }).join('')}</div>${cards.length > (gridLims[set.id] || GRID_PAGE) ? `<button class="btn" id="moreTiles" style="width:100%;margin:12px 0">Show more · ${cards.length - (gridLims[set.id] || GRID_PAGE)} more cards</button>` : ''}` : `<div class="empty">No cards match.</div>`);
   hydratePhotos($('#gridArea'));
   const more = $('#moreTiles');
   if (more) {
@@ -1070,10 +1118,12 @@ function openSettings() {
     <label class="field">Default shipping ($) <span class="small muted" style="font-weight:400">— added to a listing's price when the listing doesn't show its shipping (marked “est. shipping”). Deals use price + shipping.</span>
       <input class="input" id="sShip" type="number" min="0" step="0.25" inputmode="decimal" value="${dealShip()}"></label>
     <label class="field">Deals: at least % under market (on total)<select class="input" id="sPct">${[10, 15, 20, 25, 30, 40, 50].map(p => `<option value="${p}" ${p === dealPct() ? 'selected' : ''}>${p}%</option>`).join('')}</select></label>
+    <label class="field">Tap a card in a one-version grid<select class="input" id="sTap"><option value="own" ${tapOwnOn() ? 'selected' : ''}>Marks it owned (tap again asks first)</option><option value="open" ${tapOwnOn() ? '' : 'selected'}>Opens the card</option></select>
+      <span class="small muted" style="font-weight:400">Applies when a grid shows one version per card (a parallel picked in the filter, or one-version sets). Press &amp; hold or the <b>i</b> button always opens the card.</span></label>
     <p class="small muted">Push deal alerts are worked out on Groky's box with the same rule (40%+ under market on the total, $4 default shipping when a listing doesn't show it). Tell Groky if you want a different default for alerts.</p>
     <button class="btn primary block" id="sSave">Save</button>`, el => {
     $('#sSave', el).onclick = () => {
-      const v = parseFloat($('#sShip', el).value); prefs.dealShip = isNaN(v) || v < 0 ? 4 : Math.round(v * 100) / 100; prefs.dealPct = +$('#sPct', el).value;
+      const v = parseFloat($('#sShip', el).value); prefs.dealShip = isNaN(v) || v < 0 ? 4 : Math.round(v * 100) / 100; prefs.dealPct = +$('#sPct', el).value; prefs.tapOwn = $('#sTap', el).value !== 'open';
       savePrefs(); closeSheet(); render(); toast(`Default shipping ${money(prefs.dealShip)} · deals ${prefs.dealPct}%+`);
     };
   });
@@ -1401,6 +1451,18 @@ const FORMAT_HELP = `<h2>Import format</h2>
 let deferredInstall = null;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; });
 
+/* ---------------- one-tap owned: press & hold opens the card; keyboard; no image menu ---------------- */
+view.addEventListener('pointerdown', e => {
+  const t = e.target.closest('.tile[data-tap]'); if (!t || e.target.closest('.tile-info')) return;
+  tapLP.x = e.clientX; tapLP.y = e.clientY; clearTimeout(tapLP.t);
+  tapLP.t = setTimeout(() => { tapLP.fired = Date.now(); if (navigator.vibrate) navigator.vibrate(15); const { parts } = route(); if (parts[0] === 'set') location.hash = `#/set/${parts[1]}/card/${t.dataset.cid}`; }, 520);
+});
+const tapLPCancel = () => clearTimeout(tapLP.t);
+view.addEventListener('pointerup', tapLPCancel); view.addEventListener('pointercancel', tapLPCancel); view.addEventListener('pointerleave', tapLPCancel);
+view.addEventListener('pointermove', e => { if (Math.abs(e.clientX - tapLP.x) > 10 || Math.abs(e.clientY - tapLP.y) > 10) tapLPCancel(); });
+view.addEventListener('contextmenu', e => { if (e.target.closest('.tile[data-tap]')) e.preventDefault(); });
+view.addEventListener('keydown', e => { const t = e.target.closest?.('.tile[data-tap]'); if (t && t === e.target && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); t.click(); } });
+
 /* ---------------- global click delegation ---------------- */
 view.addEventListener('click', async e => {
   const { parts } = route(); const set = parts[0] === 'set' ? getSet(parts[1]) : null;
@@ -1414,6 +1476,8 @@ view.addEventListener('click', async e => {
     else location.hash = h;
     return;
   }
+  const tp = e.target.closest('[data-tap]');
+  if (tp && set && !card) { if (Date.now() - tapLP.fired < 700) return; tapTile(set, tp.dataset.cid, tp.dataset.tap); return; }
   const st = e.target.closest('[data-status]'); if (st && set) { getFilter(set).status = st.dataset.status; renderGrid(set); return; }
   if (e.target.closest('[data-nohits]') && set) { getFilter(set).nohits = !getFilter(set).nohits; renderGrid(set); return; }
   if (e.target.closest('[data-feat]') && set) { getFilter(set).feat = !getFilter(set).feat; renderGrid(set); return; }
