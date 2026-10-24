@@ -1092,17 +1092,35 @@ function vjPreload() {
 // Cards the user told Groky they own, marked owned ONCE (prefs.ownPreloads). Never overwrites an existing entry
 // (a later un-tick, note or serial on the phone wins) and never re-adds after the user removes it.
 const OWN_PRELOADS = [
-  { key: 'misiorowski-us136-gold-sandglitter', set: '2026-topps-upd-all', card: 'us136', ver: 'gold-sandglitter-50' } // 2026 Topps Update #US136 Jacob Misiorowski Gold Sandglitter /50 — serial left blank for the user
+  { key: 'misiorowski-us136-gold-sandglitter', set: '2026-topps-upd-all', card: 'us136', ver: 'gold-sandglitter-50' }, // 2026 Topps Update #US136 Jacob Misiorowski Gold Sandglitter /50 — serial left blank for the user
+  // 2026 Topps Chrome Green Wave Refractor /99 — the user's own copies (photo shipped as img/own/…; serial from the photo, Schwarber's left blank)
+  { key: 'chrome-233-realmuto-green-wave-99', set: '2026-topps-chrome-phillies', card: '233', ver: 'green-wave-refractor-99', serial: '29/99', photo: 'img/own/chrome-233--green-wave-refractor-99.jpg' },
+  { key: 'chrome-123-schwarber-green-wave-99', set: '2026-topps-chrome-phillies', card: '123', ver: 'green-wave-refractor-99', photo: 'img/own/chrome-123--green-wave-refractor-99.jpg' },
+  { key: 'chrome-206-garcia-green-wave-99', set: '2026-topps-chrome-phillies', card: '206', ver: 'green-wave-refractor-99', serial: '54/99', photo: 'img/own/chrome-206--green-wave-refractor-99.jpg' }
 ];
 function applyOwnPreloads() {
   prefs.ownPreloads ??= []; let changed = false;
   for (const x of OWN_PRELOADS) {
     if (prefs.ownPreloads.includes(x.key)) continue;
     const s = getSet(x.set), c = s?.cards.find(c => c.id === x.card); if (!c || !versionsFor(s, c).some(v => v.id === x.ver)) continue; // checklist not loaded yet — try next start
-    if (!own(s.id, c.id, x.ver)) setOwn(s.id, c.id, x.ver, { q: 1 });
+    if (!own(s.id, c.id, x.ver)) setOwn(s.id, c.id, x.ver, { q: 1, ...(x.serial ? { serial: x.serial } : {}) });
     prefs.ownPreloads.push(x.key); changed = true;
   }
   if (changed) savePrefs();
+}
+// Ships the user's own photo for an OWN_PRELOADS card into this phone's photo store, once. Never overwrites a photo the user already has
+// (a photo they took/removed later wins) and is retried next start if offline.
+async function applyOwnPhotos() {
+  prefs.ownPhotoPreloads ??= []; let n = 0;
+  for (const x of OWN_PRELOADS) {
+    if (!x.photo || prefs.ownPhotoPreloads.includes(x.key) || !prefs.ownPreloads?.includes(x.key)) continue;
+    const k = pkey(x.set, x.card, x.ver);
+    try {
+      if (!photoKeys.has(k)) { const r = await fetch(x.photo); if (!r.ok) continue; await photoPut(k, await r.blob()); n++; }
+      prefs.ownPhotoPreloads.push(x.key);
+    } catch { /* offline — try next start */ }
+  }
+  savePrefs(); return n;
 }
 function ensureChases() {
   prefs.chasesAdded ??= []; let changed = false;
@@ -1449,6 +1467,7 @@ async function cacheAllImages() {
   await seedDefault(false);
   ensureChases();
   applyOwnPreloads();
+  applyOwnPhotos().then(n => { if (n) render(); });
   for (const c of CHASES) if (c.preload) for (const pc of c.preload().cards) PUB.add(pubKey(c.id, pc.id));
   render();
   // prices + Groky-published cards: network first (cached by the service worker for offline), then re-render
