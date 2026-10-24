@@ -239,7 +239,7 @@ function landed(x) {
   return { price: x[0], ship, est: !known, total: Math.round((x[0] + ship) * 100) / 100 };
 }
 function listedOf(sid, cid, vid) {
-  const e = PRICES?.l?.[sid]?.[cid]?.[vid]; if (!e) return null;
+  const e = PRICES?.l?.[sid]?.[cid]?.[vid]; if (!e || !wnScanned(sid, cid)) return null;
   const best = Object.entries(e).filter(([, x]) => x && x[0] != null).map(([site, x]) => { const L = landed(x); return { site, v: L.total, price: L.price, ship: L.ship, est: L.est, url: x[1], t: x[2], title: x[3] || '' }; }).sort((a, b) => a.v - b.v)[0];
   return best || null;
 }
@@ -261,13 +261,20 @@ const sortPrice = (set, card, vid) => priceOf(set, card, vid)?.v ?? listedOf(set
 // A deal = a version you don't own, in a set where you own at least one card, whose lowest listing + assumed shipping is
 // at least prefs.dealPct % under the raw (ungraded) market price. Ownership is local, so this is computed on the phone.
 const dealPct = () => prefs.dealPct ?? 25, dealShip = () => prefs.dealShip ?? 4;
+// Whatnot is scanned weekly only for featured chases, Phillies cards and cards Groky knows you own (prices.json lScanned).
+let _wnSet = null, _wnFor = null;
+function wnScanned(sid, cid) {
+  if (!PRICES?.lScanned) return true; // older snapshot without a scope list
+  if (_wnFor !== PRICES) { _wnSet = new Set(Object.entries(PRICES.lScanned).flatMap(([s, cs]) => cs.map(c => s + '|' + c))); _wnFor = PRICES; }
+  return _wnSet.has(sid + '|' + cid);
+}
 function computeDeals({ includeHidden = false } = {}) {
   const out = []; if (!PRICES?.l) return out;
   const hid = prefs.dealHide || {};
   for (const s of sets) {
     if (s.example || !s.cards.some(c => ownedCount(s, c))) continue;
     const L = PRICES.l[s.id]; if (!L) continue;
-    for (const c of s.cards) { const LC = L[c.id]; if (!LC) continue;
+    for (const c of s.cards) { const LC = L[c.id]; if (!LC || !wnScanned(s.id, c.id)) continue;
       for (const v of versionsFor(s, c)) {
         if (own(s.id, c.id, v.id)) continue;
         const raw = pubPrice(s.id, c.id, v.id); if (!raw || raw.v < 1) continue; // no reliable market price → skip
@@ -306,6 +313,7 @@ function renderDeals() {
   const at = PRICES?.listedAt ? shortDay(PRICES.listedAt) : null;
   view.innerHTML = `<div class="card">
       <div class="small"><b>Weekly snapshot</b> of the lowest Buy-It-Now listing found on Whatnot${at ? ` (checked ${esc(at)})` : ''}. The discount is the <b>total landed cost</b> (price + shipping) vs the SportsCardsPro market price (raw / ungraded; PSA 10 for the Harper PSA 10 chase), biggest first. Whatnot's public pages don't show a listing's shipping (it's set at checkout), so your default of ${money(dealShip())} is used and marked <span class="badge est">est. shipping</span> — change it in ⋯ → Settings or below. Listings sell or change — always check before buying.</div>
+      <div class="small muted" style="margin-top:6px"><b>Which cards are scanned:</b> featured chases (Cool Crushers, Cycle Complete, Harper PSA 10, VJ Edgecombe, Tyrese Maxey, the 2008 sets), every Phillies card in any checklist, and cards Groky knows you own. Other teams' cards in the all-teams and SP/SSP checklists get weekly prices but no listing scan, so they never show deals here.</div>
       <div class="small muted" style="margin-top:6px">Only versions you don't own, in sets where you own at least one card. eBay isn't checked automatically (its search pages are off-limits to bots) — use the eBay buttons on each card.</div>
       <div class="row" style="gap:10px;margin-top:10px;flex-wrap:wrap">
         <label class="small">At least <select id="dPct" class="input" style="width:auto;display:inline-block;padding:4px 8px">${[10, 15, 20, 25, 30, 40, 50].map(p => `<option value="${p}" ${p === dealPct() ? 'selected' : ''}>${p}%</option>`).join('')}</select> under</label>
@@ -801,6 +809,7 @@ function renderDetail(set, card) {
     <div class="section-title row"><span class="grow">${set.chase ? 'My copy' : set.grade ? `My copy · ${esc(set.grade)}` : 'Versions &amp; parallels'}</span></div>
     <div class="chips" style="margin-bottom:8px;${set.chase || set.grade ? 'display:none' : ''}">${['all', 'owned', 'missing'].map(x => `<button class="chip ${vf === x ? 'on' : ''}" data-vf="${x}">${x === 'all' ? `All ${vers.length}` : x === 'owned' ? `Owned ${n}` : `Missing ${vers.length - n}`}</button>`).join('')}
       <select class="chip ${detailState.vs !== 'default' ? 'on' : ''}" id="vSort" aria-label="Sort versions"><option value="default">Checklist order</option><option value="price-desc" ${detailState.vs === 'price-desc' ? 'selected' : ''}>Price: high → low</option><option value="price-asc" ${detailState.vs === 'price-asc' ? 'selected' : ''}>Price: low → high</option></select></div>
+    ${PRICES?.lScanned && !wnScanned(set.id, card.id) ? `<p class="small muted" style="margin:-2px 4px 8px">🔎 Whatnot listings aren't scanned weekly for this card (only featured chases, Phillies cards and cards you own) — use the Whatnot / eBay buttons to check.</p>` : ''}
     ${PRICES?.updated ? `<p class="small muted" style="margin:-2px 4px 8px">${set.grade ? `${esc(set.grade)} = graded ${esc(set.grade)} sold price` : 'Raw = ungraded sold price'} from <a href="https://www.sportscardspro.com" target="_blank" rel="noopener">SportsCardsPro</a>, as of ${esc(PRICES.updated)}.${PRICES.l ? ` “Listed” = cheapest Buy-It-Now in a weekly snapshot (${esc(shortDay(PRICES.listedAt || PRICES.updated))})${set.grade ? `, ${esc(set.grade)} slabs only` : ''}, shown as the total incl. shipping (your default ${money(dealShip())} when the listing doesn't show it — “est.”) — may be gone or changed.` : ''}</p>` : ''}
     <div class="card">${shown.length ? shown.map(v => {
       const o = own(set.id, card.id, v.id); const k = pkey(set.id, card.id, v.id); const hasPhoto = photoKeys.has(k);

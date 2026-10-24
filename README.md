@@ -26,3 +26,17 @@ Bundled data: data/index.json lists the sets that load on first run (2026 Topps 
 Raise `dataVersion` in a set file to refresh that checklist on phones that already have it. What the user owns is kept.
 
 sample-set.json / sample-set.csv contain fictional EXAMPLE DATA (⋯ → Load example demo set).
+
+## Weekly price refresh (runs on the Groky box, not in the app)
+
+```
+cd /workspace/cc-tools && setsid nohup python3 prices.py > prices_run.log 2>&1 &
+```
+
+Expected runtime: **about 1¼–1½ hours** (SportsCardsPro every card + Whatnot for the scoped cards), at the polite 1.5 s / 2.5 s request delays.
+It then commits and pushes `prices.json` (git pull --rebase first) and sends Web Push deal alerts.
+
+- **Prices:** every card in every checklist (including the ~3,000 SP/SSP variations and all-teams base sets) is priced from SportsCardsPro: whole console pages for Topps S1/S2/Update, individual lookups for the rest.
+- **Whatnot listing scan** (landed-cost deals): only featured chases (Cool Crushers, Cycle Complete, Harper PSA 10, VJ Edgecombe, Tyrese Maxey, the 2008 sets), every Phillies card in any checklist (incl. Chrome and the Phillies cards inside the all-teams / SP/SSP sets) and cards known to be owned (OWN_PRELOADS in app.js, chase `owned` lists, Send-to-Groky cards). Other teams' cards get prices but no listings, and the app says so (`lScanned` in prices.json lists exactly what was scanned).
+- **Checkpoint/resume:** progress is saved to `cc-tools/state/` (every 50 cards in stage 1, every 25 scanned cards in stage 2, plus fetched console pages). If the run is interrupted, start the same command again the same day and it resumes; `--fresh` ignores the checkpoint.
+- Options: `--no-push`, `--no-alerts`, `--no-listings`, `--listings-only`, `--sets REGEX`, `--only REGEX` (test, writes nothing), `--limit N` (test, writes nothing), `--fresh`.
