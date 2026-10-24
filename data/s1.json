@@ -1,7 +1,7 @@
 {
 "format": "card-checklist-set",
 "version": 2,
-"dataVersion": 2,
+"dataVersion": 3,
 "id": "2026-topps-s1-phillies",
 "name": "Topps Series 1 — Phillies",
 "year": 2026,
@@ -15,7 +15,10 @@
 "https://www.beckett.com/news/2026-topps-series-1-baseball-cards/",
 "https://www.checklistinsider.com/2026-topps-series-1-baseball",
 "https://xcdn.checklistinsider.com/public/2026/03/2026-Topps-Series-1-Baseball-Checklist-Odds-Update-Feb.pdf",
-"https://www.sportscardspro.com/"
+"https://www.sportscardspro.com/",
+"https://www.checklistinsider.com/2026-topps-celebration-series-1-baseball",
+"https://www.sportscardspro.com/console/baseball-cards-2026-topps-celebration?model-number=197",
+"https://mycardbatch.com/checklists/topps-series-1-2026-baseball"
 ],
 "parallels": [
 {
@@ -599,6 +602,70 @@
 "name": "Rose Gold Spring Training",
 "printRun": 1,
 "color": "#d4a017"
+},
+{
+"id": "confetti",
+"name": "Confetti (Silver)",
+"printRun": null,
+"color": "#c0c7d1",
+"cardOnly": true,
+"scpPath": "baseball-cards-2026-topps-celebration/bryce-harper-confetti-197"
+},
+{
+"id": "opening-day-foil",
+"name": "Opening Day Foil",
+"printRun": null,
+"color": "#9aa5b8",
+"cardOnly": true,
+"scpPath": "baseball-cards-2026-topps-celebration/bryce-harper-opening-day-197"
+},
+{
+"id": "pink-confetti-100",
+"name": "Pink Confetti",
+"printRun": 100,
+"color": "#ec4899",
+"cardOnly": true,
+"scpPath": "baseball-cards-2026-topps-celebration/bryce-harper-pink-confetti-197"
+},
+{
+"id": "lime-green-confetti-50",
+"name": "Lime Green Confetti",
+"printRun": 50,
+"color": "#84cc16",
+"cardOnly": true,
+"scpPath": "baseball-cards-2026-topps-celebration/bryce-harper-lime-green-confetti-197"
+},
+{
+"id": "topps-foil-pattern",
+"name": "Topps Foil Pattern (Topps logo)",
+"printRun": null,
+"color": "#b0bccd",
+"cardOnly": true,
+"scpPath": "baseball-cards-2026-topps/cool-crushers-topps-foil-pattern-197"
+},
+{
+"id": "black-spring-training-10",
+"name": "Black Spring Training",
+"printRun": 10,
+"color": "#111827",
+"cardOnly": true,
+"scpPath": "baseball-cards-2026-topps/cool-crushers-spring-training-black-197"
+},
+{
+"id": "purple-tinsel",
+"name": "Purple Tinsel (Meijer) — unconfirmed",
+"printRun": null,
+"color": "#8b5cf6",
+"cardOnly": true,
+"unconfirmed": true
+},
+{
+"id": "yellow-tinsel",
+"name": "Yellow Tinsel (Walgreens) — unconfirmed",
+"printRun": null,
+"color": "#eab308",
+"cardOnly": true,
+"unconfirmed": true
 }
 ],
 "cards": [
@@ -1518,7 +1585,15 @@
 "spring-training",
 "aqua-holo-foil",
 "aqua-rainbow-foil",
-"golden-mirror-variation"
+"golden-mirror-variation",
+"confetti",
+"opening-day-foil",
+"pink-confetti-100",
+"lime-green-confetti-50",
+"topps-foil-pattern",
+"black-spring-training-10",
+"purple-tinsel",
+"yellow-tinsel"
 ],
 "players": "Bryce Harper",
 "featured": true,
@@ -1562,9 +1637,13 @@
 "purple-holo-foil-250": "img/s1/197--purple-holo-foil-250.jpg",
 "rainbow-foil": "img/s1/197--rainbow-foil.jpg",
 "spring-training": "img/s1/197--spring-training.jpg",
-"holo-foil": "img/s1/197--holo-foil.jpg"
+"holo-foil": "img/s1/197--holo-foil.jpg",
+"confetti": "img/s1/197--confetti.jpg",
+"pink-confetti-100": "img/s1/197--pink-confetti.jpg",
+"topps-foil-pattern": "img/s1/197--topps-foil-pattern.jpg"
 },
-"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps/cool-crushers-197"
+"ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps/cool-crushers-197",
+"notes": "Celebration Mega Box exclusives (Confetti silver, Pink Confetti /100, Lime Green Confetti est. /50 — unstamped, Opening Day Foil) live in a separate product, 2026 Topps Series 1 Celebration, but use this same #197 card. Topps Foil Pattern is the Fanatics-exclusive Topps-logo foil. Purple/Yellow Tinsel (Meijer/Walgreens) are listed by Checklist Insider, Degree Grading and MyCardBatch only — not by Topps, Beckett or SportsCardsPro — so they are flagged unconfirmed and left out of the rainbow total. Opening Day Foil, Topps Foil Pattern and Confetti come in one version each (no other colors found), except Pink and Lime Green Confetti."
 },
 {
 "id": "203",

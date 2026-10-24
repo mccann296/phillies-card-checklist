@@ -109,6 +109,7 @@ function normalizeSet(raw) {
     let applies = p.appliesTo ?? p.applies_to ?? [];
     if (typeof applies === 'string') applies = applies.split('|').map(x => x.trim()).filter(Boolean);
     const par = { id, name: String(p.name).trim(), printRun, color: p.color || guessColor(p.name), appliesTo: applies };
+    if (p.unconfirmed) par.unconfirmed = true; // listed by aggregators only — shown, but not counted in the rainbow total
     if (p.cardOnly) par.cardOnly = true; // added to one card only ("Add a parallel to this card") — never applies set-wide
     s.parallels.push(par);
   }
@@ -489,11 +490,12 @@ function serialHtml(card, v, o) {
   const jm = jerseyMatch(card, o);
   return `<span class="serial${jm ? ' jersey' : ''}" title="${jm ? esc(`Matches ${jm.name}'s jersey #${jm.n}`) : ''}">#${esc(o.serial)}${jm ? ` 🎽 ${esc(jm.name.split(' ').pop())}'s #${jm.n}` : ''}</span>`;
 }
+const isUnconf = v => !!v.unconfirmed || / — unconfirmed$/.test(v.name); // flag, or the name tag (survives a set stored by an older build)
 const RAINBOW = new Set(['2026-topps-s1-phillies|197', '2026-topps-upd-phillies|season-highlights-us131']);
 const isRainbow = (set, card) => RAINBOW.has(set.id + '|' + card.id);
 // every parallel of the card (base excluded), in print-run order: unnumbered first, then /399 … down to 1/1
 function rainbowVers(set, card) {
-  const pv = versionsFor(set, card).filter(v => v.id !== BASE_ID).map((v, i) => ({ v, i }));
+  const pv = versionsFor(set, card).filter(v => v.id !== BASE_ID && !isUnconf(v)).map((v, i) => ({ v, i }));
   pv.sort((a, b) => (a.v.printRun ? 1 : 0) - (b.v.printRun ? 1 : 0) || (b.v.printRun || 0) - (a.v.printRun || 0) || a.i - b.i);
   return pv.map(x => x.v);
 }
@@ -509,7 +511,7 @@ function rainbowHtml(set, card) {
     <div class="row"><b class="grow" style="font-size:18px">${n} of ${rv.length} parallels owned</b><span class="small muted">${pct(n, rv.length)}%</span></div>
     <div class="bar rainbow" style="margin:6px 0 10px"><i style="width:${pct(n, rv.length)}%"></i></div>
     <div class="chips" style="margin-bottom:8px">${[['all', `All ${rv.length}`], ['owned', `Owned ${n}`], ['missing', `Missing ${rv.length - n}`]].map(([k, l]) => `<button class="chip ${rbState.show === k ? 'on' : ''}" data-rbshow="${k}">${l}</button>`).join('')}</div>
-    <div class="small muted" style="margin-bottom:6px">Print-run order: unnumbered first, then the lowest numbered last (1/1). Tap one to open it below. Base card not counted.</div>
+    <div class="small muted" style="margin-bottom:6px">Print-run order: unnumbered first, then the lowest numbered last (1/1). Tap one to open it below. Base card not counted.${(u => u.length ? ` Not counted (unconfirmed by Topps/Beckett/SportsCardsPro): ${esc(u.map(v => v.name.replace(/ — unconfirmed$/, '')).join(', '))}.` : '')(versionsFor(set, card).filter(isUnconf))}</div>
     <div class="rb-list">${list.map(chip).join('') || '<div class="small muted">Nothing here.</div>'}</div></div>`;
 }
 /* ---------------- views ---------------- */
@@ -1094,16 +1096,27 @@ function vjPreload() {
 const OWN_PRELOADS = [
   { key: 'misiorowski-us136-gold-sandglitter', set: '2026-topps-upd-all', card: 'us136', ver: 'gold-sandglitter-50' }, // 2026 Topps Update #US136 Jacob Misiorowski Gold Sandglitter /50 — serial left blank for the user
   // 2026 Topps Chrome Green Wave Refractor /99 — the user's own copies (photo shipped as img/own/…; serial from the photo, Schwarber's left blank)
+  // 2026 Topps Series 1 #197 Cool Crushers (Harper/Schwarber) — the user's own copies, serials left blank (the user told Groky they own these four)
+  { key: 'cool-crushers-197-confetti', set: '2026-topps-s1-phillies', card: '197', ver: 'confetti' },
+  { key: 'cool-crushers-197-pink-confetti', set: '2026-topps-s1-phillies', card: '197', ver: 'pink-confetti-100' },
+  { key: 'cool-crushers-197-opening-day-foil', set: '2026-topps-s1-phillies', card: '197', ver: 'opening-day-foil' },
+  { key: 'cool-crushers-197-topps-foil-pattern', set: '2026-topps-s1-phillies', card: '197', ver: 'topps-foil-pattern' },
   { key: 'chrome-233-realmuto-green-wave-99', set: '2026-topps-chrome-phillies', card: '233', ver: 'green-wave-refractor-99', serial: '29/99', photo: 'img/own/chrome-233--green-wave-refractor-99.jpg' },
   { key: 'chrome-123-schwarber-green-wave-99', set: '2026-topps-chrome-phillies', card: '123', ver: 'green-wave-refractor-99', serial: '35/99', photo: 'img/own/chrome-123--green-wave-refractor-99-closeup.jpg' }, // serial read from the user's close-up (last 9 partly under the sleeve edge — user to confirm)
   { key: 'chrome-206-garcia-green-wave-99', set: '2026-topps-chrome-phillies', card: '206', ver: 'green-wave-refractor-99', serial: '54/99', photo: 'img/own/chrome-206--green-wave-refractor-99.jpg' }
 ];
+// Names a user might already have typed in for a version the bundled checklist now carries (so we never double-add)
+const VER_ALIASES = {
+  'confetti': /^(silver\s+)?confetti(\s*\(silver\))?(\s+(foil|parallel))?$/i, 'pink-confetti-100': /pink\s+confetti/i, 'lime-green-confetti-50': /(lime|green)\s+confetti/i,
+  'opening-day-foil': /opening\s+day/i, 'topps-foil-pattern': /topps\s+(logo|foil)|logo\s+(refractor|foil)/i, 'black-spring-training-10': /black.*spring\s+training|spring\s+training.*black/i
+};
+const resolveVer = (s, c, id) => { const vs = versionsFor(s, c); return vs.find(v => v.id === id) || (VER_ALIASES[id] && vs.find(v => v.id !== BASE_ID && VER_ALIASES[id].test(v.name))); };
 function applyOwnPreloads() {
   prefs.ownPreloads ??= []; let changed = false;
   for (const x of OWN_PRELOADS) {
     if (prefs.ownPreloads.includes(x.key)) continue;
-    const s = getSet(x.set), c = s?.cards.find(c => c.id === x.card); if (!c || !versionsFor(s, c).some(v => v.id === x.ver)) continue; // checklist not loaded yet — try next start
-    if (!own(s.id, c.id, x.ver)) setOwn(s.id, c.id, x.ver, { q: 1, ...(x.serial ? { serial: x.serial } : {}) });
+    const s = getSet(x.set), c = s?.cards.find(c => c.id === x.card), v = c && resolveVer(s, c, x.ver); if (!v) continue; // checklist not loaded yet — try next start
+    if (!own(s.id, c.id, v.id)) setOwn(s.id, c.id, v.id, { q: 1, ...(x.serial ? { serial: x.serial } : {}) });
     prefs.ownPreloads.push(x.key); changed = true;
   }
   if (changed) savePrefs();
@@ -1427,6 +1440,20 @@ view.addEventListener('click', async e => {
 /* ---------------- boot ---------------- */
 // Bundled checklists (data/index.json). New installs get them; newer bundled dataVersion refreshes the
 // checklist in place (ownership is kept because card ids are stable).
+// If you had already typed in a version the bundled list now carries (e.g. your own "Silver Confetti"), the bundled one takes over YOUR id,
+// so what you own / your photo / notes stay attached and the version isn't listed twice.
+function adoptUserParallels(ns, cur) {
+  const nsIds = new Set(ns.parallels.map(p => p.id));
+  for (const [pid, re] of Object.entries(VER_ALIASES)) {
+    const np = ns.parallels.find(p => p.id === pid); if (!np) continue;
+    for (const u of cur.parallels) {
+      if (nsIds.has(u.id) || !re.test(u.name)) continue;
+      const cards = ns.cards.filter(c => c.parallels?.includes(pid)); if (!cards.some(c => cur.cards.find(x => x.id === c.id)?.parallels?.includes(u.id))) continue;
+      for (const c of cards) { c.parallels = c.parallels.map(x => x === pid ? u.id : x); if (c.images?.[pid]) { c.images[u.id] = c.images[pid]; delete c.images[pid]; } }
+      np.id = u.id; nsIds.add(u.id); break;
+    }
+  }
+}
 async function seedDefault(force) {
   try {
     const idx = await (await fetch('data/index.json', { cache: 'no-cache' })).json();
@@ -1448,6 +1475,7 @@ async function seedDefault(force) {
       else if (!!cur.pinned !== !!ns.pinned && (ns.dataVersion || 0) <= (cur.dataVersion || 0)) { cur.pinned = ns.pinned; changed++; }
       else if ((ns.dataVersion || 0) > (cur.dataVersion || 0)) {
         // refresh the checklist but keep cards & parallels you added yourself (ownership/photos/prices are keyed by id)
+        adoptUserParallels(ns, cur);
         const ids = new Set(ns.cards.map(c => c.id)), pids = new Set(ns.parallels.map(p => p.id));
         for (const c of cur.cards) if (!ids.has(c.id)) ns.cards.push(c);
         for (const p of cur.parallels) if (!pids.has(p.id)) ns.parallels.push(p);
