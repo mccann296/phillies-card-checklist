@@ -1,0 +1,452 @@
+{
+ "format": "card-checklist-set",
+ "version": 2,
+ "dataVersion": 1,
+ "id": "2026-topps-chrome-sapphire-phillies",
+ "name": "Topps Chrome Sapphire — Phillies",
+ "year": 2026,
+ "brand": "Topps",
+ "sport": "Baseball",
+ "team": "Philadelphia Phillies",
+ "baseName": "Base Sapphire",
+ "notes": "Phillies cards only, from the official 2026 Topps Chrome Sapphire Edition checklist (online-exclusive product, released Aug 26 2026). 12 base cards (Harper also has the 6 Image Variation versions) + 2 Rookie Sapphire Autographs (Painter, Kemp). No Phillies in Sapphire Selections Autographs or Hidden Gems. Colors/print runs: Gold /50, White /30, Orange /25, Black /10, Red /5, Padparadscha 1/1; autos also Purple /75, Green /99. Photos: SportsCardsPro listings (personal reference); some rare colors have no photo yet.",
+ "sources": [
+  "https://cdn.shopify.com/s/files/1/0662/9749/5709/files/2026_Topps_Chrome_Sapphire_Checklist.pdf",
+  "https://www.breakninja.com/baseball/2026-Topps-Chrome-Sapphire-Baseball-Checklist-Philadelphia-Phillies.php",
+  "https://www.beckett.com/news/2026-topps-chrome-sapphire-baseball-cards/",
+  "https://www.hobbymonitor.com/release/2026-topps-chrome-sapphire-baseball",
+  "https://www.sportscardspro.com/console/baseball-cards-2026-topps-chrome-sapphire"
+ ],
+ "parallels": [
+  {
+   "id": "gold-sapphire-50",
+   "name": "Gold Sapphire",
+   "printRun": 50,
+   "color": "#d4af37"
+  },
+  {
+   "id": "white-sapphire-30",
+   "name": "White Sapphire",
+   "printRun": 30,
+   "color": "#f1f1f1"
+  },
+  {
+   "id": "orange-sapphire-25",
+   "name": "Orange Sapphire",
+   "printRun": 25,
+   "color": "#f28c28"
+  },
+  {
+   "id": "black-sapphire-10",
+   "name": "Black Sapphire",
+   "printRun": 10,
+   "color": "#222222"
+  },
+  {
+   "id": "red-sapphire-5",
+   "name": "Red Sapphire",
+   "printRun": 5,
+   "color": "#d62828"
+  },
+  {
+   "id": "padparadscha-sapphire-1",
+   "name": "Padparadscha Sapphire",
+   "printRun": 1,
+   "color": "#ff8a65"
+  },
+  {
+   "id": "image-variation-sapphire",
+   "name": "Sapphire Image Variation",
+   "printRun": null,
+   "color": "#4aa3df"
+  },
+  {
+   "id": "image-variation-gold-sapphire-50",
+   "name": "Gold Sapphire Image Variation",
+   "printRun": 50,
+   "color": "#d4af37"
+  },
+  {
+   "id": "image-variation-orange-sapphire-25",
+   "name": "Orange Sapphire Image Variation",
+   "printRun": 25,
+   "color": "#f28c28"
+  },
+  {
+   "id": "image-variation-black-sapphire-10",
+   "name": "Black Sapphire Image Variation",
+   "printRun": 10,
+   "color": "#222222"
+  },
+  {
+   "id": "image-variation-red-sapphire-5",
+   "name": "Red Sapphire Image Variation",
+   "printRun": 5,
+   "color": "#d62828"
+  },
+  {
+   "id": "image-variation-padparadscha-sapphire-1",
+   "name": "Padparadscha Sapphire Image Variation",
+   "printRun": 1,
+   "color": "#ff8a65"
+  },
+  {
+   "id": "green-sapphire-99",
+   "name": "Green Sapphire",
+   "printRun": 99,
+   "color": "#2e9e5b"
+  },
+  {
+   "id": "purple-sapphire-75",
+   "name": "Purple Sapphire",
+   "printRun": 75,
+   "color": "#7b3fe4"
+  }
+ ],
+ "cards": [
+  {
+   "id": "5",
+   "number": "5",
+   "player": "Trea Turner",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/5--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/5--white-sapphire-30.jpg",
+    "orange-sapphire-25": "img/sapphire/5--orange-sapphire-25.jpg",
+    "black-sapphire-10": "img/sapphire/5--black-sapphire-10.jpg",
+    "padparadscha-sapphire-1": "img/sapphire/5--padparadscha-sapphire-1.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/trea-turner-5",
+   "image": "img/sapphire/5.jpg"
+  },
+  {
+   "id": "73",
+   "number": "73",
+   "player": "Justin Crawford",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": true,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/73--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/73--white-sapphire-30.jpg",
+    "black-sapphire-10": "img/sapphire/73--black-sapphire-10.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/justin-crawford-73",
+   "image": "img/sapphire/73.jpg"
+  },
+  {
+   "id": "123",
+   "number": "123",
+   "player": "Kyle Schwarber",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/123--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/123--white-sapphire-30.jpg",
+    "orange-sapphire-25": "img/sapphire/123--orange-sapphire-25.jpg",
+    "red-sapphire-5": "img/sapphire/123--red-sapphire-5.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/kyle-schwarber-123",
+   "image": "img/sapphire/123.jpg"
+  },
+  {
+   "id": "160",
+   "number": "160",
+   "player": "Andrew Painter",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": true,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/160--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/160--white-sapphire-30.jpg",
+    "orange-sapphire-25": "img/sapphire/160--orange-sapphire-25.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/andrew-painter-160",
+   "image": "img/sapphire/160.jpg"
+  },
+  {
+   "id": "206",
+   "number": "206",
+   "player": "Adolis García",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/206--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/206--white-sapphire-30.jpg",
+    "black-sapphire-10": "img/sapphire/206--black-sapphire-10.jpg",
+    "red-sapphire-5": "img/sapphire/206--red-sapphire-5.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/adolis-garcia-206",
+   "image": "img/sapphire/206.jpg"
+  },
+  {
+   "id": "229",
+   "number": "229",
+   "player": "Otto Kemp",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": true,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/229--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/229--white-sapphire-30.jpg",
+    "orange-sapphire-25": "img/sapphire/229--orange-sapphire-25.jpg",
+    "black-sapphire-10": "img/sapphire/229--black-sapphire-10.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/otto-kemp-229",
+   "image": "img/sapphire/229.jpg"
+  },
+  {
+   "id": "233",
+   "number": "233",
+   "player": "J.T. Realmuto",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/233--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/233--white-sapphire-30.jpg",
+    "orange-sapphire-25": "img/sapphire/233--orange-sapphire-25.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/jt-realmuto-233",
+   "image": "img/sapphire/233.jpg"
+  },
+  {
+   "id": "244",
+   "number": "244",
+   "player": "Bryce Harper",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1",
+    "image-variation-sapphire",
+    "image-variation-gold-sapphire-50",
+    "image-variation-orange-sapphire-25",
+    "image-variation-black-sapphire-10",
+    "image-variation-red-sapphire-5",
+    "image-variation-padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/244--gold-sapphire-50.jpg",
+    "orange-sapphire-25": "img/sapphire/244--orange-sapphire-25.jpg",
+    "image-variation-gold-sapphire-50": "img/sapphire/244--image-variation-gold-sapphire-50.jpg",
+    "image-variation-orange-sapphire-25": "img/sapphire/244--image-variation-orange-sapphire-25.jpg",
+    "image-variation-sapphire": "img/sapphire/244--image-variation-sapphire.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/bryce-harper-244",
+   "image": "img/sapphire/244.jpg"
+  },
+  {
+   "id": "248",
+   "number": "248",
+   "player": "Bryson Stott",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/248--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/248--white-sapphire-30.jpg",
+    "orange-sapphire-25": "img/sapphire/248--orange-sapphire-25.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/bryson-stott-248",
+   "image": "img/sapphire/248.jpg"
+  },
+  {
+   "id": "265",
+   "number": "265",
+   "player": "Jesús Luzardo",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/265--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/265--white-sapphire-30.jpg",
+    "orange-sapphire-25": "img/sapphire/265--orange-sapphire-25.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/jesus-luzardo-265"
+  },
+  {
+   "id": "270",
+   "number": "270",
+   "player": "Cristopher Sánchez",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/270--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/270--white-sapphire-30.jpg",
+    "orange-sapphire-25": "img/sapphire/270--orange-sapphire-25.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/cristopher-sanchez-270",
+   "image": "img/sapphire/270.jpg"
+  },
+  {
+   "id": "290",
+   "number": "290",
+   "player": "Zack Wheeler",
+   "team": "Philadelphia Phillies",
+   "subset": "Base",
+   "rookie": false,
+   "parallels": [
+    "gold-sapphire-50",
+    "white-sapphire-30",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "images": {
+    "gold-sapphire-50": "img/sapphire/290--gold-sapphire-50.jpg",
+    "white-sapphire-30": "img/sapphire/290--white-sapphire-30.jpg",
+    "red-sapphire-5": "img/sapphire/290--red-sapphire-5.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire/zack-wheeler-290",
+   "image": "img/sapphire/290.jpg"
+  },
+  {
+   "id": "sapphire-autographs-ra-ap",
+   "number": "RA-AP",
+   "player": "Andrew Painter",
+   "team": "Philadelphia Phillies",
+   "subset": "Topps Chrome Sapphire Autographs",
+   "rookie": true,
+   "parallels": [
+    "purple-sapphire-75",
+    "green-sapphire-99",
+    "gold-sapphire-50",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "notes": "On-card auto. The plain Sapphire auto is numbered /199; colors are Purple /75, Green /99, Gold /50, Orange /25, Black /10, Red /5, Padparadscha 1/1 (no White in the auto set).",
+   "images": {
+    "purple-sapphire-75": "img/sapphire/sapphire-autographs-ra-ap--purple-sapphire-75.jpg",
+    "green-sapphire-99": "img/sapphire/sapphire-autographs-ra-ap--green-sapphire-99.jpg",
+    "gold-sapphire-50": "img/sapphire/sapphire-autographs-ra-ap--gold-sapphire-50.jpg",
+    "orange-sapphire-25": "img/sapphire/sapphire-autographs-ra-ap--orange-sapphire-25.jpg",
+    "black-sapphire-10": "img/sapphire/sapphire-autographs-ra-ap--black-sapphire-10.jpg",
+    "red-sapphire-5": "img/sapphire/sapphire-autographs-ra-ap--red-sapphire-5.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire-autograph/andrew-painter-ra-ap",
+   "image": "img/sapphire/sapphire-autographs-ra-ap.jpg"
+  },
+  {
+   "id": "sapphire-autographs-ra-ok",
+   "number": "RA-OK",
+   "player": "Otto Kemp",
+   "team": "Philadelphia Phillies",
+   "subset": "Topps Chrome Sapphire Autographs",
+   "rookie": true,
+   "parallels": [
+    "purple-sapphire-75",
+    "green-sapphire-99",
+    "gold-sapphire-50",
+    "orange-sapphire-25",
+    "black-sapphire-10",
+    "red-sapphire-5",
+    "padparadscha-sapphire-1"
+   ],
+   "notes": "On-card auto. The plain Sapphire auto is numbered /199; colors are Purple /75, Green /99, Gold /50, Orange /25, Black /10, Red /5, Padparadscha 1/1 (no White in the auto set).",
+   "images": {
+    "purple-sapphire-75": "img/sapphire/sapphire-autographs-ra-ok--purple-sapphire-75.jpg",
+    "green-sapphire-99": "img/sapphire/sapphire-autographs-ra-ok--green-sapphire-99.jpg",
+    "gold-sapphire-50": "img/sapphire/sapphire-autographs-ra-ok--gold-sapphire-50.jpg",
+    "orange-sapphire-25": "img/sapphire/sapphire-autographs-ra-ok--orange-sapphire-25.jpg",
+    "black-sapphire-10": "img/sapphire/sapphire-autographs-ra-ok--black-sapphire-10.jpg",
+    "red-sapphire-5": "img/sapphire/sapphire-autographs-ra-ok--red-sapphire-5.jpg"
+   },
+   "ref": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome-sapphire-autograph/otto-kemp-ra-ok",
+   "image": "img/sapphire/sapphire-autographs-ra-ok.jpg"
+  }
+ ]
+}

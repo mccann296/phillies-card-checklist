@@ -1152,6 +1152,16 @@ const OWN_PRELOADS = [
   { key: 'cool-crushers-197-pink-confetti', set: '2026-topps-s1-phillies', card: '197', ver: 'pink-confetti-100' },
   { key: 'cool-crushers-197-opening-day-foil', set: '2026-topps-s1-phillies', card: '197', ver: 'opening-day-foil' },
   { key: 'cool-crushers-197-topps-foil-pattern', set: '2026-topps-s1-phillies', card: '197', ver: 'topps-foil-pattern' },
+  // 2026 Topps Chrome Sapphire #290 Zack Wheeler Orange Sapphire /25, serial 7/25 — the user's own copy (user may add a photo later)
+  { key: 'chrome-sapphire-290-wheeler-orange-25', set: '2026-topps-chrome-sapphire-phillies', card: '290', ver: 'orange-sapphire-25', serial: '7/25' },
+  // 2026 Topps Chrome 'Topps Refractor' (silver Topps-logo pattern, unnumbered, Fanatics Mega exclusive) — the user's own copies (user: "logo refractors"). No serials. Crawford #73 was already owned.
+  { key: 'chrome-160-painter-topps-refractor', set: '2026-topps-chrome-phillies', card: '160', ver: 'topps-refractor' },
+  { key: 'chrome-248-stott-topps-refractor', set: '2026-topps-chrome-phillies', card: '248', ver: 'topps-refractor' },
+  { key: 'chrome-123-schwarber-topps-refractor', set: '2026-topps-chrome-phillies', card: '123', ver: 'topps-refractor' },
+  { key: 'chrome-229-kemp-topps-refractor', set: '2026-topps-chrome-phillies', card: '229', ver: 'topps-refractor' },
+  { key: 'chrome-233-realmuto-topps-refractor', set: '2026-topps-chrome-phillies', card: '233', ver: 'topps-refractor' },
+  { key: 'chrome-265-luzardo-topps-refractor', set: '2026-topps-chrome-phillies', card: '265', ver: 'topps-refractor' },
+  { key: 'chrome-244-harper-topps-refractor', set: '2026-topps-chrome-phillies', card: '244', ver: 'topps-refractor' },
   { key: 'chrome-233-realmuto-green-raywave-99', set: '2026-topps-chrome-phillies', card: '233', ver: 'green-raywave-refractor-99', supersedes: 'chrome-233-realmuto-green-wave-99', serial: '29/99', photo: 'img/own/chrome-233--green-raywave-refractor-99.jpg' },
   { key: 'chrome-206-garcia-green-raywave-99', set: '2026-topps-chrome-phillies', card: '206', ver: 'green-raywave-refractor-99', supersedes: 'chrome-206-garcia-green-wave-99', serial: '54/99', photo: 'img/own/chrome-206--green-raywave-refractor-99.jpg' },
   { key: 'chrome-123-schwarber-green-raywave-99', set: '2026-topps-chrome-phillies', card: '123', ver: 'green-raywave-refractor-99', serial: '58/99', photo: 'img/own/chrome-123--green-raywave-refractor-99.jpg' }, // 58/99 read from two photos (pinstripes cross the digits) — user to confirm
@@ -1545,6 +1555,8 @@ function adoptUserParallels(ns, cur) {
     }
   }
 }
+// where a newly bundled set is slotted into the home list (instead of the end): right after its sibling
+const SET_AFTER = { '2026-topps-chrome-sapphire-phillies': '2026-topps-chrome-phillies' };
 async function seedDefault(force) {
   try {
     const idx = await (await fetch('data/index.json', { cache: 'no-cache' })).json();
@@ -1555,7 +1567,7 @@ async function seedDefault(force) {
       const j = await (await fetch(path, { cache: 'no-cache' })).json();
       const ns = normalizeSet(j); const cur = getSet(ns.id);
       for (const c of ns.cards) PUB.add(pubKey(ns.id, c.id));
-      if (!cur) { if (force || !known.has(ns.id)) { sets.push(ns); changed++; } }
+      if (!cur) { if (force || !known.has(ns.id)) { const ai = SET_AFTER[ns.id] ? sets.findIndex(x => x.id === SET_AFTER[ns.id]) : -1; if (ai >= 0) sets.splice(ai + 1, 0, ns); else sets.push(ns); changed++; } }
       else if (cur.slim || (ns.fullSet && cur.cards.length < ns.cards.length && (ns.dataVersion || 0) >= (cur.dataVersion || 0))) {
         // slim stub of a big bundled checklist: rebuild from the data file, keep your own cards/parallels
         const ids = new Set(ns.cards.map(c => c.id)), pids = new Set(ns.parallels.map(p => p.id));
